@@ -6,10 +6,19 @@ const LossCurvesChart = lazy(() => import('./charts/LossCurvesChart'))
 const SecurityEconomicsChart = lazy(
   () => import('./charts/SecurityEconomicsChart'),
 )
+const ExplainSection = lazy(() => import('./ExplainSection'))
 
 function ChartFallback() {
   return (
     <div className="rounded-[28px] border border-black h-[380px] md:h-[420px] animate-pulse bg-black/[0.02]" />
+  )
+}
+
+function ExplainFallback() {
+  return (
+    <div className="border-t border-black/10 px-5 md:px-12 py-20">
+      <div className="max-w-[1100px] mx-auto h-[420px] rounded-[32px] border border-black/10 animate-pulse bg-black/[0.02]" />
+    </div>
   )
 }
 
@@ -264,6 +273,10 @@ export default function Content() {
           </div>
         </div>
       </section>
+
+      <Suspense fallback={<ExplainFallback />}>
+        <ExplainSection />
+      </Suspense>
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">

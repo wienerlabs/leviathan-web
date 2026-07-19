@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .claude
+
+manim/media
+manim/__pycache__
