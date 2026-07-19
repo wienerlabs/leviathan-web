@@ -1,34 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-manrope: "Manrope", sans-serif;
-  --font-italiana: "Italiana", serif;
   --font-latex: "KaTeX_Main", "KaTeX_Math", "Latin Modern Roman", "Computer Modern", "Times New Roman", serif;
   --font-latex-math: "KaTeX_Math", "KaTeX_Main", serif;
   --font-latex-tt: "KaTeX_Typewriter", "KaTeX_Main", monospace;
-}
-
-.chart-latex,
-.chart-latex * {
-  font-family: var(--font-latex) !important;
-  font-variant-numeric: lining-nums;
-  -webkit-font-smoothing: antialiased;
-}
-
-.chart-latex .recharts-text,
-.chart-latex .recharts-cartesian-axis-tick-value,
-.chart-latex .recharts-label {
-  font-family: var(--font-latex) !important;
-}
-
-.chart-latex .latex-math {
-  font-family: var(--font-latex-math) !important;
-  font-style: italic;
-}
-
-.chart-latex .latex-tt {
-  font-family: var(--font-latex-tt) !important;
+  --font-sans: var(--font-latex);
+  --font-serif: var(--font-latex);
+  --font-mono: var(--font-latex-tt);
+  --font-manrope: var(--font-latex);
+  --font-italiana: var(--font-latex);
 }
 
 html {
@@ -40,6 +20,8 @@ body {
   margin: 0;
   background: #ffffff;
   color: #000000;
+  font-family: var(--font-latex);
+  font-variant-numeric: lining-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
@@ -47,6 +29,31 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-latex-tt);
+}
+
+.latex-math {
+  font-family: var(--font-latex-math);
+  font-style: italic;
+}
+
+.latex-tt {
+  font-family: var(--font-latex-tt);
+}
+
+.chart-latex .recharts-text,
+.chart-latex .recharts-cartesian-axis-tick-value,
+.chart-latex .recharts-label,
+.recharts-text,
+.recharts-cartesian-axis-tick-value,
+.recharts-label {
+  font-family: var(--font-latex) !important;
 }
 
 @keyframes fadeUp {
