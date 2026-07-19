@@ -1,5 +1,17 @@
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import Waitlist from './Waitlist'
+
+const LossCurvesChart = lazy(() => import('./charts/LossCurvesChart'))
+const SecurityEconomicsChart = lazy(
+  () => import('./charts/SecurityEconomicsChart'),
+)
+
+function ChartFallback() {
+  return (
+    <div className="rounded-[28px] border border-black h-[380px] md:h-[420px] animate-pulse bg-black/[0.02]" />
+  )
+}
 
 const LINKS = [
   {
@@ -351,27 +363,13 @@ export default function Content() {
             </table>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-            <figure className="rounded-[28px] border border-black overflow-hidden bg-black/[0.02]">
-              <img
-                src="/loss_curves.png"
-                alt="Phase 0 loss curves across attack scenarios"
-                className="block w-full h-auto grayscale"
-              />
-              <figcaption className="px-5 py-4 text-[14px] md:text-[15px] text-black/55 border-t border-black/10">
-                Loss curves from the Phase 0 sim
-              </figcaption>
-            </figure>
-            <figure className="rounded-[28px] border border-black overflow-hidden bg-black/[0.02]">
-              <img
-                src="/security_economics.png"
-                alt="Phase 0 security economics and catch time"
-                className="block w-full h-auto grayscale"
-              />
-              <figcaption className="px-5 py-4 text-[14px] md:text-[15px] text-black/55 border-t border-black/10">
-                Break-even bond law and audit catch time
-              </figcaption>
-            </figure>
+          <div className="grid gap-6 md:gap-8">
+            <Suspense fallback={<ChartFallback />}>
+              <LossCurvesChart />
+            </Suspense>
+            <Suspense fallback={<ChartFallback />}>
+              <SecurityEconomicsChart />
+            </Suspense>
           </div>
 
           <div className="mt-10">
