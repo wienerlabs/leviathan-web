@@ -1,4 +1,11 @@
-import { motion, useInView } from 'motion/react'
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useMotionValue,
+  useTransform,
+  animate,
+} from 'motion/react'
 import { useRef, useState, useEffect, type ReactNode } from 'react'
 import { MathTex } from './Math'
 
@@ -8,7 +15,32 @@ export type FormulaStep = {
   note?: string
 }
 
-const STEP_MS = 2200
+const STEP_MS = 2800
+const EASE = [0.16, 1, 0.3, 1] as const
+
+function ProgressBar({ active, duration }: { active: boolean; duration: number }) {
+  const progress = useMotionValue(0)
+  const width = useTransform(progress, (v) => `${v * 100}%`)
+
+  useEffect(() => {
+    if (!active) {
+      progress.set(0)
+      return
+    }
+    progress.set(0)
+    const controls = animate(progress, 1, {
+      duration: duration / 1000,
+      ease: 'linear',
+    })
+    return () => controls.stop()
+  }, [active, duration, progress])
+
+  return (
+    <div className="h-[2px] w-full bg-black/10 overflow-hidden rounded-full">
+      <motion.div className="h-full bg-black origin-left" style={{ width }} />
+    </div>
+  )
+}
 
 export function FormulaScene({
   index,
@@ -24,101 +56,174 @@ export function FormulaScene({
   footer?: ReactNode
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { amount: 0.25 })
+  const inView = useInView(ref, { amount: 0.28 })
   const [step, setStep] = useState(0)
   const [manual, setManual] = useState(false)
+  const [cycle, setCycle] = useState(0)
 
   useEffect(() => {
     if (!inView || steps.length <= 1 || manual) return
     const id = window.setInterval(() => {
-      setStep((s) => (s + 1) % steps.length)
+      setStep((s) => {
+        const next = (s + 1) % steps.length
+        if (next === 0) setCycle((c) => c + 1)
+        return next
+      })
     }, STEP_MS)
     return () => window.clearInterval(id)
   }, [inView, steps.length, manual])
 
   useEffect(() => {
     if (!manual) return
-    const id = window.setTimeout(() => setManual(false), STEP_MS * 2.5)
+    const id = window.setTimeout(() => setManual(false), STEP_MS * 2)
     return () => window.clearTimeout(id)
   }, [manual, step])
 
   const active = steps[Math.min(step, steps.length - 1)]
+  const history = steps.slice(0, step)
 
   return (
     <motion.article
       ref={ref}
-      initial={{ opacity: 0, y: 36 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.85, ease: EASE }}
       className="rounded-[32px] border border-black bg-white overflow-hidden"
     >
       <div className="px-6 md:px-8 pt-6 md:pt-7 pb-5 border-b border-black/10">
-        <p className="text-[13px] tracking-[0.1em] text-black/40 mb-2">
-          {index}
-        </p>
-        <h3 className="text-[26px] md:text-[34px] leading-[1.12] font-normal">
-          {title}
-        </h3>
-        <p className="mt-2 text-[16px] md:text-[17px] leading-relaxed text-black/55 max-w-[560px]">
-          {lead}
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[13px] tracking-[0.1em] text-black/40 mb-2">
+              {index}
+            </p>
+            <h3 className="text-[26px] md:text-[34px] leading-[1.12] font-normal">
+              {title}
+            </h3>
+            <p className="mt-2 text-[16px] md:text-[17px] leading-relaxed text-black/55 max-w-[560px]">
+              {lead}
+            </p>
+          </div>
+          <div className="shrink-0 text-right pt-1">
+            <p className="text-[12px] text-black/35 tracking-[0.08em] mb-1">
+              step
+            </p>
+            <p className="text-[28px] md:text-[32px] tabular-nums leading-none">
+              <span className="text-black">{String(step + 1).padStart(2, '0')}</span>
+              <span className="text-black/25">
+                /{String(steps.length).padStart(2, '0')}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div className="mt-5">
+          <ProgressBar
+            key={`${step}-${cycle}-${manual}`}
+            active={inView && !manual}
+            duration={STEP_MS}
+          />
+        </div>
       </div>
 
-      <div className="px-6 md:px-8 py-8 md:py-10 min-h-[220px] md:min-h-[260px] flex flex-col justify-center">
-        <div className="flex flex-wrap gap-2 mb-6">
-          {steps.map((s, i) => (
-            <button
-              key={s.label}
-              type="button"
-              onClick={() => {
-                setStep(i)
-                setManual(true)
-              }}
-              className={[
-                'h-9 px-3.5 rounded-full border text-[13px] transition-colors',
-                i === step
-                  ? 'border-black bg-black text-white'
-                  : 'border-black/20 text-black/55 hover:border-black',
-              ].join(' ')}
-            >
-              {s.label}
-            </button>
-          ))}
+      <div className="grid md:grid-cols-[200px_1fr] min-h-[320px] md:min-h-[360px]">
+        <div className="border-b md:border-b-0 md:border-r border-black/10 px-5 md:px-6 py-5 md:py-8">
+          <ol className="space-y-1">
+            {steps.map((s, i) => {
+              const state =
+                i === step ? 'active' : i < step ? 'done' : 'todo'
+              return (
+                <li key={s.label}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStep(i)
+                      setManual(true)
+                    }}
+                    className={[
+                      'w-full text-left rounded-[16px] px-3 py-2.5 transition-colors',
+                      state === 'active'
+                        ? 'bg-black text-white'
+                        : state === 'done'
+                          ? 'bg-black/[0.04] text-black hover:bg-black/[0.07]'
+                          : 'text-black/35 hover:text-black/55',
+                    ].join(' ')}
+                  >
+                    <span className="block text-[11px] tracking-[0.1em] opacity-60 mb-0.5">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="block text-[14px] md:text-[15px]">
+                      {s.label}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ol>
         </div>
 
-        <div className="relative overflow-hidden rounded-[24px] border border-black/10 bg-black/[0.02] px-5 md:px-8 py-8 md:py-10">
-          <motion.div
-            key={active.tex}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center text-[22px] md:text-[34px] leading-relaxed"
-          >
-            <MathTex tex={active.tex} display />
-          </motion.div>
+        <div className="relative px-5 md:px-10 py-8 md:py-10 flex flex-col justify-center overflow-hidden">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.035]"
+            style={{
+              backgroundImage:
+                'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+            }}
+          />
 
-          {active.note ? (
-            <motion.p
-              key={active.note}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.12, duration: 0.35 }}
-              className="mt-5 text-center text-[14px] md:text-[15px] text-black/50 max-w-[520px] mx-auto leading-relaxed"
-            >
-              {active.note}
-            </motion.p>
-          ) : null}
+          <div className="relative z-[1] space-y-3 mb-6 min-h-[72px]">
+            <AnimatePresence initial={false}>
+              {history.map((s, i) => (
+                <motion.div
+                  key={`${s.tex}-hist-${i}`}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 0.28, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35, ease: EASE }}
+                  className="text-[15px] md:text-[18px] text-center md:text-left scale-[0.92] origin-left"
+                >
+                  <MathTex tex={s.tex} display />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
 
-          <div className="mt-6 flex justify-center gap-1.5">
-            {steps.map((_, i) => (
-              <span
-                key={i}
-                className={[
-                  'h-1.5 rounded-full transition-all duration-300',
-                  i === step ? 'w-6 bg-black' : 'w-1.5 bg-black/20',
-                ].join(' ')}
-              />
-            ))}
+          <div className="relative z-[1] rounded-[28px] border border-black bg-white px-5 md:px-8 py-8 md:py-10 shadow-[0_20px_60px_rgba(0,0,0,0.04)]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active.tex}
+                initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -12, scale: 0.99 }}
+                transition={{ duration: 0.5, ease: EASE }}
+                className="text-center text-[24px] md:text-[38px] leading-relaxed"
+              >
+                <MathTex tex={active.tex} display />
+              </motion.div>
+            </AnimatePresence>
+
+            <motion.div
+              className="mx-auto mt-6 h-px bg-black/15"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              key={`line-${active.tex}`}
+              transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
+              style={{ originX: 0.5, maxWidth: 280 }}
+            />
+
+            <AnimatePresence mode="wait">
+              {active.note ? (
+                <motion.p
+                  key={active.note}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.4, ease: EASE, delay: 0.12 }}
+                  className="mt-5 text-center text-[14px] md:text-[16px] text-black/50 max-w-[520px] mx-auto leading-relaxed"
+                >
+                  {active.note}
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
           </div>
         </div>
       </div>

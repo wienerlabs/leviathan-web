@@ -14,8 +14,8 @@ export default function ExplainSection() {
           The math that makes strangers safe to train with
         </h2>
         <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[760px] mb-12 md:mb-16">
-          Looping chalkboard scenes: the break-even bond, Proof of Gradient, and
-          the audit lottery. Formulas render in LaTeX and advance on a steady
+          Looping chalkboard scenes with step progress, equation history, and a
+          live audit lottery. Formulas render in LaTeX and advance on a steady
           beat.
         </p>
 
