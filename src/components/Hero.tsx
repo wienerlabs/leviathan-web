@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const FRAME_COUNT = 145
 const PIXELS_PER_FRAME = 28
@@ -212,6 +213,12 @@ export default function Hero() {
             >
               X
             </a>
+            <Link
+              to="/docs/developer/quickstart"
+              className="inline-flex items-center justify-center h-9 px-4 md:h-11 md:px-6 rounded-full border border-black text-black text-[12px] md:text-[14px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+            >
+              Docs
+            </Link>
             <a
               href="https://github.com/wienerlabs/leviathan-net"
               target="_blank"

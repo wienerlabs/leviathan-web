@@ -1,18 +1,28 @@
+import { Link } from 'react-router-dom'
 const LINKS = [
+  {
+    label: 'Docs',
+    href: '/docs/developer/quickstart',
+    detail: 'Quickstart, architecture, security',
+    external: false,
+  },
   {
     label: 'Network substrate',
     href: 'https://github.com/wienerlabs/leviathan-net',
     detail: 'Bonds, audits, slashing on Solana',
+    external: true,
   },
   {
     label: 'Research & sim',
     href: 'https://github.com/wienerlabs/leviathan',
     detail: 'Phase 0 proof and whitepaper',
+    external: true,
   },
   {
     label: 'On X',
     href: 'https://x.com/leviathanfront',
     detail: '@leviathanfront',
+    external: true,
   },
 ]
 
@@ -182,28 +192,44 @@ export default function Content() {
           <h2 className="font-italiana text-[28px] md:text-[48px] leading-[1.1] mb-12 md:mb-16">
             Read the code
           </h2>
-          <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-            {LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group rounded-[28px] border border-black p-6 md:p-8 hover:bg-black hover:text-white transition-colors duration-200"
-              >
-                <div className="flex items-center justify-between mb-8">
-                  <span className="text-[15px] md:text-[16px] font-semibold">
-                    {link.label}
-                  </span>
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-current text-[16px] transition-transform duration-200 group-hover:translate-x-0.5">
-                    →
-                  </span>
-                </div>
-                <p className="text-[13px] md:text-[14px] text-black/60 group-hover:text-white/70 transition-colors duration-200">
-                  {link.detail}
-                </p>
-              </a>
-            ))}
+          <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
+            {LINKS.map((link) => {
+              const className =
+                'group rounded-[28px] border border-black p-6 md:p-8 hover:bg-black hover:text-white transition-colors duration-200'
+              const inner = (
+                <>
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="text-[15px] md:text-[16px] font-semibold">
+                      {link.label}
+                    </span>
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-current text-[16px] transition-transform duration-200 group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </div>
+                  <p className="text-[13px] md:text-[14px] text-black/60 group-hover:text-white/70 transition-colors duration-200">
+                    {link.detail}
+                  </p>
+                </>
+              )
+              if (link.external) {
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={className}
+                  >
+                    {inner}
+                  </a>
+                )
+              }
+              return (
+                <Link key={link.href} to={link.href} className={className}>
+                  {inner}
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
