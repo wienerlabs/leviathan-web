@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import {
   CartesianGrid,
+  Customized,
   Line,
   LineChart,
   ReferenceLine,
@@ -17,6 +18,7 @@ import {
   lossFinals,
   PHASE0_CONFIG,
 } from '../../data/phase0'
+import Banknote from './Banknote'
 import { ChartShell, ChartTooltipBox, MetricPill } from './ChartShell'
 import { LATEX_FONT, latexLabel, latexTick } from './latex'
 
@@ -58,16 +60,76 @@ function LossTooltip({
   )
 }
 
+type AxisLike = {
+  scale?: (v: number) => number
+}
+
+function GapWithBanknote(props: {
+  xAxisMap?: Record<string, AxisLike>
+  yAxisMap?: Record<string, AxisLike>
+  show: boolean
+}) {
+  if (!props.show) return null
+
+  const xAxis = props.xAxisMap
+    ? (Object.values(props.xAxisMap)[0] as AxisLike | undefined)
+    : undefined
+  const yAxis = props.yAxisMap
+    ? (Object.values(props.yAxisMap)[0] as AxisLike | undefined)
+    : undefined
+
+  if (!xAxis?.scale || !yAxis?.scale) return null
+
+  const xs = xAxis.scale
+  const ys = yAxis.scale
+
+  const upper = lossChartData.map((d) => [xs(d.round), ys(d.signflipMean)])
+  const lower = [...lossChartData]
+    .reverse()
+    .map((d) => [xs(d.round), ys(d.honest)])
+
+  const path = [
+    ...upper.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0]},${p[1]}`),
+    ...lower.map((p) => `L${p[0]},${p[1]}`),
+    'Z',
+  ].join(' ')
+
+  const anchorRound = 17
+  const row = lossChartData[anchorRound - 1]
+  if (!row) return null
+
+  const cx = xs(anchorRound)
+  const cy = (ys(row.signflipMean) + ys(row.honest)) / 2
+  const billW = 112
+  const billH = 58
+
+  return (
+    <g style={{ pointerEvents: 'none' }}>
+      <path d={path} fill="rgba(0,0,0,0.045)" stroke="none" />
+      <Banknote
+        x={cx - billW / 2}
+        y={cy - billH / 2}
+        width={billW}
+        height={billH}
+        opacity={0.95}
+      />
+    </g>
+  )
+}
+
 export default function LossCurvesChart() {
   const [active, setActive] = useState<Set<LossSeriesKey>>(
     () => new Set(DEFAULT_ON),
   )
-  const [focus, setFocus] = useState<'full' | 'band'>('band')
+  const [focus, setFocus] = useState<'full' | 'band'>('full')
 
   const visible = useMemo(
     () => LOSS_SERIES.filter((s) => active.has(s.key)),
     [active],
   )
+
+  const showBanknote =
+    focus === 'full' && active.has('signflipMean') && active.has('honest')
 
   const toggle = (key: LossSeriesKey) => {
     setActive((prev) => {
@@ -115,7 +177,6 @@ export default function LossCurvesChart() {
           </div>
         }
         heightClass="h-[360px] md:h-[420px]"
-        dollarRule
         footer={
           <div className="space-y-5">
             <div className="flex flex-wrap gap-2">
@@ -190,9 +251,15 @@ export default function LossCurvesChart() {
                 Stable band crops the y-axis to [2.15, 2.85] so honest and
                 defended runs resolve clearly. Sign-flip vs mean leaves the frame
                 after divergence - switch to full range to see the collapse to
-                12.0.
+                12.0 and the gap banknote.
               </p>
-            ) : null}
+            ) : (
+              <p className="text-[14px] text-black/40 leading-relaxed">
+                Banknote sits in the loss gap between naive mean under attack
+                (diverged) and the honest baseline - the economic space attacks
+                open when verification is missing.
+              </p>
+            )}
           </div>
         }
       >
@@ -238,6 +305,15 @@ export default function LossCurvesChart() {
                 position: 'insideTopRight',
                 ...latexLabel,
               }}
+            />
+            <Customized
+              component={(p: Record<string, unknown>) => (
+                <GapWithBanknote
+                  xAxisMap={p.xAxisMap as Record<string, AxisLike>}
+                  yAxisMap={p.yAxisMap as Record<string, AxisLike>}
+                  show={showBanknote}
+                />
+              )}
             />
             <Tooltip
               content={<LossTooltip />}

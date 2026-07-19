@@ -1,21 +1,6 @@
 import { useRef, type ReactNode } from 'react'
 import { motion, useInView } from 'motion/react'
 
-export function DollarRule() {
-  return (
-    <div
-      className="chart-latex flex items-center gap-4 px-6 md:px-8 py-4"
-      aria-hidden
-    >
-      <div className="flex-1 h-px bg-black" />
-      <span className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-black bg-white text-[20px] leading-none select-none">
-        <span className="translate-y-[1px]">$</span>
-      </span>
-      <div className="flex-1 h-px bg-black" />
-    </div>
-  )
-}
-
 export function ChartShell({
   eyebrow,
   title,
@@ -24,7 +9,6 @@ export function ChartShell({
   children,
   footer,
   heightClass = 'h-[340px] md:h-[400px]',
-  dollarRule = false,
 }: {
   eyebrow?: string
   title: string
@@ -33,7 +17,6 @@ export function ChartShell({
   children: ReactNode
   footer?: ReactNode
   heightClass?: string
-  dollarRule?: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.28 })
@@ -73,15 +56,8 @@ export function ChartShell({
         )}
       </div>
 
-      {dollarRule ? <DollarRule /> : null}
-
       {footer ? (
-        <div
-          className={[
-            'px-6 md:px-8 pb-6 md:pb-7 pt-2',
-            dollarRule ? 'border-t border-black' : 'border-t border-black/8',
-          ].join(' ')}
-        >
+        <div className="px-6 md:px-8 pb-6 md:pb-7 pt-2 border-t border-black/8">
           {footer}
         </div>
       ) : null}
