@@ -19,9 +19,10 @@ import {
   lossFinals,
   PHASE0_CONFIG,
 } from '../../data/phase0'
-import Banknote from './Banknote'
 import { ChartShell, ChartTooltipBox, MetricPill } from './ChartShell'
 import { LATEX_FONT, latexLabel, latexTick } from './latex'
+
+const BANKNOTE_SRC = '/banknote.jpg'
 
 const DEFAULT_ON: LossSeriesKey[] = [
   'honest',
@@ -97,23 +98,53 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
     .reverse()
     .map((p) => `L${p.x},${p.yBot}`)
     .join(' ')
-  const path = `${pathTop} ${pathBot} Z`
+  const clipPath = `${pathTop} ${pathBot} Z`
 
-  const anchor = points.find((p) => p.round === 16) ?? points[Math.floor(points.length * 0.55)]
-  const cx = anchor.x
-  const cy = (anchor.yTop + anchor.yBot) / 2
-  const billW = 120
-  const billH = 64
+  const minX = Math.min(...points.map((p) => p.x))
+  const maxX = Math.max(...points.map((p) => p.x))
+  const minY = Math.min(...points.map((p) => p.yTop))
+  const maxY = Math.max(...points.map((p) => p.yBot))
+  const boxW = Math.max(1, maxX - minX)
+  const boxH = Math.max(1, maxY - minY)
+
+  const billAspect = 1280 / 616
+  let imgW = boxW
+  let imgH = imgW / billAspect
+  if (imgH < boxH) {
+    imgH = boxH
+    imgW = imgH * billAspect
+  }
+  const imgX = minX + (boxW - imgW) / 2
+  const imgY = minY + (boxH - imgH) / 2
+
+  const clipId = 'loss-gap-banknote-clip'
 
   return (
     <g style={{ pointerEvents: 'none' }}>
-      <path d={path} fill="rgba(0,0,0,0.06)" stroke="none" />
-      <Banknote
-        x={cx - billW / 2}
-        y={cy - billH / 2}
-        width={billW}
-        height={billH}
-        opacity={1}
+      <defs>
+        <clipPath id={clipId}>
+          <path d={clipPath} />
+        </clipPath>
+      </defs>
+      <path d={clipPath} fill="rgba(0,0,0,0.03)" stroke="none" />
+      <g clipPath={`url(#${clipId})`}>
+        <image
+          href={BANKNOTE_SRC}
+          x={imgX}
+          y={imgY}
+          width={imgW}
+          height={imgH}
+          preserveAspectRatio="xMidYMid slice"
+          opacity={0.92}
+          style={{ filter: 'grayscale(1) contrast(1.05)' }}
+        />
+      </g>
+      <path
+        d={clipPath}
+        fill="none"
+        stroke="#000"
+        strokeOpacity={0.12}
+        strokeWidth={1}
       />
     </g>
   )
