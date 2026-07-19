@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 import {
   CartesianGrid,
-  Customized,
   Line,
   LineChart,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
+  useXAxisScale,
+  useYAxisScale,
   XAxis,
   YAxis,
 } from 'recharts'
@@ -60,58 +61,59 @@ function LossTooltip({
   )
 }
 
-type AxisLike = {
-  scale?: (v: number) => number
-}
+function GapWithBanknote({ enabled }: { enabled: boolean }) {
+  const xScale = useXAxisScale()
+  const yScale = useYAxisScale()
 
-function GapWithBanknote(props: {
-  xAxisMap?: Record<string, AxisLike>
-  yAxisMap?: Record<string, AxisLike>
-  show: boolean
-}) {
-  if (!props.show) return null
+  if (!enabled || !xScale || !yScale) return null
 
-  const xAxis = props.xAxisMap
-    ? (Object.values(props.xAxisMap)[0] as AxisLike | undefined)
-    : undefined
-  const yAxis = props.yAxisMap
-    ? (Object.values(props.yAxisMap)[0] as AxisLike | undefined)
-    : undefined
+  const points = lossChartData
+    .map((d) => {
+      const x = xScale(d.round)
+      const yTop = yScale(d.signflipMean)
+      const yBot = yScale(d.honest)
+      if (
+        x == null ||
+        yTop == null ||
+        yBot == null ||
+        Number.isNaN(x) ||
+        Number.isNaN(yTop) ||
+        Number.isNaN(yBot)
+      ) {
+        return null
+      }
+      return { x, yTop, yBot, round: d.round }
+    })
+    .filter((p): p is { x: number; yTop: number; yBot: number; round: number } =>
+      Boolean(p),
+    )
 
-  if (!xAxis?.scale || !yAxis?.scale) return null
+  if (points.length < 2) return null
 
-  const xs = xAxis.scale
-  const ys = yAxis.scale
-
-  const upper = lossChartData.map((d) => [xs(d.round), ys(d.signflipMean)])
-  const lower = [...lossChartData]
+  const pathTop = points
+    .map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.yTop}`)
+    .join(' ')
+  const pathBot = [...points]
     .reverse()
-    .map((d) => [xs(d.round), ys(d.honest)])
+    .map((p) => `L${p.x},${p.yBot}`)
+    .join(' ')
+  const path = `${pathTop} ${pathBot} Z`
 
-  const path = [
-    ...upper.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0]},${p[1]}`),
-    ...lower.map((p) => `L${p[0]},${p[1]}`),
-    'Z',
-  ].join(' ')
-
-  const anchorRound = 17
-  const row = lossChartData[anchorRound - 1]
-  if (!row) return null
-
-  const cx = xs(anchorRound)
-  const cy = (ys(row.signflipMean) + ys(row.honest)) / 2
-  const billW = 112
-  const billH = 58
+  const anchor = points.find((p) => p.round === 16) ?? points[Math.floor(points.length * 0.55)]
+  const cx = anchor.x
+  const cy = (anchor.yTop + anchor.yBot) / 2
+  const billW = 120
+  const billH = 64
 
   return (
     <g style={{ pointerEvents: 'none' }}>
-      <path d={path} fill="rgba(0,0,0,0.045)" stroke="none" />
+      <path d={path} fill="rgba(0,0,0,0.06)" stroke="none" />
       <Banknote
         x={cx - billW / 2}
         y={cy - billH / 2}
         width={billW}
         height={billH}
-        opacity={0.95}
+        opacity={1}
       />
     </g>
   )
@@ -248,16 +250,14 @@ export default function LossCurvesChart() {
 
             {focus === 'band' ? (
               <p className="text-[14px] text-black/40 leading-relaxed">
-                Stable band crops the y-axis to [2.15, 2.85] so honest and
-                defended runs resolve clearly. Sign-flip vs mean leaves the frame
-                after divergence - switch to full range to see the collapse to
-                12.0 and the gap banknote.
+                Stable band crops the y-axis to [2.15, 2.85]. Switch to full
+                range to see the attack divergence and the banknote in the loss
+                gap.
               </p>
             ) : (
               <p className="text-[14px] text-black/40 leading-relaxed">
-                Banknote sits in the loss gap between naive mean under attack
-                (diverged) and the honest baseline - the economic space attacks
-                open when verification is missing.
+                Banknote marks the loss gap between naive mean under attack
+                (diverged to 12) and the honest baseline.
               </p>
             )}
           </div>
@@ -306,15 +306,6 @@ export default function LossCurvesChart() {
                 ...latexLabel,
               }}
             />
-            <Customized
-              component={(p: Record<string, unknown>) => (
-                <GapWithBanknote
-                  xAxisMap={p.xAxisMap as Record<string, AxisLike>}
-                  yAxisMap={p.yAxisMap as Record<string, AxisLike>}
-                  show={showBanknote}
-                />
-              )}
-            />
             <Tooltip
               content={<LossTooltip />}
               cursor={{
@@ -348,6 +339,7 @@ export default function LossCurvesChart() {
                 connectNulls
               />
             ))}
+            <GapWithBanknote enabled={showBanknote} />
           </LineChart>
         </ResponsiveContainer>
       </ChartShell>
