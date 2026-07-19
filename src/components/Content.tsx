@@ -69,30 +69,35 @@ const OPEN_SLOT = [
     name: 'Bittensor training subnets',
     verification: 'Scoring gates, admitted gaps',
     economics: 'Emissions only, no bonds',
+    tag: 'Economics without proof',
     us: false,
   },
   {
     name: 'Nous Psyche',
     verification: 'Witness liveness, verifier is a todo',
     economics: 'No stake, dead slash code, whitelist',
+    tag: 'Coordination without teeth',
     us: false,
   },
   {
     name: 'Gensyn Verde',
     verification: 'Strong, FP32 single-GPU determinism',
     economics: 'Pre-mainnet',
+    tag: 'Proof without a market',
     us: false,
   },
   {
     name: 'OVIG',
     verification: 'Tolerance-band replay audits',
     economics: 'Paper, not a network',
+    tag: 'Theory without a mesh',
     us: false,
   },
   {
     name: 'Leviathan',
     verification: 'OVIG-style replay audits',
     economics: 'Bonds sized (1-p)/p, live slashing',
+    tag: 'Both columns, live on devnet',
     us: true,
   },
 ]
@@ -213,64 +218,132 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <SectionLabel>The open slot</SectionLabel>
-          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
-            Everyone picked one column. Nobody picked both.
-          </h2>
-          <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[720px] mb-12 md:mb-16">
-            Bonded contributions plus random replay audits plus slashing is not
-            run by anyone for live LLM training today. That combination is the
-            moat.
-          </p>
-
-          <div className="overflow-x-auto rounded-[28px] border border-black">
-            <table className="w-full min-w-[720px] border-collapse text-left">
-              <thead>
-                <tr className="border-b border-black/10 bg-black/[0.03]">
-                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
-                    Network
-                  </th>
-                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-start mb-12 md:mb-16">
+            <div>
+              <SectionLabel>The open slot</SectionLabel>
+              <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
+                Everyone picked one column. Nobody picked both.
+              </h2>
+              <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[640px] mb-6">
+                Decentralized training has two hard problems: proving a stranger
+                did real work, and making lying cost more than it earns. Live
+                networks keep choosing only one.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-3 mb-8">
+                <div className="rounded-[24px] border border-black p-5">
+                  <p className="text-[13px] tracking-[0.08em] text-black/45 mb-2">
+                    Column A
+                  </p>
+                  <p className="text-[20px] md:text-[22px] font-semibold mb-2">
                     Verification
-                  </th>
-                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+                  </p>
+                  <p className="text-[15px] md:text-[16px] leading-relaxed text-black/65">
+                    Replay audits, tolerance bands, fraud proofs. Hard without
+                    live bonds and slash.
+                  </p>
+                </div>
+                <div className="rounded-[24px] border border-black p-5">
+                  <p className="text-[13px] tracking-[0.08em] text-black/45 mb-2">
+                    Column B
+                  </p>
+                  <p className="text-[20px] md:text-[22px] font-semibold mb-2">
                     Live economics
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {OPEN_SLOT.map((row) => (
-                  <tr
-                    key={row.name}
-                    className={[
-                      'border-b border-black/10 last:border-0',
-                      row.us ? 'bg-black text-white' : '',
-                    ].join(' ')}
-                  >
-                    <td className="px-5 md:px-6 py-4 text-[16px] md:text-[18px] font-semibold">
-                      {row.name}
-                    </td>
-                    <td
-                      className={[
-                        'px-5 md:px-6 py-4 text-[15px] md:text-[17px] leading-snug',
-                        row.us ? 'text-white/85' : 'text-black/70',
-                      ].join(' ')}
-                    >
-                      {row.verification}
-                    </td>
-                    <td
-                      className={[
-                        'px-5 md:px-6 py-4 text-[15px] md:text-[17px] leading-snug',
-                        row.us ? 'text-white/85' : 'text-black/70',
-                      ].join(' ')}
-                    >
-                      {row.economics}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  </p>
+                  <p className="text-[15px] md:text-[16px] leading-relaxed text-black/65">
+                    Bonds, emissions, slashing. Empty if the verifier path is a
+                    todo or a whitelist.
+                  </p>
+                </div>
+              </div>
+              <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70 max-w-[640px]">
+                Bonded contributions plus random replay audits plus slashing is
+                not run by anyone else for live LLM training today. Leviathan
+                occupies that cell: both columns, on Solana, verified on devnet.
+              </p>
+            </div>
+
+            <figure className="rounded-[28px] border border-black overflow-hidden bg-black/[0.02] lg:sticky lg:top-8">
+              <img
+                src="/open-slot.jpg"
+                alt="Leviathan open slot figure"
+                width={1080}
+                height={1200}
+                className="block w-full h-auto max-h-[520px] object-cover object-center grayscale"
+              />
+              <figcaption className="px-5 py-4 border-t border-black/10 text-[14px] md:text-[15px] text-black/50 leading-relaxed">
+                The missing cell: verification guarantees and live bond economics
+                in one network.
+              </figcaption>
+            </figure>
           </div>
+
+          <div className="grid sm:grid-cols-2 gap-3 md:gap-4 mb-6">
+            {OPEN_SLOT.filter((r) => !r.us).map((row) => (
+              <div
+                key={row.name}
+                className="rounded-[24px] border border-black/20 p-5 md:p-6"
+              >
+                <p className="text-[12px] md:text-[13px] tracking-[0.08em] text-black/40 mb-2">
+                  {row.tag}
+                </p>
+                <h3 className="text-[18px] md:text-[20px] font-semibold mb-4">
+                  {row.name}
+                </h3>
+                <div className="space-y-3 text-[15px] md:text-[16px] leading-snug">
+                  <div>
+                    <p className="text-black/40 text-[12px] mb-1">Verification</p>
+                    <p className="text-black/75">{row.verification}</p>
+                  </div>
+                  <div>
+                    <p className="text-black/40 text-[12px] mb-1">
+                      Live economics
+                    </p>
+                    <p className="text-black/75">{row.economics}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {OPEN_SLOT.filter((r) => r.us).map((row) => (
+            <div
+              key={row.name}
+              className="rounded-[28px] border border-black bg-black text-white p-6 md:p-8"
+            >
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                <div className="max-w-[560px]">
+                  <p className="text-[12px] md:text-[13px] tracking-[0.08em] text-white/50 mb-2">
+                    {row.tag}
+                  </p>
+                  <h3 className="text-[28px] md:text-[36px] font-normal mb-4">
+                    {row.name}
+                  </h3>
+                  <p className="text-[16px] md:text-[18px] leading-relaxed text-white/75">
+                    Replay audits that survive heterogeneous hardware, bonds sized
+                    so expected cheating is negative, and live slash that feeds the
+                    run vault. Not a paper. Not a whitelist. A permissionless
+                    training network.
+                  </p>
+                </div>
+                <div className="grid gap-3 min-w-[240px]">
+                  <div className="rounded-[18px] border border-white/25 px-4 py-3">
+                    <p className="text-[12px] text-white/45 mb-1">Verification</p>
+                    <p className="text-[15px] md:text-[16px] text-white/90">
+                      {row.verification}
+                    </p>
+                  </div>
+                  <div className="rounded-[18px] border border-white/25 px-4 py-3">
+                    <p className="text-[12px] text-white/45 mb-1">
+                      Live economics
+                    </p>
+                    <p className="text-[15px] md:text-[16px] text-white/90">
+                      {row.economics}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
