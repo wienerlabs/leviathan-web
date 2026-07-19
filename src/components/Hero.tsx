@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 
 const FRAME_COUNT = 145
 const FRAME_MAX = FRAME_COUNT - 1
-const WHEEL_SENSITIVITY = 48
-const LERP = 0.14
-const SNAP_EPS = 0.02
+const WHEEL_SENSITIVITY = 14
+const LERP = 0.22
+const SNAP_EPS = 0.03
 
 function frameSrc(index: number) {
   return `/frames/frame-${String(index + 1).padStart(3, '0')}.jpg`
@@ -17,12 +17,14 @@ function clamp(n: number, min: number, max: number) {
 
 function normalizeWheelDelta(e: WheelEvent) {
   let dy = e.deltaY
-  if (e.deltaMode === 1) dy *= 16
-  if (e.deltaMode === 2) dy *= window.innerHeight
+  if (e.deltaMode === 1) dy *= 18
+  if (e.deltaMode === 2) dy *= window.innerHeight * 0.85
   const abs = Math.abs(dy)
-  if (abs > 80) {
+  if (abs > 28 && abs < 90) {
+    dy *= 1.65
+  } else if (abs >= 90) {
     const sign = dy < 0 ? -1 : 1
-    dy = sign * (40 + Math.log2(1 + abs) * 12)
+    dy = sign * Math.min(abs * 1.35, 160)
   }
   return dy
 }
