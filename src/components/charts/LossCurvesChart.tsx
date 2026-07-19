@@ -102,20 +102,25 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
 
   const minX = Math.min(...points.map((p) => p.x))
   const maxX = Math.max(...points.map((p) => p.x))
-  const minY = Math.min(...points.map((p) => p.yTop))
-  const maxY = Math.max(...points.map((p) => p.yBot))
   const boxW = Math.max(1, maxX - minX)
-  const boxH = Math.max(1, maxY - minY)
+
+  const band = points.filter((p) => p.round >= 9 && p.round <= 26)
+  const sample =
+    band[Math.floor(band.length / 2)] ?? points[Math.floor(points.length / 2)]
+  const gapH = Math.max(1, sample.yBot - sample.yTop)
+  const midX = sample.x
+  const midY = (sample.yTop + sample.yBot) / 2
 
   const billAspect = 1280 / 616
-  let imgW = boxW
-  let imgH = imgW / billAspect
-  if (imgH < boxH) {
-    imgH = boxH
-    imgW = imgH * billAspect
+  let imgH = gapH * 0.78
+  let imgW = imgH * billAspect
+  const maxW = boxW * 0.72
+  if (imgW > maxW) {
+    imgW = maxW
+    imgH = imgW / billAspect
   }
-  const imgX = minX + (boxW - imgW) / 2
-  const imgY = minY + (boxH - imgH) / 2
+  const imgX = midX - imgW / 2
+  const imgY = midY - imgH / 2
 
   const clipId = 'loss-gap-banknote-clip'
 
@@ -126,7 +131,7 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
           <path d={clipPath} />
         </clipPath>
       </defs>
-      <path d={clipPath} fill="rgba(0,0,0,0.03)" stroke="none" />
+      <path d={clipPath} fill="rgba(0,0,0,0.025)" stroke="none" />
       <g clipPath={`url(#${clipId})`}>
         <image
           href={BANKNOTE_SRC}
@@ -134,16 +139,16 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
           y={imgY}
           width={imgW}
           height={imgH}
-          preserveAspectRatio="xMidYMid slice"
-          opacity={0.92}
-          style={{ filter: 'grayscale(1) contrast(1.05)' }}
+          preserveAspectRatio="xMidYMid meet"
+          opacity={0.48}
+          style={{ filter: 'grayscale(1) contrast(1.02)' }}
         />
       </g>
       <path
         d={clipPath}
         fill="none"
         stroke="#000"
-        strokeOpacity={0.12}
+        strokeOpacity={0.1}
         strokeWidth={1}
       />
     </g>
