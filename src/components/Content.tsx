@@ -226,11 +226,11 @@ export default function Content() {
       </section>
 
       <footer className="border-t border-black/10">
-        <div className="w-full">
+        <div className="w-full flex justify-center px-5 md:px-12 pt-10 md:pt-12">
           <img
             src="/banner.jpg"
             alt="Leviathan"
-            className="block w-full max-h-[220px] md:max-h-[280px] object-cover object-center grayscale"
+            className="block w-full max-w-[480px] md:max-w-[560px] h-auto grayscale"
             width={1400}
             height={653}
           />
