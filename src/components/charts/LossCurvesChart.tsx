@@ -18,6 +18,7 @@ import {
   PHASE0_CONFIG,
 } from '../../data/phase0'
 import { ChartShell, ChartTooltipBox, MetricPill } from './ChartShell'
+import { LATEX_FONT, latexLabel, latexTick } from './latex'
 
 const DEFAULT_ON: LossSeriesKey[] = [
   'honest',
@@ -84,196 +85,195 @@ export default function LossCurvesChart() {
   const yDomain: [number, number] = focus === 'band' ? [2.15, 2.85] : [2, 12.2]
 
   return (
-    <ChartShell
-      eyebrow="Figure 01"
-      title="Validation loss across attacks"
-      subtitle={`${PHASE0_CONFIG.rounds} outer rounds · ${PHASE0_CONFIG.workers} workers · ${(PHASE0_CONFIG.model_parameters / 1000).toFixed(0)}k GPT · real gradients from the Phase 0 sim`}
-      meta={
-        <div className="flex flex-wrap md:justify-end gap-2">
-          {(
-            [
-              ['band', 'Stable band'],
-              ['full', 'Full range'],
-            ] as const
-          ).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setFocus(id)}
-              className={[
-                'h-9 px-4 rounded-full border text-[13px] font-medium transition-colors',
-                focus === id
-                  ? 'bg-black text-white border-black'
-                  : 'border-black/20 text-black/70 hover:border-black',
-              ].join(' ')}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      }
-      heightClass="h-[360px] md:h-[420px]"
-      footer={
-        <div className="space-y-5">
-          <div className="flex flex-wrap gap-2">
-            {LOSS_SERIES.map((s) => {
-              const on = active.has(s.key)
-              return (
-                <button
-                  key={s.key}
-                  type="button"
-                  onClick={() => toggle(s.key)}
-                  className={[
-                    'inline-flex items-center gap-2.5 h-10 px-3.5 rounded-full border text-[13px] transition-all',
-                    on
-                      ? 'border-black bg-white text-black'
-                      : 'border-black/15 text-black/35',
-                  ].join(' ')}
-                >
-                  <svg width="22" height="8" className="shrink-0">
-                    <line
-                      x1="0"
-                      y1="4"
-                      x2="22"
-                      y2="4"
-                      stroke={on ? `rgba(0,0,0,${s.opacity})` : 'rgba(0,0,0,0.2)'}
-                      strokeWidth={s.strokeWidth}
-                      strokeDasharray={s.dash}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  {s.short}
-                </button>
-              )
-            })}
+    <div className="chart-latex">
+      <ChartShell
+        eyebrow="Figure 01"
+        title="Validation loss across attacks"
+        subtitle={`${PHASE0_CONFIG.rounds} outer rounds · ${PHASE0_CONFIG.workers} workers · ${(PHASE0_CONFIG.model_parameters / 1000).toFixed(0)}k GPT · real gradients from the Phase 0 sim`}
+        meta={
+          <div className="flex flex-wrap md:justify-end gap-2">
+            {(
+              [
+                ['band', 'Stable band'],
+                ['full', 'Full range'],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setFocus(id)}
+                className={[
+                  'h-9 px-4 rounded-full border text-[14px] transition-colors',
+                  focus === id
+                    ? 'bg-black text-white border-black'
+                    : 'border-black/20 text-black/70 hover:border-black',
+                ].join(' ')}
+              >
+                {label}
+              </button>
+            ))}
           </div>
+        }
+        heightClass="h-[360px] md:h-[420px]"
+        footer={
+          <div className="space-y-5">
+            <div className="flex flex-wrap gap-2">
+              {LOSS_SERIES.map((s) => {
+                const on = active.has(s.key)
+                return (
+                  <button
+                    key={s.key}
+                    type="button"
+                    onClick={() => toggle(s.key)}
+                    className={[
+                      'inline-flex items-center gap-2.5 h-10 px-3.5 rounded-full border text-[14px] transition-all',
+                      on
+                        ? 'border-black bg-white text-black'
+                        : 'border-black/15 text-black/35',
+                    ].join(' ')}
+                  >
+                    <svg width="22" height="8" className="shrink-0">
+                      <line
+                        x1="0"
+                        y1="4"
+                        x2="22"
+                        y2="4"
+                        stroke={
+                          on
+                            ? `rgba(0,0,0,${s.opacity})`
+                            : 'rgba(0,0,0,0.2)'
+                        }
+                        strokeWidth={s.strokeWidth}
+                        strokeDasharray={s.dash}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    {s.short}
+                  </button>
+                )
+              })}
+            </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {lossFinals
-              .filter((f) =>
-                ['honest', 'signflipMean', 'signflipClip', 'alieAudit'].includes(
-                  f.key,
-                ),
-              )
-              .map((f) => (
-                <MetricPill
-                  key={f.key}
-                  label={f.short}
-                  value={
-                    f.final >= 10 ? f.final.toFixed(1) : f.final.toFixed(3)
-                  }
-                  hint={
-                    f.key === 'signflipMean'
-                      ? 'Diverged'
-                      : f.key === 'honest'
-                        ? 'Baseline'
-                        : f.key === 'signflipClip'
-                          ? 'Malicious accept 3%'
-                          : 'All 5 slashed'
-                  }
-                />
-              ))}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {lossFinals
+                .filter((f) =>
+                  [
+                    'honest',
+                    'signflipMean',
+                    'signflipClip',
+                    'alieAudit',
+                  ].includes(f.key),
+                )
+                .map((f) => (
+                  <MetricPill
+                    key={f.key}
+                    label={f.short}
+                    value={
+                      f.final >= 10 ? f.final.toFixed(1) : f.final.toFixed(3)
+                    }
+                    hint={
+                      f.key === 'signflipMean'
+                        ? 'Diverged'
+                        : f.key === 'honest'
+                          ? 'Baseline'
+                          : f.key === 'signflipClip'
+                            ? 'Malicious accept 3%'
+                            : 'All 5 slashed'
+                    }
+                  />
+                ))}
+            </div>
+
+            {focus === 'band' ? (
+              <p className="text-[14px] text-black/40 leading-relaxed">
+                Stable band crops the y-axis to [2.15, 2.85] so honest and
+                defended runs resolve clearly. Sign-flip vs mean leaves the frame
+                after divergence - switch to full range to see the collapse to
+                12.0.
+              </p>
+            ) : null}
           </div>
-
-          {focus === 'band' ? (
-            <p className="text-[13px] text-black/40 leading-relaxed">
-              Stable band crops the y-axis to [2.15, 2.85] so honest and defended
-              runs resolve clearly. Sign-flip vs mean leaves the frame after
-              divergence - switch to full range to see the collapse to 12.0.
-            </p>
-          ) : null}
-        </div>
-      }
-    >
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={lossChartData}
-          margin={{ top: 16, right: 18, left: 4, bottom: 8 }}
-        >
-          <defs>
-            <linearGradient id="lossGridFade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#000" stopOpacity="0.05" />
-              <stop offset="100%" stopColor="#000" stopOpacity="0.02" />
-            </linearGradient>
-          </defs>
-          <CartesianGrid
-            stroke="#000"
-            strokeOpacity={0.055}
-            vertical={false}
-            strokeDasharray="3 6"
-          />
-          <XAxis
-            dataKey="round"
-            tickLine={false}
-            axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-            tick={{
-              fill: 'rgba(0,0,0,0.42)',
-              fontSize: 11,
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-            }}
-            tickMargin={10}
-            ticks={[1, 5, 10, 15, 20, 25, 30]}
-          />
-          <YAxis
-            domain={yDomain}
-            tickLine={false}
-            axisLine={false}
-            tick={{
-              fill: 'rgba(0,0,0,0.42)',
-              fontSize: 11,
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-            }}
-            tickMargin={8}
-            width={44}
-            tickCount={focus === 'band' ? 6 : 6}
-            tickFormatter={(v: number) => v.toFixed(focus === 'band' ? 2 : 1)}
-          />
-          <ReferenceLine
-            y={HONEST_FINAL}
-            stroke="#000"
-            strokeOpacity={0.18}
-            strokeDasharray="4 4"
-            label={{
-              value: 'Honest final',
-              position: 'insideTopRight',
-              fill: 'rgba(0,0,0,0.35)',
-              fontSize: 11,
-            }}
-          />
-          <Tooltip
-            content={<LossTooltip />}
-            cursor={{
-              stroke: '#000',
-              strokeOpacity: 0.14,
-              strokeDasharray: '2 4',
-            }}
-            isAnimationActive={false}
-          />
-          {visible.map((s, i) => (
-            <Line
-              key={s.key}
-              type="monotone"
-              dataKey={s.key}
-              name={s.label}
-              stroke={`rgba(0,0,0,${s.opacity})`}
-              strokeWidth={s.strokeWidth}
-              strokeDasharray={s.dash}
-              dot={false}
-              activeDot={{
-                r: 5,
-                fill: '#fff',
-                stroke: '#000',
-                strokeWidth: 2,
-              }}
-              isAnimationActive
-              animationDuration={1600}
-              animationBegin={i * 70}
-              animationEasing="ease-in-out"
-              connectNulls
+        }
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={lossChartData}
+            margin={{ top: 16, right: 18, left: 4, bottom: 8 }}
+            style={{ fontFamily: LATEX_FONT }}
+          >
+            <CartesianGrid
+              stroke="#000"
+              strokeOpacity={0.055}
+              vertical={false}
+              strokeDasharray="3 6"
             />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
-    </ChartShell>
+            <XAxis
+              dataKey="round"
+              tickLine={false}
+              axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
+              tick={latexTick}
+              tickMargin={10}
+              ticks={[1, 5, 10, 15, 20, 25, 30]}
+            />
+            <YAxis
+              domain={yDomain}
+              tickLine={false}
+              axisLine={false}
+              tick={latexTick}
+              tickMargin={8}
+              width={48}
+              tickCount={6}
+              tickFormatter={(v: number) =>
+                v.toFixed(focus === 'band' ? 2 : 1)
+              }
+            />
+            <ReferenceLine
+              y={HONEST_FINAL}
+              stroke="#000"
+              strokeOpacity={0.18}
+              strokeDasharray="4 4"
+              label={{
+                value: 'Honest final',
+                position: 'insideTopRight',
+                ...latexLabel,
+              }}
+            />
+            <Tooltip
+              content={<LossTooltip />}
+              cursor={{
+                stroke: '#000',
+                strokeOpacity: 0.14,
+                strokeDasharray: '2 4',
+              }}
+              isAnimationActive={false}
+              wrapperStyle={{ fontFamily: LATEX_FONT, outline: 'none' }}
+            />
+            {visible.map((s, i) => (
+              <Line
+                key={s.key}
+                type="monotone"
+                dataKey={s.key}
+                name={s.label}
+                stroke={`rgba(0,0,0,${s.opacity})`}
+                strokeWidth={s.strokeWidth}
+                strokeDasharray={s.dash}
+                dot={false}
+                activeDot={{
+                  r: 5,
+                  fill: '#fff',
+                  stroke: '#000',
+                  strokeWidth: 2,
+                }}
+                isAnimationActive
+                animationDuration={1600}
+                animationBegin={i * 70}
+                animationEasing="ease-in-out"
+                connectNulls
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </ChartShell>
+    </div>
   )
 }

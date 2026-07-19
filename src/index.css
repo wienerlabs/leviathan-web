@@ -4,6 +4,31 @@
 @theme {
   --font-manrope: "Manrope", sans-serif;
   --font-italiana: "Italiana", serif;
+  --font-latex: "KaTeX_Main", "KaTeX_Math", "Latin Modern Roman", "Computer Modern", "Times New Roman", serif;
+  --font-latex-math: "KaTeX_Math", "KaTeX_Main", serif;
+  --font-latex-tt: "KaTeX_Typewriter", "KaTeX_Main", monospace;
+}
+
+.chart-latex,
+.chart-latex * {
+  font-family: var(--font-latex) !important;
+  font-variant-numeric: lining-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+.chart-latex .recharts-text,
+.chart-latex .recharts-cartesian-axis-tick-value,
+.chart-latex .recharts-label {
+  font-family: var(--font-latex) !important;
+}
+
+.chart-latex .latex-math {
+  font-family: var(--font-latex-math) !important;
+  font-style: italic;
+}
+
+.chart-latex .latex-tt {
+  font-family: var(--font-latex-tt) !important;
 }
 
 html {

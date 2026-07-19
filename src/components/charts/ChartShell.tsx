@@ -27,16 +27,16 @@ export function ChartShell({
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-[32px] border border-black bg-white overflow-hidden"
+      className="chart-latex rounded-[32px] border border-black bg-white overflow-hidden"
     >
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 px-6 md:px-8 pt-6 md:pt-7 pb-5 border-b border-black/10">
         <div className="max-w-[640px]">
           {eyebrow ? (
-            <p className="text-[12px] md:text-[13px] font-medium tracking-[0.14em] text-black/40 mb-2">
+            <p className="text-[13px] md:text-[14px] tracking-[0.08em] text-black/40 mb-2">
               {eyebrow}
             </p>
           ) : null}
-          <h3 className="font-italiana text-[28px] md:text-[36px] leading-[1.05] tracking-tight">
+          <h3 className="text-[26px] md:text-[34px] leading-[1.12] tracking-tight font-normal">
             {title}
           </h3>
           {subtitle ? (
@@ -49,7 +49,9 @@ export function ChartShell({
       </div>
 
       <div className={`px-3 md:px-5 pt-5 pb-3 ${heightClass}`}>
-        {inView ? children : (
+        {inView ? (
+          children
+        ) : (
           <div className="h-full w-full rounded-[20px] bg-black/[0.03] animate-pulse" />
         )}
       </div>
@@ -73,15 +75,13 @@ export function ChartTooltipBox({
   footer?: string
 }) {
   return (
-    <div className="min-w-[200px] rounded-[18px] border border-black bg-white/95 backdrop-blur-sm px-4 py-3.5 shadow-[0_18px_50px_rgba(0,0,0,0.12)]">
-      <p className="text-[11px] font-medium tracking-[0.12em] text-black/40 mb-2.5">
-        {label}
-      </p>
+    <div className="chart-latex min-w-[200px] rounded-[18px] border border-black bg-white/95 backdrop-blur-sm px-4 py-3.5 shadow-[0_18px_50px_rgba(0,0,0,0.12)]">
+      <p className="text-[12px] tracking-[0.06em] text-black/40 mb-2.5">{label}</p>
       <div className="space-y-1.5">
         {rows.map((row) => (
           <div
             key={row.name}
-            className="flex items-center justify-between gap-8 text-[13px]"
+            className="flex items-center justify-between gap-8 text-[14px]"
           >
             <span className="inline-flex items-center gap-2 text-black/65">
               {row.swatch ? (
@@ -94,7 +94,7 @@ export function ChartTooltipBox({
             </span>
             <span
               className={[
-                'font-mono tabular-nums font-medium',
+                'tabular-nums',
                 row.muted ? 'text-black/40' : 'text-black',
               ].join(' ')}
             >
@@ -104,7 +104,7 @@ export function ChartTooltipBox({
         ))}
       </div>
       {footer ? (
-        <p className="mt-3 pt-2.5 border-t border-black/10 text-[11px] text-black/40 leading-snug">
+        <p className="mt-3 pt-2.5 border-t border-black/10 text-[12px] text-black/40 leading-snug">
           {footer}
         </p>
       ) : null}
@@ -122,13 +122,13 @@ export function MetricPill({
   hint?: string
 }) {
   return (
-    <div className="rounded-[20px] border border-black/15 bg-black/[0.02] px-4 py-3 min-w-[140px]">
-      <p className="text-[11px] tracking-[0.1em] text-black/40 mb-1">{label}</p>
-      <p className="text-[22px] md:text-[24px] font-semibold font-mono tabular-nums tracking-tight">
+    <div className="chart-latex rounded-[20px] border border-black/15 bg-black/[0.02] px-4 py-3 min-w-[140px]">
+      <p className="text-[12px] tracking-[0.06em] text-black/40 mb-1">{label}</p>
+      <p className="text-[22px] md:text-[24px] tabular-nums tracking-tight leading-none">
         {value}
       </p>
       {hint ? (
-        <p className="text-[12px] text-black/45 mt-0.5 leading-snug">{hint}</p>
+        <p className="text-[13px] text-black/45 mt-1.5 leading-snug">{hint}</p>
       ) : null}
     </div>
   )

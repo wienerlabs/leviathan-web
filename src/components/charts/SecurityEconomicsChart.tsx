@@ -19,6 +19,7 @@ import {
   PHASE0_KPIS,
 } from '../../data/phase0'
 import { ChartShell, ChartTooltipBox, MetricPill } from './ChartShell'
+import { LATEX_FONT, latexTick, latexTickMuted } from './latex'
 
 function BondTooltip({
   active,
@@ -52,7 +53,7 @@ function BondTooltip({
     <ChartTooltipBox
       label={`Audit probability ${label}`}
       rows={rows}
-      footer="Break-even bond = reward x (1-p)/p"
+      footer="Break-even bond = reward × (1 − p)/p"
     />
   )
 }
@@ -69,19 +70,20 @@ function CatchTimeline() {
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-      className="rounded-[32px] border border-black bg-white overflow-hidden"
+      className="chart-latex rounded-[32px] border border-black bg-white overflow-hidden"
     >
       <div className="px-6 md:px-8 pt-6 md:pt-7 pb-5 border-b border-black/10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <p className="text-[12px] md:text-[13px] font-medium tracking-[0.14em] text-black/40 mb-2">
+          <p className="text-[13px] md:text-[14px] tracking-[0.08em] text-black/40 mb-2">
             Figure 03
           </p>
-          <h3 className="font-italiana text-[28px] md:text-[36px] leading-[1.05]">
+          <h3 className="text-[26px] md:text-[34px] leading-[1.12] font-normal">
             Audit lottery timeline
           </h3>
           <p className="mt-2 text-[15px] md:text-[16px] text-black/55 max-w-[520px]">
-            ALIE 5/16 vs clip + audit at p = 0.1. Each marker is the round a
-            malicious worker was first convicted.
+            ALIE 5/16 vs clip + audit at{' '}
+            <span className="latex-math">p = 0.1</span>. Each marker is the
+            round a malicious worker was first convicted.
           </p>
         </div>
         <div className="flex gap-3">
@@ -100,8 +102,8 @@ function CatchTimeline() {
             className="absolute top-0 bottom-8 w-px bg-black/25"
             style={{ left: `${(theory / maxRound) * 100}%` }}
           >
-            <span className="absolute -top-1 left-2 text-[11px] font-mono text-black/40 whitespace-nowrap">
-              E[1/p]={theory}
+            <span className="absolute -top-1 left-2 text-[12px] text-black/40 whitespace-nowrap latex-math">
+              E[1/p] = {theory}
             </span>
           </div>
 
@@ -110,7 +112,7 @@ function CatchTimeline() {
               const left = (w.round / maxRound) * 100
               return (
                 <div key={w.worker} className="relative h-10">
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-10 text-[12px] font-mono text-black/45">
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-10 text-[13px] text-black/45 latex-math">
                     {w.worker}
                   </div>
                   <div className="ml-12 relative h-full">
@@ -132,7 +134,7 @@ function CatchTimeline() {
                       }}
                     >
                       <div className="w-4 h-4 rounded-full bg-black border-2 border-white shadow-[0_0_0_1px_#000]" />
-                      <div className="absolute left-1/2 -translate-x-1/2 top-5 text-[11px] font-mono tabular-nums text-black/55 whitespace-nowrap">
+                      <div className="absolute left-1/2 -translate-x-1/2 top-5 text-[12px] tabular-nums text-black/55 whitespace-nowrap latex-math">
                         r{w.round}
                       </div>
                     </motion.div>
@@ -142,7 +144,7 @@ function CatchTimeline() {
             })}
           </div>
 
-          <div className="ml-12 mt-8 flex justify-between text-[11px] font-mono text-black/35">
+          <div className="ml-12 mt-8 flex justify-between text-[12px] text-black/35 latex-math">
             <span>r0</span>
             <span>r10</span>
             <span>r20</span>
@@ -156,7 +158,7 @@ function CatchTimeline() {
 
 export default function SecurityEconomicsChart() {
   return (
-    <div className="space-y-5 md:space-y-6">
+    <div className="chart-latex space-y-5 md:space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {PHASE0_KPIS.map((kpi) => (
           <MetricPill
@@ -180,7 +182,7 @@ export default function SecurityEconomicsChart() {
                   className="w-3 h-3 rounded-[3px] border border-black"
                   style={{ background: s.fill }}
                 />
-                <span className="text-[13px] text-black/60">{s.label}</span>
+                <span className="text-[14px] text-black/60">{s.label}</span>
               </div>
             ))}
           </div>
@@ -202,10 +204,11 @@ export default function SecurityEconomicsChart() {
                   style={{ background: item.fill }}
                 />
                 <div>
-                  <p className="text-[12px] text-black/40 tracking-[0.08em]">
-                    {item.label} · p = 10%
+                  <p className="text-[13px] text-black/40">
+                    {item.label} ·{' '}
+                    <span className="latex-math">p = 10%</span>
                   </p>
-                  <p className="text-[26px] md:text-[30px] font-semibold font-mono tabular-nums tracking-tight leading-none mt-1">
+                  <p className="text-[26px] md:text-[30px] tabular-nums tracking-tight leading-none mt-1">
                     $
                     {item.bond < 1
                       ? item.bond.toFixed(2)
@@ -223,6 +226,7 @@ export default function SecurityEconomicsChart() {
             margin={{ top: 16, right: 16, left: 4, bottom: 8 }}
             barCategoryGap="32%"
             barGap={4}
+            style={{ fontFamily: LATEX_FONT }}
           >
             <CartesianGrid
               stroke="#000"
@@ -234,11 +238,7 @@ export default function SecurityEconomicsChart() {
               dataKey="pLabel"
               tickLine={false}
               axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-              tick={{
-                fill: 'rgba(0,0,0,0.42)',
-                fontSize: 12,
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-              }}
+              tick={latexTick}
               tickMargin={10}
             />
             <YAxis
@@ -247,15 +247,11 @@ export default function SecurityEconomicsChart() {
               domain={[0.02, 250]}
               tickLine={false}
               axisLine={false}
-              tick={{
-                fill: 'rgba(0,0,0,0.42)',
-                fontSize: 11,
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-              }}
+              tick={latexTick}
               tickFormatter={(v: number) =>
                 v >= 1 ? `$${v}` : `$${Number(v).toFixed(2)}`
               }
-              width={52}
+              width={56}
             />
             <YAxis
               yAxisId="catch"
@@ -263,13 +259,9 @@ export default function SecurityEconomicsChart() {
               domain={[0, 55]}
               tickLine={false}
               axisLine={false}
-              tick={{
-                fill: 'rgba(0,0,0,0.32)',
-                fontSize: 11,
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-              }}
+              tick={latexTickMuted}
               tickFormatter={(v: number) => `${v}r`}
-              width={40}
+              width={44}
             />
             <ReferenceLine
               yAxisId="bond"
@@ -282,6 +274,7 @@ export default function SecurityEconomicsChart() {
               content={<BondTooltip />}
               cursor={{ fill: 'rgba(0,0,0,0.025)' }}
               isAnimationActive={false}
+              wrapperStyle={{ fontFamily: LATEX_FONT, outline: 'none' }}
             />
             {BOND_SERIES.map((s, i) => (
               <Bar
@@ -313,7 +306,12 @@ export default function SecurityEconomicsChart() {
                 stroke: '#000',
                 strokeWidth: 1.75,
               }}
-              activeDot={{ r: 6, fill: '#000', stroke: '#fff', strokeWidth: 2 }}
+              activeDot={{
+                r: 6,
+                fill: '#000',
+                stroke: '#fff',
+                strokeWidth: 2,
+              }}
               isAnimationActive
               animationDuration={1500}
               animationBegin={350}
