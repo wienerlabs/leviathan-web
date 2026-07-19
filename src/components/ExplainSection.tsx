@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import AuditVisual from './math/AuditVisual'
 import { FormulaScene } from './math/FormulaScene'
-import LossSketch from './math/LossSketch'
 import { MathTex } from './math/Math'
 
 export default function ExplainSection() {
@@ -15,14 +14,12 @@ export default function ExplainSection() {
           The math that makes strangers safe to train with
         </h2>
         <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[760px] mb-12 md:mb-16">
-          Scroll-triggered scenes: loss intuition, the break-even bond, Proof of
-          Gradient, and the audit lottery. Formulas render in LaTeX; steps
-          animate like a chalkboard, not a slide deck.
+          Looping chalkboard scenes: the break-even bond, Proof of Gradient, and
+          the audit lottery. Formulas render in LaTeX and advance on a steady
+          beat.
         </p>
 
         <div className="space-y-6 md:space-y-8">
-          <LossSketch />
-
           <FormulaScene
             index="Scene 01 · Bond"
             title="Price lying before it pays"
@@ -31,7 +28,7 @@ export default function ExplainSection() {
               {
                 label: 'Reward',
                 tex: 'R = \\text{round reward}',
-                note: 'Calibrated to ~1.2× H100 market cost of the round FLOPs.',
+                note: 'Calibrated to ~1.2x H100 market cost of the round FLOPs.',
               },
               {
                 label: 'Audit p',

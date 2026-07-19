@@ -5,27 +5,41 @@ import { MathTex } from './Math'
 const WORKERS = 16
 const MALICIOUS = new Set([0, 1, 2, 3, 4])
 const CATCH = [12, 20, 1, 5, 11]
+const MAX_ROUND = 22
+const TICK_MS = 280
+const HOLD_MS = 1400
 
 export default function AuditVisual() {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.4 })
+  const inView = useInView(ref, { amount: 0.25 })
   const [round, setRound] = useState(0)
 
   useEffect(() => {
     if (!inView) return
-    setRound(0)
     let r = 0
-    const id = window.setInterval(() => {
+    let timer = 0
+
+    const tick = () => {
       r += 1
+      if (r > MAX_ROUND) {
+        timer = window.setTimeout(() => {
+          r = 0
+          setRound(0)
+          timer = window.setTimeout(tick, TICK_MS)
+        }, HOLD_MS)
+        return
+      }
       setRound(r)
-      if (r >= 22) window.clearInterval(id)
-    }, 220)
-    return () => window.clearInterval(id)
+      timer = window.setTimeout(tick, TICK_MS)
+    }
+
+    setRound(0)
+    timer = window.setTimeout(tick, TICK_MS)
+    return () => window.clearTimeout(timer)
   }, [inView])
 
   const caught = CATCH.map((c, i) => ({ id: i, round: c, done: round >= c }))
-  const mean =
-    CATCH.reduce((a, b) => a + b, 0) / CATCH.length
+  const mean = CATCH.reduce((a, b) => a + b, 0) / CATCH.length
 
   return (
     <motion.div
@@ -62,9 +76,9 @@ export default function AuditVisual() {
             const hit = bad && CATCH[i] != null && round >= CATCH[i]
             return (
               <motion.div
-                key={i}
+                key={`${i}-${hit}`}
                 animate={{
-                  scale: hit ? [1, 1.08, 1] : 1,
+                  scale: hit ? 1 : 1,
                   backgroundColor: hit
                     ? '#000000'
                     : bad
@@ -72,7 +86,7 @@ export default function AuditVisual() {
                       : '#ffffff',
                   color: hit ? '#ffffff' : '#000000',
                 }}
-                transition={{ duration: 0.35 }}
+                transition={{ duration: 0.3 }}
                 className="aspect-square rounded-[12px] border border-black flex items-center justify-center text-[12px] md:text-[13px] tabular-nums"
               >
                 {bad ? `M${i + 1}` : `H${i + 1}`}

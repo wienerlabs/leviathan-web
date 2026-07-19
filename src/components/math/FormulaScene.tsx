@@ -8,6 +8,8 @@ export type FormulaStep = {
   note?: string
 }
 
+const STEP_MS = 2200
+
 export function FormulaScene({
   index,
   title,
@@ -22,21 +24,23 @@ export function FormulaScene({
   footer?: ReactNode
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.35 })
+  const inView = useInView(ref, { amount: 0.25 })
   const [step, setStep] = useState(0)
+  const [manual, setManual] = useState(false)
 
   useEffect(() => {
-    if (!inView) return
-    setStep(0)
-    if (steps.length <= 1) return
-    const timers: number[] = []
-    for (let i = 1; i < steps.length; i++) {
-      timers.push(
-        window.setTimeout(() => setStep(i), i * 1100),
-      )
-    }
-    return () => timers.forEach((t) => window.clearTimeout(t))
-  }, [inView, steps.length])
+    if (!inView || steps.length <= 1 || manual) return
+    const id = window.setInterval(() => {
+      setStep((s) => (s + 1) % steps.length)
+    }, STEP_MS)
+    return () => window.clearInterval(id)
+  }, [inView, steps.length, manual])
+
+  useEffect(() => {
+    if (!manual) return
+    const id = window.setTimeout(() => setManual(false), STEP_MS * 2.5)
+    return () => window.clearTimeout(id)
+  }, [manual, step])
 
   const active = steps[Math.min(step, steps.length - 1)]
 
@@ -66,14 +70,15 @@ export function FormulaScene({
             <button
               key={s.label}
               type="button"
-              onClick={() => setStep(i)}
+              onClick={() => {
+                setStep(i)
+                setManual(true)
+              }}
               className={[
                 'h-9 px-3.5 rounded-full border text-[13px] transition-colors',
-                i <= step
-                  ? i === step
-                    ? 'border-black bg-black text-white'
-                    : 'border-black bg-white text-black'
-                  : 'border-black/15 text-black/30',
+                i === step
+                  ? 'border-black bg-black text-white'
+                  : 'border-black/20 text-black/55 hover:border-black',
               ].join(' ')}
             >
               {s.label}
@@ -84,9 +89,9 @@ export function FormulaScene({
         <div className="relative overflow-hidden rounded-[24px] border border-black/10 bg-black/[0.02] px-5 md:px-8 py-8 md:py-10">
           <motion.div
             key={active.tex}
-            initial={{ opacity: 0, y: 14, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="text-center text-[22px] md:text-[34px] leading-relaxed"
           >
             <MathTex tex={active.tex} display />
@@ -97,7 +102,7 @@ export function FormulaScene({
               key={active.note}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.15, duration: 0.4 }}
+              transition={{ delay: 0.12, duration: 0.35 }}
               className="mt-5 text-center text-[14px] md:text-[15px] text-black/50 max-w-[520px] mx-auto leading-relaxed"
             >
               {active.note}
