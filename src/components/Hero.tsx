@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const FRAME_COUNT = 145
-const PIXELS_PER_FRAME = 28
+const FRAME_MAX = FRAME_COUNT - 1
+const WHEEL_SENSITIVITY = 48
+const LERP = 0.14
+const SNAP_EPS = 0.02
 
 function frameSrc(index: number) {
   return `/frames/frame-${String(index + 1).padStart(3, '0')}.jpg`
@@ -12,18 +15,31 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))
 }
 
+function normalizeWheelDelta(e: WheelEvent) {
+  let dy = e.deltaY
+  if (e.deltaMode === 1) dy *= 16
+  if (e.deltaMode === 2) dy *= window.innerHeight
+  const abs = Math.abs(dy)
+  if (abs > 80) {
+    const sign = dy < 0 ? -1 : 1
+    dy = sign * (40 + Math.log2(1 + abs) * 12)
+  }
+  return dy
+}
+
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const framesRef = useRef<HTMLImageElement[]>([])
-  const frameRef = useRef(0)
+  const targetRef = useRef(0)
+  const currentRef = useRef(0)
   const unlockedRef = useRef(false)
   const touchYRef = useRef<number | null>(null)
   const rafRef = useRef(0)
   const drawnRef = useRef(-1)
   const heroRef = useRef<HTMLElement>(null)
+  const progressBarRef = useRef<HTMLDivElement>(null)
   const [loaded, setLoaded] = useState(0)
   const [ready, setReady] = useState(false)
-  const [frame, setFrame] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -54,14 +70,18 @@ export default function Hero() {
   }, [])
 
   useEffect(() => {
-    const draw = () => {
-      rafRef.current = requestAnimationFrame(draw)
+    const applyFrame = (value: number) => {
+      const index = clamp(Math.round(value), 0, FRAME_MAX)
+      unlockedRef.current = value >= FRAME_MAX - 0.001
+
+      const bar = progressBarRef.current
+      if (bar) {
+        bar.style.width = `${(value / FRAME_MAX) * 100}%`
+      }
+
       const canvas = canvasRef.current
       const frames = framesRef.current
-      if (!canvas || frames.length === 0) return
-
-      const index = frameRef.current
-      if (index === drawnRef.current) return
+      if (!canvas || frames.length === 0 || index === drawnRef.current) return
 
       const img = frames[index]
       if (!img || !img.complete || img.naturalWidth === 0) return
@@ -69,7 +89,10 @@ export default function Hero() {
       const ctx = canvas.getContext('2d', { alpha: false })
       if (!ctx) return
 
-      if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
+      if (
+        canvas.width !== img.naturalWidth ||
+        canvas.height !== img.naturalHeight
+      ) {
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
       }
@@ -78,21 +101,37 @@ export default function Hero() {
       drawnRef.current = index
     }
 
-    rafRef.current = requestAnimationFrame(draw)
+    const tick = () => {
+      rafRef.current = requestAnimationFrame(tick)
+      const target = targetRef.current
+      let current = currentRef.current
+      const delta = target - current
+
+      if (Math.abs(delta) < SNAP_EPS) {
+        if (current !== target) {
+          current = target
+          currentRef.current = current
+          applyFrame(current)
+        }
+        return
+      }
+
+      current += delta * LERP
+      currentRef.current = current
+      applyFrame(current)
+    }
+
+    rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
   }, [])
 
   useEffect(() => {
-    const setFrameIndex = (next: number) => {
-      const clamped = clamp(Math.round(next), 0, FRAME_COUNT - 1)
-      if (clamped === frameRef.current) return
-      frameRef.current = clamped
-      setFrame(clamped)
-      if (clamped >= FRAME_COUNT - 1) {
-        unlockedRef.current = true
-      } else {
-        unlockedRef.current = false
-      }
+    const nudgeTarget = (deltaFrames: number) => {
+      targetRef.current = clamp(
+        targetRef.current + deltaFrames,
+        0,
+        FRAME_MAX,
+      )
     }
 
     const heroStillPinned = () => {
@@ -102,29 +141,33 @@ export default function Hero() {
     }
 
     const onWheel = (e: WheelEvent) => {
-      const atLast = frameRef.current >= FRAME_COUNT - 1
-      const atFirst = frameRef.current <= 0
-      const scrollingDown = e.deltaY > 0
-      const scrollingUp = e.deltaY < 0
+      const atLast = targetRef.current >= FRAME_MAX - 0.001
+      const atFirst = targetRef.current <= 0.001
+      const dy = normalizeWheelDelta(e)
+      const scrollingDown = dy > 0
+      const scrollingUp = dy < 0
+      const step = dy / WHEEL_SENSITIVITY
 
       if (scrollingDown && !atLast) {
         e.preventDefault()
-        const steps = Math.max(1, Math.round(Math.abs(e.deltaY) / PIXELS_PER_FRAME))
-        setFrameIndex(frameRef.current + steps)
+        nudgeTarget(step)
         return
       }
 
-      if (scrollingUp && unlockedRef.current && window.scrollY <= 0 && !atFirst) {
+      if (
+        scrollingUp &&
+        unlockedRef.current &&
+        window.scrollY <= 0 &&
+        !atFirst
+      ) {
         e.preventDefault()
-        const steps = Math.max(1, Math.round(Math.abs(e.deltaY) / PIXELS_PER_FRAME))
-        setFrameIndex(frameRef.current - steps)
+        nudgeTarget(step)
         return
       }
 
       if (scrollingUp && window.scrollY <= 0 && !atFirst && heroStillPinned()) {
         e.preventDefault()
-        const steps = Math.max(1, Math.round(Math.abs(e.deltaY) / PIXELS_PER_FRAME))
-        setFrameIndex(frameRef.current - steps)
+        nudgeTarget(step)
       }
     }
 
@@ -139,34 +182,32 @@ export default function Hero() {
 
       const delta = touchYRef.current - y
       touchYRef.current = y
-      const atLast = frameRef.current >= FRAME_COUNT - 1
-      const atFirst = frameRef.current <= 0
+      const atLast = targetRef.current >= FRAME_MAX - 0.001
+      const atFirst = targetRef.current <= 0.001
 
       if (delta > 0 && !atLast) {
         e.preventDefault()
-        const steps = Math.max(1, Math.round(Math.abs(delta) / (PIXELS_PER_FRAME * 0.45)))
-        setFrameIndex(frameRef.current + steps)
+        nudgeTarget(delta / (WHEEL_SENSITIVITY * 0.55))
         return
       }
 
       if (delta < 0 && window.scrollY <= 0 && !atFirst) {
         e.preventDefault()
-        const steps = Math.max(1, Math.round(Math.abs(delta) / (PIXELS_PER_FRAME * 0.45)))
-        setFrameIndex(frameRef.current - steps)
+        nudgeTarget(delta / (WHEEL_SENSITIVITY * 0.55))
       }
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-        if (frameRef.current < FRAME_COUNT - 1) {
+        if (targetRef.current < FRAME_MAX) {
           e.preventDefault()
-          setFrameIndex(frameRef.current + (e.key === 'PageDown' ? 8 : 2))
+          nudgeTarget(e.key === 'PageDown' ? 8 : 2.5)
         }
       }
       if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        if (window.scrollY <= 0 && frameRef.current > 0) {
+        if (window.scrollY <= 0 && targetRef.current > 0) {
           e.preventDefault()
-          setFrameIndex(frameRef.current - (e.key === 'PageUp' ? 8 : 2))
+          nudgeTarget(e.key === 'PageUp' ? -8 : -2.5)
         }
       }
     }
@@ -185,13 +226,9 @@ export default function Hero() {
   }, [])
 
   const loadPct = Math.round((loaded / FRAME_COUNT) * 100)
-  const progress = frame / (FRAME_COUNT - 1)
 
   return (
-    <section
-      ref={heroRef}
-      className="relative h-screen w-full bg-white"
-    >
+    <section ref={heroRef} className="relative h-screen w-full bg-white">
       <div className="h-full w-full bg-white flex flex-col">
         <header className="flex-shrink-0 z-20 flex items-center justify-between px-4 pt-3 pb-1 md:px-8 md:pt-5 md:pb-2">
           <div className="flex items-center gap-2.5 md:gap-3">
@@ -268,8 +305,9 @@ export default function Hero() {
 
           <div className="flex-shrink-0 w-full max-w-[min(94vw,calc(100svh-9.5rem))] h-[2px] bg-black/10 overflow-hidden rounded-full">
             <div
-              className="h-full bg-black transition-[width] duration-75 ease-linear"
-              style={{ width: `${progress * 100}%` }}
+              ref={progressBarRef}
+              className="h-full bg-black"
+              style={{ width: '0%' }}
             />
           </div>
         </div>
