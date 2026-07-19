@@ -34,6 +34,15 @@ const LAYERS = [
 export default function Content() {
   return (
     <div className="relative z-10 bg-white text-black">
+      <div className="w-full border-b border-black/10">
+        <img
+          src="/banner.jpg"
+          alt="Leviathan"
+          className="block w-full max-h-[42vh] object-cover object-center grayscale"
+          width={1400}
+          height={653}
+        />
+      </div>
       <section className="px-5 md:px-12 pt-14 md:pt-20 pb-20 md:pb-32 max-w-[1100px] mx-auto">
         <p className="text-[13px] md:text-[14px] text-black/50 font-medium mb-6 tracking-[0.06em]">
           Thesis

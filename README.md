@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/banner.jpg" alt="Leviathan" width="100%" />
+</p>
+
 # Leviathan website
 
 Marketing site for [Leviathan](https://x.com/leviathanfront): trustless training for the people's model.
