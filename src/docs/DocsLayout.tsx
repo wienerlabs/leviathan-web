@@ -45,16 +45,16 @@ export default function DocsLayout() {
               <img
                 src="/mascot.png"
                 alt=""
-                className="h-7 w-7 object-contain grayscale"
+                className="h-9 w-9 object-contain grayscale"
               />
-              <span className="text-[14px] md:text-[15px] font-semibold tracking-tight">
+              <span className="text-[17px] md:text-[19px] font-semibold tracking-tight">
                 Leviathan
               </span>
             </Link>
             <span className="hidden sm:inline text-black/25">/</span>
             <Link
               to={DOCS_DEFAULT}
-              className="hidden sm:inline text-[13px] md:text-[14px] text-black/60 hover:text-black"
+              className="hidden sm:inline text-[15px] md:text-[17px] text-black/60 hover:text-black"
             >
               Docs
             </Link>
@@ -64,13 +64,13 @@ export default function DocsLayout() {
               href="https://github.com/wienerlabs/leviathan-net"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-9 items-center justify-center rounded-full border border-black px-4 text-[12px] font-medium hover:bg-black hover:text-white transition-colors"
+              className="inline-flex h-9 items-center justify-center rounded-full border border-black px-5 text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
             >
               GitHub
             </a>
             <Link
               to="/"
-              className="inline-flex h-9 items-center justify-center rounded-full bg-black px-4 text-[12px] font-medium text-white hover:bg-black/80 transition-colors"
+              className="inline-flex h-9 items-center justify-center rounded-full bg-black px-5 text-[17px] font-medium text-white hover:bg-black/80 transition-colors"
             >
               Site
             </Link>
@@ -90,7 +90,7 @@ export default function DocsLayout() {
           <nav className="px-4 py-6 md:px-5">
             {DOCS_NAV.map((group) => (
               <div key={group.title} className="mb-6">
-                <p className="mb-2 px-2 text-[11px] font-semibold tracking-[0.08em] text-black/45">
+                <p className="mb-2 px-2 text-[13px] font-semibold tracking-[0.08em] text-black/45">
                   {group.title}
                 </p>
                 <ul className="space-y-0.5">
@@ -101,7 +101,7 @@ export default function DocsLayout() {
                         <Link
                           to={item.path}
                           className={[
-                            'block rounded-full px-3 py-2 text-[13px] md:text-[14px] transition-colors',
+                            'block rounded-full px-3 py-2.5 text-[15px] md:text-[16px] transition-colors',
                             active
                               ? 'bg-black text-white font-medium'
                               : 'text-black/70 hover:bg-black/[0.04] hover:text-black',
@@ -128,8 +128,8 @@ export default function DocsLayout() {
         )}
 
         <main className="min-w-0 flex-1 px-5 py-8 md:px-10 md:py-12 lg:px-14">
-          <div className="mx-auto max-w-[720px]">
-            <p className="mb-3 text-[12px] text-black/45 tracking-[0.06em]">
+          <div className="mx-auto max-w-[820px]">
+            <p className="mb-3 text-[14px] text-black/45 tracking-[0.06em]">
               {groupTitle}
             </p>
             {page.body}
@@ -139,8 +139,8 @@ export default function DocsLayout() {
                   to={prev.path}
                   className="flex-1 rounded-[24px] border border-black px-5 py-4 hover:bg-black hover:text-white transition-colors"
                 >
-                  <p className="text-[11px] opacity-50 mb-1">Previous</p>
-                  <p className="text-[14px] font-medium">{prev.title}</p>
+                  <p className="text-[13px] opacity-50 mb-1">Previous</p>
+                  <p className="text-[17px] font-medium">{prev.title}</p>
                 </Link>
               ) : (
                 <div className="flex-1" />
@@ -150,12 +150,12 @@ export default function DocsLayout() {
                   to={next.path}
                   className="flex-1 rounded-[24px] border border-black px-5 py-4 text-right hover:bg-black hover:text-white transition-colors"
                 >
-                  <p className="text-[11px] opacity-50 mb-1">Next</p>
-                  <p className="text-[14px] font-medium">{next.title}</p>
+                  <p className="text-[13px] opacity-50 mb-1">Next</p>
+                  <p className="text-[17px] font-medium">{next.title}</p>
                 </Link>
               ) : null}
             </div>
-            <p className="mt-10 text-[12px] text-black/40">
+            <p className="mt-10 text-[14px] text-black/40">
               Source pages:{' '}
               {flatDocsNav().length} docs · derived from{' '}
               <a

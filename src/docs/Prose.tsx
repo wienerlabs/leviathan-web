@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export function H1({ children }: { children: ReactNode }) {
   return (
-    <h1 className="font-italiana text-[32px] md:text-[40px] leading-[1.1] tracking-tight mb-4">
+    <h1 className="font-italiana text-[42px] md:text-[56px] leading-[1.08] tracking-tight mb-5">
       {children}
     </h1>
   )
@@ -13,7 +13,7 @@ export function H2({ id, children }: { id?: string; children: ReactNode }) {
   return (
     <h2
       id={id}
-      className="font-italiana text-[22px] md:text-[28px] leading-[1.15] mt-12 mb-4 scroll-mt-24"
+      className="font-italiana text-[30px] md:text-[38px] leading-[1.12] mt-14 mb-5 scroll-mt-24"
     >
       {children}
     </h2>
@@ -24,7 +24,7 @@ export function H3({ id, children }: { id?: string; children: ReactNode }) {
   return (
     <h3
       id={id}
-      className="text-[16px] md:text-[18px] font-semibold mt-8 mb-3 scroll-mt-24"
+      className="text-[20px] md:text-[24px] font-semibold mt-10 mb-4 scroll-mt-24"
     >
       {children}
     </h3>
@@ -33,7 +33,7 @@ export function H3({ id, children }: { id?: string; children: ReactNode }) {
 
 export function P({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[15px] md:text-[16px] leading-relaxed text-black/80 mb-4">
+    <p className="text-[18px] md:text-[20px] leading-relaxed text-black/80 mb-5">
       {children}
     </p>
   )
@@ -41,7 +41,7 @@ export function P({ children }: { children: ReactNode }) {
 
 export function Note({ children }: { children: ReactNode }) {
   return (
-    <div className="my-6 rounded-[20px] border border-black/15 px-5 py-4 text-[14px] leading-relaxed text-black/75">
+    <div className="my-6 rounded-[20px] border border-black/15 px-5 py-4 text-[17px] leading-relaxed text-black/75">
       {children}
     </div>
   )
@@ -49,7 +49,7 @@ export function Note({ children }: { children: ReactNode }) {
 
 export function Code({ children }: { children: ReactNode }) {
   return (
-    <code className="rounded-md bg-black/[0.05] px-1.5 py-0.5 text-[13px] font-mono text-black">
+    <code className="rounded-md bg-black/[0.05] px-1.5 py-0.5 text-[15px] font-mono text-black">
       {children}
     </code>
   )
@@ -57,7 +57,7 @@ export function Code({ children }: { children: ReactNode }) {
 
 export function Pre({ children }: { children: string }) {
   return (
-    <pre className="my-5 overflow-x-auto rounded-[18px] border border-black/10 bg-black/[0.03] px-4 py-4 text-[12.5px] md:text-[13px] leading-relaxed font-mono text-black">
+    <pre className="my-5 overflow-x-auto rounded-[18px] border border-black/10 bg-black/[0.03] px-4 py-4 text-[14px] md:text-[15px] leading-relaxed font-mono text-black">
       <code>{children}</code>
     </pre>
   )
@@ -65,7 +65,7 @@ export function Pre({ children }: { children: string }) {
 
 export function Ul({ children }: { children: ReactNode }) {
   return (
-    <ul className="mb-5 ml-5 list-disc space-y-2 text-[15px] md:text-[16px] leading-relaxed text-black/80">
+    <ul className="mb-5 ml-5 list-disc space-y-2.5 text-[18px] md:text-[20px] leading-relaxed text-black/80">
       {children}
     </ul>
   )
@@ -73,7 +73,7 @@ export function Ul({ children }: { children: ReactNode }) {
 
 export function Ol({ children }: { children: ReactNode }) {
   return (
-    <ol className="mb-5 ml-5 list-decimal space-y-2 text-[15px] md:text-[16px] leading-relaxed text-black/80">
+    <ol className="mb-5 ml-5 list-decimal space-y-2.5 text-[18px] md:text-[20px] leading-relaxed text-black/80">
       {children}
     </ol>
   )
@@ -92,7 +92,7 @@ export function Table({
 }) {
   return (
     <div className="my-6 overflow-x-auto rounded-[18px] border border-black/10">
-      <table className="w-full min-w-[560px] border-collapse text-left text-[13px] md:text-[14px]">
+      <table className="w-full min-w-[560px] border-collapse text-left text-[15px] md:text-[17px]">
         <thead>
           <tr className="border-b border-black/10 bg-black/[0.03]">
             {headers.map((h) => (
@@ -137,7 +137,7 @@ export function A({ href, children }: { href: string; children: ReactNode }) {
 
 export function Lead({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[16px] md:text-[18px] leading-relaxed text-black/70 mb-8 max-w-[52rem]">
+    <p className="text-[20px] md:text-[24px] leading-relaxed text-black/70 mb-10 max-w-[52rem]">
       {children}
     </p>
   )

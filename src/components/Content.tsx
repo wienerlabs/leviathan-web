@@ -45,14 +45,14 @@ export default function Content() {
   return (
     <div className="relative z-10 bg-white text-black">
       <section className="px-5 md:px-12 pt-14 md:pt-20 pb-20 md:pb-32 max-w-[1100px] mx-auto">
-        <p className="text-[13px] md:text-[14px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+        <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
           Thesis
         </p>
-        <h2 className="font-italiana text-[32px] md:text-[56px] leading-[1.08] max-w-[900px] mb-10 md:mb-14">
+        <h2 className="font-italiana text-[42px] md:text-[72px] leading-[1.06] max-w-[1000px] mb-10 md:mb-14">
           Hobbes drew Leviathan as a giant made of thousands of people.
           This one is made of thousands of GPUs.
         </h2>
-        <div className="grid md:grid-cols-2 gap-8 md:gap-16 text-[15px] md:text-[17px] leading-relaxed text-black/80">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 text-[18px] md:text-[22px] leading-relaxed text-black/80">
           <p>
             Frontier AI today sits on five balance sheets. The math of training
             over the open internet is already solved and shipping. What remains
@@ -70,46 +70,46 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <p className="text-[13px] md:text-[14px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+          <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
             How it works
           </p>
-          <h2 className="font-italiana text-[28px] md:text-[48px] leading-[1.1] mb-12 md:mb-16 max-w-[720px]">
+          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16 max-w-[860px]">
             One daemon. One wallet. From a gaming GPU to a datacenter.
           </h2>
           <div className="grid md:grid-cols-3 gap-10 md:gap-12">
             <div>
-              <div className="w-10 h-10 rounded-full border border-black flex items-center justify-center text-[13px] font-medium mb-5">
+              <div className="w-12 h-12 rounded-full border border-black flex items-center justify-center text-[15px] font-medium mb-5">
                 01
               </div>
-              <h3 className="text-[17px] md:text-[18px] font-semibold mb-3">
+              <h3 className="text-[20px] md:text-[24px] font-semibold mb-3">
                 Join with a bond
               </h3>
-              <p className="text-[14px] md:text-[15px] leading-relaxed text-black/70">
+              <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
                 Every contributor posts collateral. Participation is open, sybil
                 is a cost, and exit runs through a challenge window.
               </p>
             </div>
             <div>
-              <div className="w-10 h-10 rounded-full border border-black flex items-center justify-center text-[13px] font-medium mb-5">
+              <div className="w-12 h-12 rounded-full border border-black flex items-center justify-center text-[15px] font-medium mb-5">
                 02
               </div>
-              <h3 className="text-[17px] md:text-[18px] font-semibold mb-3">
+              <h3 className="text-[20px] md:text-[24px] font-semibold mb-3">
                 Train over the mesh
               </h3>
-              <p className="text-[14px] md:text-[15px] leading-relaxed text-black/70">
+              <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
                 Training runs across the internet. Solana coordinates each
                 round: contribution commitments, verifications and rewards live
                 on-chain. The chain does not carry tensors. It carries trust.
               </p>
             </div>
             <div>
-              <div className="w-10 h-10 rounded-full border border-black flex items-center justify-center text-[13px] font-medium mb-5">
+              <div className="w-12 h-12 rounded-full border border-black flex items-center justify-center text-[15px] font-medium mb-5">
                 03
               </div>
-              <h3 className="text-[17px] md:text-[18px] font-semibold mb-3">
+              <h3 className="text-[20px] md:text-[24px] font-semibold mb-3">
                 Proof of Gradient
               </h3>
-              <p className="text-[14px] md:text-[15px] leading-relaxed text-black/70">
+              <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
                 Every gradient that survives verification mints token. Bitcoin
                 turned electricity into security. This network turns idle compute
                 into collective intelligence.
@@ -121,13 +121,13 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <p className="text-[13px] md:text-[14px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+          <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
             Security
           </p>
-          <h2 className="font-italiana text-[28px] md:text-[48px] leading-[1.1] mb-6 max-w-[760px]">
+          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
             Defection becomes economically irrational
           </h2>
-          <p className="text-[15px] md:text-[17px] leading-relaxed text-black/70 max-w-[640px] mb-14 md:mb-16">
+          <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[720px] mb-14 md:mb-16">
             Every contribution is bonded. Random spot-checks catch liars; caught
             bonds are burned into the system. Three layers cover each other's
             gap.
@@ -138,10 +138,10 @@ export default function Content() {
                 key={layer.title}
                 className="rounded-[28px] border border-black p-6 md:p-8"
               >
-                <h3 className="text-[16px] md:text-[18px] font-semibold mb-3">
+                <h3 className="text-[20px] md:text-[22px] font-semibold mb-3">
                   {layer.title}
                 </h3>
-                <p className="text-[14px] md:text-[15px] leading-relaxed text-black/70">
+                <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
                   {layer.body}
                 </p>
               </div>
@@ -153,14 +153,14 @@ export default function Content() {
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-start">
           <div>
-            <p className="text-[13px] md:text-[14px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+            <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
               Ownership
             </p>
-            <h2 className="font-italiana text-[28px] md:text-[48px] leading-[1.1] mb-8">
+            <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-8">
               Weights public. Revenue circular. Governance by futarchy.
             </h2>
           </div>
-          <div className="space-y-6 text-[15px] md:text-[17px] leading-relaxed text-black/75 pt-2">
+          <div className="space-y-6 text-[18px] md:text-[22px] leading-relaxed text-black/75 pt-2">
             <p>
               Model weights are public. The inference network earns revenue.
               Revenue flows to the treasury. The treasury funds the next training
@@ -177,10 +177,10 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <p className="text-[13px] md:text-[14px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+          <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
             Open source
           </p>
-          <h2 className="font-italiana text-[28px] md:text-[48px] leading-[1.1] mb-12 md:mb-16">
+          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16">
             Read the code
           </h2>
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
@@ -190,14 +190,14 @@ export default function Content() {
               const inner = (
                 <>
                   <div className="flex items-center justify-between mb-8">
-                    <span className="text-[15px] md:text-[16px] font-semibold">
+                    <span className="text-[18px] md:text-[20px] font-semibold">
                       {link.label}
                     </span>
                     <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-current text-[16px] transition-transform duration-200 group-hover:translate-x-0.5">
                       →
                     </span>
                   </div>
-                  <p className="text-[13px] md:text-[14px] text-black/60 group-hover:text-white/70 transition-colors duration-200">
+                  <p className="text-[16px] md:text-[17px] text-black/60 group-hover:text-white/70 transition-colors duration-200">
                     {link.detail}
                   </p>
                 </>
@@ -241,11 +241,11 @@ export default function Content() {
               <img
                 src="/mascot.png"
                 alt=""
-                className="h-8 w-8 object-contain grayscale"
+                className="h-10 w-10 object-contain grayscale"
               />
               <div>
-                <p className="text-[14px] font-semibold">Leviathan</p>
-                <p className="text-[12px] text-black/50">
+                <p className="text-[17px] font-semibold">Leviathan</p>
+                <p className="text-[15px] text-black/50">
                   Trustless training for the people's model
                 </p>
               </div>
@@ -255,7 +255,7 @@ export default function Content() {
                 href="https://x.com/leviathanfront"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center h-10 px-5 rounded-full border border-black text-[12px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+                className="inline-flex items-center justify-center h-12 px-6 rounded-full border border-black text-[15px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
               >
                 Follow on X
               </a>
@@ -263,7 +263,7 @@ export default function Content() {
                 href="https://github.com/wienerlabs/leviathan-net"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center h-10 px-5 rounded-full bg-black text-white text-[12px] font-medium hover:bg-black/80 transition-colors duration-200"
+                className="inline-flex items-center justify-center h-12 px-6 rounded-full bg-black text-white text-[15px] font-medium hover:bg-black/80 transition-colors duration-200"
               >
                 GitHub
               </a>

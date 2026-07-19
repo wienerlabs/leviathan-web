@@ -198,9 +198,9 @@ export default function Hero() {
             <img
               src="/mascot.png"
               alt="Leviathan"
-              className="h-8 w-8 md:h-10 md:w-10 object-contain grayscale"
+              className="h-10 w-10 md:h-12 md:w-12 object-contain grayscale"
             />
-            <span className="text-black text-[14px] md:text-[17px] font-semibold tracking-tight">
+            <span className="text-black text-[18px] md:text-[22px] font-semibold tracking-tight">
               Leviathan
             </span>
           </div>
@@ -209,13 +209,13 @@ export default function Hero() {
               href="https://x.com/leviathanfront"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center h-9 px-4 md:h-11 md:px-6 rounded-full border border-black text-black text-[12px] md:text-[14px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+              className="inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
             >
               X
             </a>
             <Link
               to="/docs/developer/quickstart"
-              className="inline-flex items-center justify-center h-9 px-4 md:h-11 md:px-6 rounded-full border border-black text-black text-[12px] md:text-[14px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+              className="inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
             >
               Docs
             </Link>
@@ -223,7 +223,7 @@ export default function Hero() {
               href="https://github.com/wienerlabs/leviathan-net"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center h-9 px-4 md:h-11 md:px-6 rounded-full bg-black text-white text-[12px] md:text-[14px] font-medium hover:bg-black/80 transition-colors duration-200"
+              className="inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full bg-black text-white text-[15px] md:text-[17px] font-medium hover:bg-black/80 transition-colors duration-200"
             >
               Network
             </a>
@@ -232,10 +232,10 @@ export default function Hero() {
 
         <div className="flex-1 min-h-0 flex flex-col items-center justify-start md:justify-center px-3 md:px-6 pt-1 md:pt-2 pb-3 gap-2 md:gap-3">
           <div className="text-center flex-shrink-0 max-w-[920px]">
-            <p className="text-black/55 text-[11px] md:text-[13px] font-medium tracking-[0.08em] mb-1 md:mb-1.5">
+            <p className="text-black/55 text-[14px] md:text-[17px] font-medium tracking-[0.08em] mb-1 md:mb-1.5">
               Trustless training for the people's model
             </p>
-            <h1 className="text-black font-italiana text-[26px] leading-[1.05] sm:text-[34px] md:text-[48px] md:leading-[1.02]">
+            <h1 className="text-black font-italiana text-[36px] leading-[1.05] sm:text-[48px] md:text-[68px] md:leading-[1.02]">
               The people own their frontier model
             </h1>
           </div>
@@ -253,7 +253,7 @@ export default function Hero() {
             />
             {!ready && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/70">
-                <p className="text-black/50 text-[12px] md:text-[13px]">
+                <p className="text-black/50 text-[15px] md:text-[16px]">
                   Loading {loadPct}%
                 </p>
               </div>
