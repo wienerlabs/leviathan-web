@@ -115,6 +115,7 @@ export default function LossCurvesChart() {
           </div>
         }
         heightClass="h-[360px] md:h-[420px]"
+        dollarRule
         footer={
           <div className="space-y-5">
             <div className="flex flex-wrap gap-2">
