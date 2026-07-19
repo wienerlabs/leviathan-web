@@ -213,6 +213,12 @@ export default function Hero() {
             >
               X
             </a>
+            <a
+              href="#waitlist"
+              className="hidden sm:inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+            >
+              Waitlist
+            </a>
             <Link
               to="/docs/developer/quickstart"
               className="inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import Waitlist from './Waitlist'
+
 const LINKS = [
   {
     label: 'Docs',
@@ -41,16 +43,136 @@ const LAYERS = [
   },
 ]
 
+const OPEN_SLOT = [
+  {
+    name: 'Bittensor training subnets',
+    verification: 'Scoring gates, admitted gaps',
+    economics: 'Emissions only, no bonds',
+    us: false,
+  },
+  {
+    name: 'Nous Psyche',
+    verification: 'Witness liveness, verifier is a todo',
+    economics: 'No stake, dead slash code, whitelist',
+    us: false,
+  },
+  {
+    name: 'Gensyn Verde',
+    verification: 'Strong, FP32 single-GPU determinism',
+    economics: 'Pre-mainnet',
+    us: false,
+  },
+  {
+    name: 'OVIG',
+    verification: 'Tolerance-band replay audits',
+    economics: 'Paper, not a network',
+    us: false,
+  },
+  {
+    name: 'Leviathan',
+    verification: 'OVIG-style replay audits',
+    economics: 'Bonds sized (1-p)/p, live slashing',
+    us: true,
+  },
+]
+
+const SIM_ROWS = [
+  {
+    scenario: 'Honest swarm, mean',
+    loss: '2.175',
+    outcome: 'Reference',
+  },
+  {
+    scenario: 'Sign flip 5/16 vs mean',
+    loss: '12.0, diverged',
+    outcome: 'Naive aggregation destroyed',
+  },
+  {
+    scenario: 'Sign flip 5/16 vs clip + excision',
+    loss: '2.203',
+    outcome: 'Neutralized; malicious acceptance 3%',
+  },
+  {
+    scenario: 'ALIE 5/16 vs clip',
+    loss: '2.190',
+    outcome: 'Stealth accepted 100%, damage 0.7%',
+  },
+  {
+    scenario: 'ALIE 5/16 vs clip + audit p=0.1',
+    loss: '2.194',
+    outcome: 'All 5 cheaters slashed',
+  },
+  {
+    scenario: 'Honest non-IID, clip',
+    loss: '2.222',
+    outcome: 'Zero honest false positives',
+  },
+]
+
+const ROADMAP = [
+  {
+    phase: 'Phase 0',
+    title: 'Proof',
+    status: 'Done',
+    body: 'Whitepaper, decision log, and the sim: Condorcet security economics on real transformer gradients.',
+  },
+  {
+    phase: 'Phase 1',
+    title: 'Devnet core',
+    status: 'In progress',
+    body: 'Bond custody, audit lottery, and slash paths are live on the fork. Open: verifier daemon, local swarm, conviction demo.',
+  },
+  {
+    phase: 'Phase 2',
+    title: 'Genesis Run',
+    status: 'Next',
+    body: 'Public testnet, 50+ volunteer nodes, 350M to 1B model, live loss curve, one-line join.',
+  },
+  {
+    phase: 'Phase 3',
+    title: 'Mainnet',
+    status: 'Later',
+    body: 'TGE, real bonds, Proof of Gradient live, open weights, inference network v0.',
+  },
+  {
+    phase: 'Phase 4',
+    title: 'Scale',
+    status: 'Later',
+    body: 'DanteGPU supply, 7B+, futarchy for the next model, optional TEE lane.',
+  },
+]
+
+const DEVNET = [
+  {
+    label: 'Coordinator',
+    id: 'JD9rHTiqBFgHjViWZc7gFZX74LvKKysbLbqFRaFvtmmN',
+  },
+  {
+    label: 'Authorizer',
+    id: '2Kg5ERG6ubuzyPmQ24axsws7V2ja2EvWp5CHMKFCrTxv',
+  },
+  {
+    label: 'Treasurer',
+    id: '9A1kc8Dr9dFJW9t1npAk7EHrADm6TAyFeVLH27CDdvv8',
+  },
+]
+
+function SectionLabel({ children }: { children: string }) {
+  return (
+    <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+      {children}
+    </p>
+  )
+}
+
 export default function Content() {
   return (
     <div className="relative z-10 bg-white text-black">
       <section className="px-5 md:px-12 pt-14 md:pt-20 pb-20 md:pb-32 max-w-[1100px] mx-auto">
-        <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
-          Thesis
-        </p>
+        <SectionLabel>Thesis</SectionLabel>
         <h2 className="font-italiana text-[42px] md:text-[72px] leading-[1.06] max-w-[1000px] mb-10 md:mb-14">
-          Hobbes drew Leviathan as a giant made of thousands of people.
-          This one is made of thousands of GPUs.
+          Hobbes drew Leviathan as a giant made of thousands of people. This one
+          is made of thousands of GPUs.
         </h2>
         <div className="grid md:grid-cols-2 gap-8 md:gap-16 text-[18px] md:text-[22px] leading-relaxed text-black/80">
           <p>
@@ -60,8 +182,8 @@ export default function Content() {
             a stranger and pay them for it.
           </p>
           <p>
-            Leviathan is a Solana-coordinated training network. Anyone with a
-            GPU joins by posting a bond, earns Proof of Gradient for work that
+            Leviathan is a Solana-coordinated training network. Anyone with a GPU
+            joins by posting a bond, earns Proof of Gradient for work that
             survives verification, and loses the bond if they lie. The model
             belongs to the network that trained it.
           </p>
@@ -70,9 +192,70 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
-            How it works
+          <SectionLabel>The open slot</SectionLabel>
+          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
+            Everyone picked one column. Nobody picked both.
+          </h2>
+          <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[720px] mb-12 md:mb-16">
+            Bonded contributions plus random replay audits plus slashing is not
+            run by anyone for live LLM training today. That combination is the
+            moat.
           </p>
+
+          <div className="overflow-x-auto rounded-[28px] border border-black">
+            <table className="w-full min-w-[720px] border-collapse text-left">
+              <thead>
+                <tr className="border-b border-black/10 bg-black/[0.03]">
+                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+                    Network
+                  </th>
+                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+                    Verification
+                  </th>
+                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+                    Live economics
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {OPEN_SLOT.map((row) => (
+                  <tr
+                    key={row.name}
+                    className={[
+                      'border-b border-black/10 last:border-0',
+                      row.us ? 'bg-black text-white' : '',
+                    ].join(' ')}
+                  >
+                    <td className="px-5 md:px-6 py-4 text-[16px] md:text-[18px] font-semibold">
+                      {row.name}
+                    </td>
+                    <td
+                      className={[
+                        'px-5 md:px-6 py-4 text-[15px] md:text-[17px] leading-snug',
+                        row.us ? 'text-white/85' : 'text-black/70',
+                      ].join(' ')}
+                    >
+                      {row.verification}
+                    </td>
+                    <td
+                      className={[
+                        'px-5 md:px-6 py-4 text-[15px] md:text-[17px] leading-snug',
+                        row.us ? 'text-white/85' : 'text-black/70',
+                      ].join(' ')}
+                    >
+                      {row.economics}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+        <div className="max-w-[1100px] mx-auto">
+          <SectionLabel>How it works</SectionLabel>
           <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16 max-w-[860px]">
             One daemon. One wallet. From a gaming GPU to a datacenter.
           </h2>
@@ -97,8 +280,8 @@ export default function Content() {
                 Train over the mesh
               </h3>
               <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
-                Training runs across the internet. Solana coordinates each
-                round: contribution commitments, verifications and rewards live
+                Training runs across the internet. Solana coordinates each round:
+                contribution commitments, verifications and rewards live
                 on-chain. The chain does not carry tensors. It carries trust.
               </p>
             </div>
@@ -121,15 +304,96 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
-            Security
+          <SectionLabel>Phase 0 proof</SectionLabel>
+          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[920px]">
+            Security economics on real transformer gradients
+          </h2>
+          <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[760px] mb-10 md:mb-14">
+            30 outer rounds, 16 workers, a 5/16 Byzantine coalition, gradients
+            from an 826k-parameter GPT. At audit probability p = 0.1, expected
+            catch time is 10 rounds; observed mean across five convictions was
+            9.8.
           </p>
+
+          <div className="overflow-x-auto rounded-[28px] border border-black mb-10 md:mb-14">
+            <table className="w-full min-w-[700px] border-collapse text-left">
+              <thead>
+                <tr className="border-b border-black/10 bg-black/[0.03]">
+                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+                    Scenario
+                  </th>
+                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+                    Final val loss
+                  </th>
+                  <th className="px-5 md:px-6 py-4 text-[15px] md:text-[16px] font-semibold">
+                    Outcome
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {SIM_ROWS.map((row) => (
+                  <tr
+                    key={row.scenario}
+                    className="border-b border-black/10 last:border-0"
+                  >
+                    <td className="px-5 md:px-6 py-4 text-[15px] md:text-[17px] font-medium">
+                      {row.scenario}
+                    </td>
+                    <td className="px-5 md:px-6 py-4 text-[15px] md:text-[17px] font-mono text-black/80">
+                      {row.loss}
+                    </td>
+                    <td className="px-5 md:px-6 py-4 text-[15px] md:text-[17px] text-black/70">
+                      {row.outcome}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            <figure className="rounded-[28px] border border-black overflow-hidden bg-black/[0.02]">
+              <img
+                src="/loss_curves.png"
+                alt="Phase 0 loss curves across attack scenarios"
+                className="block w-full h-auto grayscale"
+              />
+              <figcaption className="px-5 py-4 text-[14px] md:text-[15px] text-black/55 border-t border-black/10">
+                Loss curves from the Phase 0 sim
+              </figcaption>
+            </figure>
+            <figure className="rounded-[28px] border border-black overflow-hidden bg-black/[0.02]">
+              <img
+                src="/security_economics.png"
+                alt="Phase 0 security economics and catch time"
+                className="block w-full h-auto grayscale"
+              />
+              <figcaption className="px-5 py-4 text-[14px] md:text-[15px] text-black/55 border-t border-black/10">
+                Break-even bond law and audit catch time
+              </figcaption>
+            </figure>
+          </div>
+
+          <div className="mt-10">
+            <Link
+              to="/docs/developer/sim"
+              className="inline-flex h-12 items-center justify-center rounded-full border border-black px-6 text-[15px] md:text-[16px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              Reproduce the sim
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+        <div className="max-w-[1100px] mx-auto">
+          <SectionLabel>Security</SectionLabel>
           <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
             Defection becomes economically irrational
           </h2>
           <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[720px] mb-14 md:mb-16">
             Every contribution is bonded. Random spot-checks catch liars; caught
-            bonds are burned into the system. Three layers cover each other's
+            bonds are burned into the system. Three layers cover each other&apos;s
             gap.
           </p>
           <div className="grid md:grid-cols-3 gap-8 md:gap-10">
@@ -153,9 +417,7 @@ export default function Content() {
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-start">
           <div>
-            <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
-              Ownership
-            </p>
+            <SectionLabel>Ownership</SectionLabel>
             <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-8">
               Weights public. Revenue circular. Governance by futarchy.
             </h2>
@@ -177,9 +439,96 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
-            Open source
+          <SectionLabel>Roadmap</SectionLabel>
+          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16 max-w-[820px]">
+            Honest status, not vapor timeline
+          </h2>
+          <div className="space-y-4 md:space-y-5">
+            {ROADMAP.map((item) => (
+              <div
+                key={item.phase}
+                className="rounded-[28px] border border-black p-6 md:p-8 grid md:grid-cols-[140px_1fr_auto] gap-4 md:gap-8 items-start"
+              >
+                <div>
+                  <p className="text-[14px] md:text-[15px] text-black/45 mb-1">
+                    {item.phase}
+                  </p>
+                  <p className="text-[20px] md:text-[24px] font-semibold">
+                    {item.title}
+                  </p>
+                </div>
+                <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
+                  {item.body}
+                </p>
+                <span className="inline-flex h-10 w-fit items-center justify-center rounded-full border border-black px-4 text-[13px] md:text-[14px] font-medium whitespace-nowrap">
+                  {item.status}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10">
+            <Link
+              to="/docs/project/roadmap"
+              className="inline-flex h-12 items-center justify-center rounded-full border border-black px-6 text-[15px] md:text-[16px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              Full roadmap in docs
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+        <div className="max-w-[1100px] mx-auto">
+          <SectionLabel>Devnet</SectionLabel>
+          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[820px]">
+            Programs live on Solana devnet
+          </h2>
+          <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[720px] mb-10 md:mb-12">
+            Deployed 2026-07-19 under our own program IDs. Permissionless run{' '}
+            <span className="font-mono text-[16px] md:text-[18px]">
+              leviathan-dev
+            </span>{' '}
+            sits in WaitingForMembers. Mainnet will use fresh IDs.
           </p>
+          <div className="grid gap-3 md:gap-4">
+            {DEVNET.map((row) => (
+              <div
+                key={row.label}
+                className="rounded-[24px] border border-black px-5 md:px-6 py-4 md:py-5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6"
+              >
+                <span className="text-[15px] md:text-[16px] font-semibold sm:w-[130px] shrink-0">
+                  {row.label}
+                </span>
+                <code className="text-[13px] md:text-[15px] font-mono text-black/75 break-all">
+                  {row.id}
+                </code>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link
+              to="/docs/network/devnet"
+              className="inline-flex h-12 items-center justify-center rounded-full border border-black px-6 text-[15px] md:text-[16px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              Devnet docs
+            </Link>
+            <a
+              href="https://github.com/wienerlabs/leviathan-net"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-black text-white px-6 text-[15px] md:text-[16px] font-medium hover:bg-black/80 transition-colors"
+            >
+              leviathan-net
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <Waitlist />
+
+      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+        <div className="max-w-[1100px] mx-auto">
+          <SectionLabel>Open source</SectionLabel>
           <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16">
             Read the code
           </h2>
@@ -246,11 +595,17 @@ export default function Content() {
               <div>
                 <p className="text-[17px] font-semibold">Leviathan</p>
                 <p className="text-[15px] text-black/50">
-                  Trustless training for the people's model
+                  Trustless training for the people&apos;s model
                 </p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
+              <a
+                href="#waitlist"
+                className="inline-flex items-center justify-center h-12 px-6 rounded-full border border-black text-[15px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+              >
+                Waitlist
+              </a>
               <a
                 href="https://x.com/leviathanfront"
                 target="_blank"
