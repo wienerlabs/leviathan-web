@@ -51,16 +51,22 @@ const LINKS = [
 
 const LAYERS = [
   {
+    n: '01',
     title: 'Robust aggregation',
     body: 'Centered clipping with far-outlier excision caps any contribution in the round it arrives. A Byzantine coalition cannot drag the model off course while it still lives.',
+    proof: 'Sign-flip 5/16 neutralized; malicious acceptance 3%.',
   },
   {
+    n: '02',
     title: 'Replay audits',
     body: 'Each gradient is audited with probability p. Local rounds are pure functions of checkpoint, seed and data. A mismatch beyond the tolerance band is a binary fraud proof.',
+    proof: 'ALIE at p = 0.1: all five caught, mean 9.8 rounds vs 1/p = 10.',
   },
   {
+    n: '03',
     title: 'Bonds & slash',
-    body: 'Break-even bond equals reward times (1-p)/p. Lying is priced. A slashed identity re-enters only with a fresh bond; forfeited stake funds the verifiers hunting it.',
+    body: 'Break-even bond equals reward times (1-p)/p. Lying is priced. A slashed identity re-enters only with a fresh bond; forfeited stake funds the run vault.',
+    proof: 'Live devnet: bond 500, slashed 200, recover 300.',
   },
 ]
 
@@ -501,29 +507,128 @@ export default function Content() {
 
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
-          <SectionLabel>Security</SectionLabel>
-          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
-            Defection becomes economically irrational
-          </h2>
-          <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[720px] mb-14 md:mb-16">
-            Every contribution is bonded. Random spot-checks catch liars; caught
-            bonds are burned into the system. Three layers cover each other&apos;s
-            gap.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 md:gap-10">
+          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-start mb-12 md:mb-16">
+            <div>
+              <SectionLabel>Security</SectionLabel>
+              <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
+                Defection becomes economically irrational
+              </h2>
+              <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[640px] mb-6">
+                Every contribution is bonded. Random spot-checks catch liars.
+                Caught bonds do not vanish into the void - they stay in the run
+                vault as reward liquidity. Three layers cover each other&apos;s
+                gap so lying is not a clever strategy; it is a losing one.
+              </p>
+              <p className="text-[16px] md:text-[18px] leading-relaxed text-black/60 max-w-[600px] mb-8">
+                Honest work keeps the bond and earns Proof of Gradient. Fraud
+                gets a binary proof, an ejection, and a thinner wallet. Re-entry
+                costs a fresh bond.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  to="/docs/protocol/security"
+                  className="inline-flex h-12 items-center justify-center rounded-full border border-black px-6 text-[15px] font-medium hover:bg-black hover:text-white transition-colors"
+                >
+                  Security model
+                </Link>
+                <Link
+                  to="/docs/developer/conviction-demo"
+                  className="inline-flex h-12 items-center justify-center rounded-full bg-black text-white px-6 text-[15px] font-medium hover:bg-black/80 transition-colors"
+                >
+                  Conviction demo
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              <figure className="rounded-[24px] border border-black overflow-hidden bg-black/[0.02]">
+                <img
+                  src="/franklin.jpg"
+                  alt="Honest contribution keeps the bond"
+                  className="block w-full aspect-square object-cover grayscale"
+                />
+                <figcaption className="px-4 py-3 border-t border-black/10">
+                  <p className="text-[13px] tracking-[0.08em] text-black/40 mb-1">
+                    Honest
+                  </p>
+                  <p className="text-[15px] md:text-[16px] font-medium leading-snug">
+                    Bond intact. PoG paid.
+                  </p>
+                </figcaption>
+              </figure>
+              <figure className="rounded-[24px] border border-black overflow-hidden bg-black/[0.02]">
+                <img
+                  src="/franklin-cry.jpg"
+                  alt="Slashed defector loses bond"
+                  className="block w-full aspect-square object-cover grayscale"
+                />
+                <figcaption className="px-4 py-3 border-t border-black/10">
+                  <p className="text-[13px] tracking-[0.08em] text-black/40 mb-1">
+                    Caught
+                  </p>
+                  <p className="text-[15px] md:text-[16px] font-medium leading-snug">
+                    Slash applied. Vault fed.
+                  </p>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 md:gap-5 mb-10 md:mb-12">
             {LAYERS.map((layer) => (
               <div
                 key={layer.title}
-                className="rounded-[28px] border border-black p-6 md:p-8"
+                className="rounded-[28px] border border-black p-6 md:p-8 flex flex-col"
               >
+                <p className="text-[13px] tracking-[0.1em] text-black/40 mb-3">
+                  {layer.n}
+                </p>
                 <h3 className="text-[20px] md:text-[22px] font-semibold mb-3">
                   {layer.title}
                 </h3>
-                <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
+                <p className="text-[16px] md:text-[17px] leading-relaxed text-black/70 mb-5 flex-1">
                   {layer.body}
+                </p>
+                <p className="text-[14px] md:text-[15px] leading-snug text-black border-t border-black/10 pt-4">
+                  {layer.proof}
                 </p>
               </div>
             ))}
+          </div>
+
+          <div className="rounded-[28px] border border-black bg-black text-white p-6 md:p-8">
+            <div className="grid md:grid-cols-[1fr_auto] gap-8 items-end">
+              <div>
+                <p className="text-[13px] tracking-[0.1em] text-white/45 mb-3">
+                  Verified on live devnet
+                </p>
+                <h3 className="text-[26px] md:text-[34px] leading-[1.1] mb-4">
+                  A real slash, not a slide
+                </h3>
+                <p className="text-[16px] md:text-[18px] leading-relaxed text-white/70 max-w-[640px]">
+                  Bond posted at 500. Stranger dispute rejected. Authority
+                  convicts mid-epoch via treasurer CPI into{' '}
+                  <span className="text-white">slash_client</span>. Epoch end
+                  writes <span className="text-white">slashed = 200</span>.
+                  Withdrawal returns 300; the forfeited 200 stays in the run
+                  vault.
+                </p>
+              </div>
+              <div className="grid grid-cols-3 gap-3 min-w-[260px]">
+                <div className="rounded-[18px] border border-white/20 px-3 py-3 text-center">
+                  <p className="text-[11px] text-white/45 mb-1">Bond</p>
+                  <p className="text-[22px] tabular-nums">500</p>
+                </div>
+                <div className="rounded-[18px] border border-white/20 px-3 py-3 text-center">
+                  <p className="text-[11px] text-white/45 mb-1">Slashed</p>
+                  <p className="text-[22px] tabular-nums">200</p>
+                </div>
+                <div className="rounded-[18px] border border-white/20 px-3 py-3 text-center">
+                  <p className="text-[11px] text-white/45 mb-1">Recovered</p>
+                  <p className="text-[22px] tabular-nums">300</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
