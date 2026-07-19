@@ -105,7 +105,7 @@ export default function AuditVisual() {
             alt=""
             width={280}
             height={350}
-            className="h-16 w-14 md:h-20 md:w-[4.5rem] object-cover rounded-[14px] border border-black shrink-0 grayscale"
+            className="h-28 w-24 md:h-36 md:w-28 object-cover rounded-[18px] border border-black shrink-0 grayscale"
           />
           <div className="min-w-0">
             <p className="text-[13px] tracking-[0.1em] text-black/40 mb-2">
