@@ -19,6 +19,8 @@ export const DOCS_NAV: DocsNavGroup[] = [
       { title: 'Quickstart', path: '/docs/developer/quickstart' },
       { title: 'Reproduce the sim', path: '/docs/developer/sim' },
       { title: 'Network tests', path: '/docs/developer/network-tests' },
+      { title: 'Run a training node', path: '/docs/developer/run-a-node' },
+      { title: 'Conviction demo', path: '/docs/developer/conviction-demo' },
     ],
   },
   {
@@ -26,6 +28,7 @@ export const DOCS_NAV: DocsNavGroup[] = [
     items: [
       { title: 'Architecture', path: '/docs/protocol/architecture' },
       { title: 'Security model', path: '/docs/protocol/security' },
+      { title: 'Verification', path: '/docs/protocol/verification' },
       { title: 'Economics', path: '/docs/protocol/economics' },
       { title: 'Round lifecycle', path: '/docs/protocol/round-lifecycle' },
     ],

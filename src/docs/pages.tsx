@@ -107,11 +107,10 @@ export const DOCS_PAGES: DocsPage[] = [
           join lands in Phase 2.
         </Lead>
         <Note>
-          Phase status from <Code>docs/TASKS.md</Code> in{' '}
-          <A href="https://github.com/wienerlabs/leviathan">wienerlabs/leviathan</A>
-          : Phase 0 proof is done; Phase 1 has bond custody, audit lottery, and
-          slash paths live on the fork. Verifier daemon and four-process swarm
-          are still open.
+          Phase 0 proof is shipped. Phase 1 (devnet core) is complete and live on
+          Solana devnet: trust machine and training swarm both verified. Phase 2
+          Genesis Run has started. See{' '}
+          <A href="/docs/project/roadmap">Roadmap</A>.
         </Note>
 
         <H2 id="repos">1. Repositories</H2>
@@ -225,14 +224,35 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python -m leviathan_sim.run --rounds 30`}</
         <P>
           At audit probability p = 0.1 the theoretical expected catch time is
           1/p = 10 rounds. Observed mean across the five convictions was 9.8
-          rounds.
+          rounds. A 5/16 sign-flip coalition drives naive mean to 12.0
+          (diverged); centered clip + excision finishes at 2.20 against a 2.18
+          honest reference and admits 3% of malicious deltas.
         </P>
+        <H2 id="base-command">Base command</H2>
+        <Pre>{`PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python -m leviathan_sim.run --rounds 30`}</Pre>
+        <H2 id="sparse">Sparse mode</H2>
+        <P>
+          Chunked top-k + 1-bit sign at 2% density. The sign-flip coalition is
+          rejected even harder under compression (malicious selection 0.03 to
+          0.00), for about 0.7 loss cost at a ~50x bandwidth reduction. The
+          defense holds in the SparseLoCo transport domain.
+        </P>
+        <Pre>{`PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python -m leviathan_sim.run --rounds 30 --sparse`}</Pre>
+        <H2 id="verify">Verify mode</H2>
+        <P>
+          Tolerance-band replay separates 1% simulated cross-hardware drift
+          (distance 0.010, passes) from sign-flip (6.0), gaussian (1.35) and lazy
+          (1.0), all caught above the 0.05 band, with 0 honest false positives and
+          3/3 cheaters caught.
+        </P>
+        <Pre>{`PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python -m leviathan_sim.run --rounds 30 --verify`}</Pre>
         <H2 id="what-lives-in-sim">What lives in sim/</H2>
         <P>
           Condorcet aggregation, attack and staking layers ported onto a real GPT
           trained by a 16-worker swarm: centered clip + excision vs sign-flip and
           ALIE coalitions, stake ledger with replay audits, break-even bond
-          calibration against H100 market cost.
+          calibration against H100 market cost. Tests: memnet program suites
+          17/17, coordinator core 20/20.
         </P>
       </>
     ),
@@ -255,8 +275,8 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python -m leviathan_sim.run --rounds 30`}</
         <Pre>{`cargo test -p psyche-solana-tooling`}</Pre>
         <P>
           In-process harness for coordinator and treasurer instruction layers.
-          CODEMAP notes the suite as the TDD substrate for bond, audit and slash
-          work.
+          The memnet suites are 17/17. CODEMAP notes the suite as the TDD
+          substrate for bond, audit and slash work.
         </P>
         <H2 id="build">Build programs</H2>
         <Pre>{`anchor build --no-idl`}</Pre>
@@ -286,6 +306,116 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python -m leviathan_sim.run --rounds 30`}</
         </Ul>
         <H2 id="client-cli">Client CLI</H2>
         <Pre>{`cargo run -p psyche-solana-client -- --help`}</Pre>
+      </>
+    ),
+  },
+  {
+    path: '/docs/developer/run-a-node',
+    title: 'Run a training node',
+    description: 'Toolchain, create a permissionless run, and train on devnet.',
+    body: (
+      <>
+        <H1>Run a training node</H1>
+        <Lead>
+          Build the client against the NousResearch tch fork, create a
+          permissionless devnet run, and launch <Code>psyche-solana-client train</Code>.
+        </Lead>
+
+        <H2 id="toolchain">Toolchain</H2>
+        <P>
+          The client links libtorch through the NousResearch tch fork, which pins
+          PyTorch 2.9.1. A mismatched torch fails the build&apos;s version probe.{' '}
+          <Code>numpy</Code> and <Code>setuptools</Code> are required because
+          torch-sys imports <Code>torch.utils.cpp_extension</Code> during its build
+          probe.
+        </P>
+        <Pre>{`uv venv --python 3.11 /tmp/leviathan-torch-venv
+uv pip install --python /tmp/leviathan-torch-venv/bin/python torch==2.9.1 numpy setuptools
+
+export LIBTORCH_USE_PYTORCH=1
+export PYO3_PYTHON=/tmp/leviathan-torch-venv/bin/python
+export LIBTORCH_BYPASS_VERSION_CHECK=1
+export DYLD_LIBRARY_PATH=/tmp/leviathan-torch-venv/lib/python3.11/site-packages/torch/lib
+export PYTORCH_ENABLE_MPS_FALLBACK=1
+cargo build -p psyche-solana-client`}</Pre>
+
+        <H2 id="create-run">Create a permissionless devnet run</H2>
+        <Pre>{`run-manager join-authorization-create --authorizer 11111111111111111111111111111111 --rpc https://api.devnet.solana.com
+run-manager create-run --run-id <id> --client-version demo --rpc https://api.devnet.solana.com --ws-rpc wss://api.devnet.solana.com
+run-manager update-config --run-id <id> --config-path config/solana-test/nano-config.toml --num-parameters 1000 --vocab-size 30 --rpc https://api.devnet.solana.com --ws-rpc wss://api.devnet.solana.com
+run-manager set-paused --run-id <id> --resume --rpc https://api.devnet.solana.com --ws-rpc wss://api.devnet.solana.com`}</Pre>
+
+        <H2 id="train">Launch train against devnet</H2>
+        <Pre>{`LEVIATHAN_JOIN_TIMEOUT_SECS=45 psyche-solana-client train \\
+  --wallet-private-key-path <wallet> \\
+  --rpc https://api.devnet.solana.com --ws-rpc wss://api.devnet.solana.com \\
+  --run-id <id> --data-parallelism 1 --tensor-parallelism 1 --micro-batch-size 1 \\
+  --authorizer 11111111111111111111111111111111 --logs console`}</Pre>
+
+        <H2 id="join-timeout">LEVIATHAN_JOIN_TIMEOUT_SECS</H2>
+        <P>
+          Default 30. Sets the join-transaction confirmation deadline. The public
+          devnet RPC routinely exceeds the old hard-coded 5s, which killed a client
+          the moment it tried to re-join for the next epoch (Psyche re-joins every
+          epoch). Raising it enables sustained multi-epoch runs.
+        </P>
+
+        <H2 id="what-you-see">What you will see</H2>
+        <Ul>
+          <Li>Join on-chain</Li>
+          <Li>Model download</Li>
+          <Li>Warmup</Li>
+          <Li>Training rounds</Li>
+          <Li>DisTrO gradients over the iroh mesh</Li>
+          <Li>Witness and tick transactions</Li>
+        </Ul>
+        <P>
+          A verified run used <Code>pefontana/Nano-Llama</Code> (vocab 30, seq_len
+          64), crossed the epoch 0 to epoch 1 boundary, and recorded 2 epochs, 16
+          training rounds, 15 DisTrO-compressed pseudo-gradients, 0 join timeouts,
+          and on-chain 2 Join + 12 Witness + 38 Tick transactions. Details:{' '}
+          <A href="/docs/network/devnet">Devnet programs</A>.
+        </P>
+      </>
+    ),
+  },
+  {
+    path: '/docs/developer/conviction-demo',
+    title: 'Conviction demo',
+    description: 'Live devnet slash loop and deterministic memnet proof.',
+    body: (
+      <>
+        <H1>Conviction demo</H1>
+        <Lead>
+          End-to-end bond, dispute reject, slash, and vault forfeit on live
+          devnet, with a deterministic memnet twin.
+        </Lead>
+        <H2 id="binary">devnet-conviction-demo</H2>
+        <P>
+          The <Code>devnet-conviction-demo</Code> binary is behind the{' '}
+          <Code>demo</Code> feature of <Code>psyche-solana-tooling</Code>. It is
+          chain-only; it needs the same libtorch env only if built in the same
+          workspace pass as the training client.
+        </P>
+        <Pre>{`cargo run -p psyche-solana-tooling --bin devnet-conviction-demo --features demo`}</Pre>
+        <H2 id="verified">Verified output</H2>
+        <P>
+          A participant posted a bond of 500. A stranger&apos;s dispute was
+          rejected (authority gated). The run authority convicted the cheater
+          mid-epoch through the treasurer, which CPIs the coordinator&apos;s{' '}
+          <Code>slash_client</Code> with the run PDA signature. At epoch end the
+          coordinator wrote <Code>slashed = 200</Code> on-chain. On bond
+          withdrawal the cheater recovered 300 and the forfeited 200 stayed in
+          the run vault as reward liquidity.
+        </P>
+        <H2 id="memnet">Deterministic memnet equivalent</H2>
+        <Pre>{`cargo test -p psyche-solana-tooling`}</Pre>
+        <P>
+          The same loop is proven deterministically by the memnet suites (17/17).
+          Programs:{' '}
+          <A href="/docs/network/devnet">Devnet programs</A>. Economics framing:{' '}
+          <A href="/docs/protocol/economics">Economics</A>.
+        </P>
       </>
     ),
   },
@@ -392,9 +522,8 @@ telemetry -> web`}</Pre>
             <strong>Robust aggregation bounds damage.</strong> Centered clipping
             with far-outlier excision caps any contribution in the round it
             arrives. On the sim, a 5/16 sign-flip coalition drives naive mean to
-            divergence (loss 12.0) while clip plus excision finishes at 2.203
-            against a 2.175 honest reference and admits 3% of malicious
-            contributions.
+            12.0 (diverged); centered clip + excision finishes at 2.20 against a
+            2.18 honest reference and admits 3% of malicious deltas.
           </Li>
           <Li>
             <strong>Replay audits price lying.</strong> Each contribution is
@@ -423,6 +552,69 @@ telemetry -> web`}</Pre>
           comparison uses calibrated tolerance bands per hardware class (OVIG /
           NAO style). RepOps-style bitwise determinism was rejected as the base
           path but remains viable for high-value dispute escalation.
+        </P>
+        <H2 id="holds-under-compression">Holds under compression</H2>
+        <P>
+          The same clip + excision defense holds in the SparseLoCo transport
+          domain. With <Code>--sparse</Code> (chunked top-k + 1-bit sign at 2%
+          density), the sign-flip coalition is rejected even harder under
+          compression (malicious selection 0.03 to 0.00), for about 0.7 loss cost
+          at a ~50x bandwidth reduction.
+        </P>
+        <H2 id="replay-in-practice">Replay audits, in practice</H2>
+        <P>
+          A local training round is a replayable pure function of (checkpoint,
+          seed, data). The verifier recomputes the assigned round and scores
+          relative L2 distance against the submitted delta. A mismatch beyond a
+          calibrated tolerance band is a binary fraud proof, judged on chain.
+        </P>
+        <P>
+          The band absorbs benign nondeterminism (GPU scatter-reduce, bf16 casts,
+          data-parallel reduce order) rather than demanding bitwise equality;
+          this is the OVIG-style approach. With <Code>--verify</Code>, 1%
+          simulated cross-hardware drift scores distance 0.010 and passes; sign-flip
+          (6.0), gaussian (1.35) and lazy (1.0) all sit above the 0.05 band, with 0
+          honest false positives and 3/3 cheaters caught. Full concept page:{' '}
+          <A href="/docs/protocol/verification">Verification</A>.
+        </P>
+      </>
+    ),
+  },
+  {
+    path: '/docs/protocol/verification',
+    title: 'Verification',
+    description: 'Replay audits, tolerance bands, and fraud proofs.',
+    body: (
+      <>
+        <H1>Verification</H1>
+        <Lead>
+          Replay audits make lying a priced, detectable event without demanding
+          bitwise equality across hardware.
+        </Lead>
+        <H2 id="pure-function">Replayable pure function</H2>
+        <P>
+          A local training round is a replayable pure function of (checkpoint,
+          seed, data). The verifier recomputes the assigned round and scores
+          relative L2 distance against the submitted delta.
+        </P>
+        <H2 id="band">Tolerance band</H2>
+        <P>
+          A mismatch beyond a calibrated tolerance band is a binary fraud proof,
+          judged on chain. The band absorbs benign cross-hardware nondeterminism
+          (GPU scatter-reduce, bf16 casts, data-parallel reduce order) instead of
+          demanding bitwise equality. This is the OVIG-style approach.
+        </P>
+        <H2 id="numbers">Band numbers from the sim</H2>
+        <P>
+          With <Code>--verify</Code>, tolerance-band replay separates 1%
+          simulated cross-hardware drift (distance 0.010, passes) from sign-flip
+          (6.0), gaussian (1.35) and lazy (1.0), all caught above the 0.05 band,
+          with 0 honest false positives and 3/3 cheaters caught.
+        </P>
+        <Pre>{`PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python -m leviathan_sim.run --rounds 30 --verify`}</Pre>
+        <P>
+          Related: <A href="/docs/protocol/security">Security model</A>,{' '}
+          <A href="/docs/developer/sim">Reproduce the sim</A>.
         </P>
       </>
     ),
@@ -455,6 +647,23 @@ telemetry -> web`}</Pre>
           flow to the treasury. The treasury funds the next training run.
           Futarchy (Wienerpad) decides what the network trains next. Weights are
           public.
+        </P>
+        <H2 id="verified-conviction">Verified conviction economics</H2>
+        <P>
+          Worked example of bond &gt;= reward x (1-p)/p with a real slash on live
+          devnet. A participant posted a bond of 500. A stranger&apos;s dispute
+          was rejected (authority gated). The run authority convicted the cheater
+          mid-epoch through the treasurer, which CPIs the coordinator&apos;s{' '}
+          <Code>slash_client</Code> with the run PDA signature. At epoch end the
+          coordinator wrote <Code>slashed = 200</Code> on-chain. On bond
+          withdrawal the cheater recovered 300 and the forfeited 200 stayed in
+          the run vault as reward liquidity.
+        </P>
+        <P>
+          Reproduce the loop:{' '}
+          <A href="/docs/developer/conviction-demo">Conviction demo</A>. Memnet
+          suites prove the same path deterministically at 17/17 (
+          <Code>cargo test -p psyche-solana-tooling</Code>).
         </P>
       </>
     ),
@@ -635,8 +844,45 @@ TREASURER_ARGS="--treasurer-collateral-mint <mint>" \\
   ./scripts/create-permissionless-run.sh --treasurer`}</Pre>
         <Note>
           These are devnet-only program keypairs. Do not treat them as mainnet
-          production addresses.
+          production addresses. Program IDs are unchanged after later in-place
+          upgrades that carried the bond, slash and run_slash instructions on the
+          same addresses.
         </Note>
+        <H2 id="verified-live">Verified on live devnet</H2>
+        <H3 id="conviction">Conviction</H3>
+        <P>
+          A participant posted a bond of 500. A stranger&apos;s dispute was
+          rejected (authority gated). The run authority convicted the cheater
+          mid-epoch through the treasurer, which CPIs the coordinator&apos;s{' '}
+          <Code>slash_client</Code> with the run PDA signature. At epoch end the
+          coordinator wrote <Code>slashed = 200</Code> on-chain. On bond
+          withdrawal the cheater recovered 300 and the forfeited 200 stayed in
+          the run vault as reward liquidity.
+        </P>
+        <Pre>{`cargo run -p psyche-solana-tooling --bin devnet-conviction-demo --features demo`}</Pre>
+        <P>
+          The same loop is proven deterministically by the memnet suites (
+          <Code>cargo test -p psyche-solana-tooling</Code>, 17/17).
+        </P>
+        <H3 id="training">Training</H3>
+        <P>
+          The <Code>psyche-solana-client</Code> builds against the NousResearch
+          tch fork and runs on this machine&apos;s MPS. A verified run: the client
+          joined on-chain, downloaded <Code>pefontana/Nano-Llama</Code> (a nano CI
+          model, vocab 30, seq_len 64, tiny dataset from a single HF URL), and
+          trained across the epoch 0 to epoch 1 boundary, re-joining successfully.
+        </P>
+        <P>
+          Totals: 2 epochs, 16 training rounds, loss descending from the ln(30) ≈
+          3.40 random-init baseline, 15 DisTrO-compressed pseudo-gradients
+          broadcast over the iroh mesh, 0 join timeouts, and on-chain 2 Join + 12
+          Witness + 38 Tick transactions, all coordinated by our devnet
+          coordinator. Multi-node and multi-week resilience remain Phase 2 work.
+        </P>
+        <P>
+          How to launch a node:{' '}
+          <A href="/docs/developer/run-a-node">Run a training node</A>.
+        </P>
       </>
     ),
   },
@@ -700,21 +946,30 @@ TREASURER_ARGS="--treasurer-collateral-mint <mint>" \\
         </Lead>
         <H2 id="phase-0">Phase 0 - proof</H2>
         <P>
-          Whitepaper, decision log, sim on real transformer gradients. Done
-          (landing page and name lock were open checklist items at last TASKS
-          write).
+          Shipped. Whitepaper, decision log, and the sim on real transformer
+          gradients.
         </P>
         <H2 id="phase-1">Phase 1 - devnet core</H2>
-        <P>Exit criteria: recorded end-to-end conviction demo, anchor tests green, two-GPU tolerance-band replay reproduced.</P>
-        <Ul>
-          <Li>Done: fork bootstrap, code map, devnet deploy, bond custody, audit lottery, dispute and slash</Li>
-          <Li>Open: aggregation adaptation, verifier daemon v0, four-process local swarm, conviction demo capture</Li>
-        </Ul>
+        <P>
+          Complete and live. All of 1.1-1.10 shipped. Fork bootstrap, code map,
+          devnet deploy, bond custody (treasurer deposit / challenge-window
+          withdraw / settlement), audit lottery, dispute-driven slashing, the
+          treasurer run_slash CPI, the tolerance-band verifier core, and the
+          training-client toolchain.
+        </P>
+        <P>
+          Both halves run on live devnet: the trust machine (verified conviction)
+          and the training swarm (verified sustained training). See{' '}
+          <A href="/docs/network/devnet">Devnet programs</A>,{' '}
+          <A href="/docs/developer/conviction-demo">Conviction demo</A>, and{' '}
+          <A href="/docs/developer/run-a-node">Run a training node</A>.
+        </P>
         <H2 id="phase-2">Phase 2 - Genesis Run</H2>
         <P>
-          Public testnet: 50+ volunteer nodes, 350M to 1B model, live collective
-          loss curve, one-line join, tolerance band calibration across hardware
-          classes.
+          Started. First items done: env-tunable join timeout enabling sustained
+          multi-epoch runs, and this docs/marketing site (leviathan-web). Next: a
+          multi-volunteer swarm, a live collective loss-curve view, one-line join,
+          and the first open-weight run trained by its participants.
         </P>
         <H2 id="phase-3">Phase 3 - mainnet</H2>
         <P>
