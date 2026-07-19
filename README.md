@@ -10,6 +10,12 @@ Marketing site for [Leviathan](https://x.com/leviathanfront): trustless training
 
 Vite, React 19, Tailwind v4, Motion.
 
+## Docs
+
+Local route: `/docs/developer/quickstart`
+
+Content is derived from [wienerlabs/leviathan](https://github.com/wienerlabs/leviathan) and [wienerlabs/leviathan-net](https://github.com/wienerlabs/leviathan-net). Prefer the GitHub sources if anything drifts.
+
 ## Develop
 
 ```bash
