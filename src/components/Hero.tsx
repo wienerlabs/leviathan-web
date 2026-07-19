@@ -241,7 +241,7 @@ export default function Hero() {
             <p className="text-black/55 text-[14px] md:text-[17px] font-medium tracking-[0.08em] mb-1 md:mb-1.5">
               Trustless training for the people's model
             </p>
-            <h1 className="text-black font-italiana text-[36px] leading-[1.05] sm:text-[48px] md:text-[68px] md:leading-[1.02]">
+            <h1 className="text-black font-italiana text-[32px] leading-[1.05] sm:text-[42px] md:text-[56px] md:leading-[1.02]">
               The people own their frontier model
             </h1>
           </div>
