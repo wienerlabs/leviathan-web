@@ -99,18 +99,27 @@ export default function AuditVisual() {
       className="rounded-[32px] border border-black overflow-hidden bg-white"
     >
       <div className="px-6 md:px-8 pt-6 md:pt-7 pb-5 border-b border-black/10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-        <div>
-          <p className="text-[13px] tracking-[0.1em] text-black/40 mb-2">
-            Scene 03 · Audit lottery
-          </p>
-          <h3 className="text-[26px] md:text-[34px] leading-[1.12]">
-            Spot-check until conviction
-          </h3>
-          <p className="mt-2 text-[16px] text-black/55 max-w-[520px] leading-relaxed">
-            Each contribution is audited with probability{' '}
-            <MathTex tex="p" className="text-[16px]" />. Expected catch time is{' '}
-            <MathTex tex="1/p" className="text-[16px]" />.
-          </p>
+        <div className="flex items-start gap-4 md:gap-5 min-w-0">
+          <img
+            src="/audit-figure.jpg"
+            alt=""
+            width={280}
+            height={350}
+            className="h-16 w-14 md:h-20 md:w-[4.5rem] object-cover rounded-[14px] border border-black shrink-0 grayscale"
+          />
+          <div className="min-w-0">
+            <p className="text-[13px] tracking-[0.1em] text-black/40 mb-2">
+              Scene 03 · Audit lottery
+            </p>
+            <h3 className="text-[26px] md:text-[34px] leading-[1.12]">
+              Spot-check until conviction
+            </h3>
+            <p className="mt-2 text-[16px] text-black/55 max-w-[520px] leading-relaxed">
+              Each contribution is audited with probability{' '}
+              <MathTex tex="p" className="text-[16px]" />. Expected catch time
+              is <MathTex tex="1/p" className="text-[16px]" />.
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-5">
