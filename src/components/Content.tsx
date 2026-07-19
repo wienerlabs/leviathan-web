@@ -297,13 +297,11 @@ export default function Content() {
                       {row.name}
                     </h3>
                   </div>
-                  <div className="h-12 w-12 md:h-14 md:w-14 rounded-[14px] border border-black/15 bg-white flex items-center justify-center shrink-0 overflow-hidden p-2">
-                    <img
-                      src={row.logo}
-                      alt=""
-                      className="h-full w-full object-contain grayscale"
-                    />
-                  </div>
+                  <img
+                    src={row.logo}
+                    alt=""
+                    className="h-11 w-11 md:h-12 md:w-12 object-contain grayscale shrink-0"
+                  />
                 </div>
                 <div className="space-y-3 text-[15px] md:text-[16px] leading-snug">
                   <div>
@@ -329,13 +327,11 @@ export default function Content() {
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                 <div className="max-w-[560px]">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="h-14 w-14 rounded-[16px] border border-white/25 bg-white flex items-center justify-center overflow-hidden p-2 shrink-0">
-                      <img
-                        src={row.logo}
-                        alt=""
-                        className="h-full w-full object-contain grayscale"
-                      />
-                    </div>
+                    <img
+                      src={row.logo}
+                      alt=""
+                      className="h-12 w-12 md:h-14 md:w-14 object-contain grayscale shrink-0 invert"
+                    />
                     <div>
                       <p className="text-[12px] md:text-[13px] tracking-[0.08em] text-white/50 mb-1">
                         {row.tag}
