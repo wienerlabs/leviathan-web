@@ -102,25 +102,20 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
 
   const minX = Math.min(...points.map((p) => p.x))
   const maxX = Math.max(...points.map((p) => p.x))
+  const minY = Math.min(...points.map((p) => p.yTop))
+  const maxY = Math.max(...points.map((p) => p.yBot))
   const boxW = Math.max(1, maxX - minX)
-
-  const band = points.filter((p) => p.round >= 9 && p.round <= 26)
-  const sample =
-    band[Math.floor(band.length / 2)] ?? points[Math.floor(points.length / 2)]
-  const gapH = Math.max(1, sample.yBot - sample.yTop)
-  const midX = sample.x
-  const midY = (sample.yTop + sample.yBot) / 2
+  const boxH = Math.max(1, maxY - minY)
 
   const billAspect = 1280 / 616
-  let imgH = gapH * 0.78
-  let imgW = imgH * billAspect
-  const maxW = boxW * 0.72
-  if (imgW > maxW) {
-    imgW = maxW
-    imgH = imgW / billAspect
+  let imgW = boxW
+  let imgH = imgW / billAspect
+  if (imgH < boxH) {
+    imgH = boxH
+    imgW = imgH * billAspect
   }
-  const imgX = midX - imgW / 2
-  const imgY = midY - imgH / 2
+  const imgX = minX + (boxW - imgW) / 2
+  const imgY = minY + (boxH - imgH) / 2
 
   const clipId = 'loss-gap-banknote-clip'
 
@@ -131,7 +126,6 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
           <path d={clipPath} />
         </clipPath>
       </defs>
-      <path d={clipPath} fill="rgba(0,0,0,0.025)" stroke="none" />
       <g clipPath={`url(#${clipId})`}>
         <image
           href={BANKNOTE_SRC}
@@ -139,8 +133,8 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
           y={imgY}
           width={imgW}
           height={imgH}
-          preserveAspectRatio="xMidYMid meet"
-          opacity={0.48}
+          preserveAspectRatio="xMidYMid slice"
+          opacity={0.5}
           style={{ filter: 'grayscale(1) contrast(1.02)' }}
         />
       </g>
