@@ -394,8 +394,15 @@ export default function Content() {
               </p>
             </div>
             <div>
-              <div className="w-12 h-12 rounded-full border border-black flex items-center justify-center text-[15px] font-medium mb-5">
-                02
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-full border border-black flex items-center justify-center text-[15px] font-medium shrink-0">
+                  02
+                </div>
+                <img
+                  src="/logos/solana.png"
+                  alt="Solana"
+                  className="h-8 w-8 object-contain grayscale shrink-0"
+                />
               </div>
               <h3 className="text-[20px] md:text-[24px] font-semibold mb-3">
                 Train over the mesh
@@ -587,9 +594,16 @@ export default function Content() {
       <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
           <SectionLabel>Devnet</SectionLabel>
-          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[820px]">
-            Programs live on Solana devnet
-          </h2>
+          <div className="flex items-start gap-4 md:gap-5 mb-6 max-w-[820px]">
+            <img
+              src="/logos/solana.png"
+              alt="Solana"
+              className="h-12 w-12 md:h-14 md:w-14 object-contain grayscale shrink-0 mt-2"
+            />
+            <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08]">
+              Programs live on Solana devnet
+            </h2>
+          </div>
           <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[720px] mb-10 md:mb-12">
             Deployed 2026-07-19 under our own program IDs. Permissionless run{' '}
             <span className="font-mono text-[16px] md:text-[18px]">
