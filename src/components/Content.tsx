@@ -44,15 +44,6 @@ const LAYERS = [
 export default function Content() {
   return (
     <div className="relative z-10 bg-white text-black">
-      <div className="w-full border-b border-black/10">
-        <img
-          src="/banner.jpg"
-          alt="Leviathan"
-          className="block w-full max-h-[42vh] object-cover object-center grayscale"
-          width={1400}
-          height={653}
-        />
-      </div>
       <section className="px-5 md:px-12 pt-14 md:pt-20 pb-20 md:pb-32 max-w-[1100px] mx-auto">
         <p className="text-[13px] md:text-[14px] text-black/50 font-medium mb-6 tracking-[0.06em]">
           Thesis
@@ -234,38 +225,49 @@ export default function Content() {
         </div>
       </section>
 
-      <footer className="border-t border-black/10 px-5 md:px-12 py-10 md:py-12">
-        <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <img
-              src="/mascot.png"
-              alt=""
-              className="h-8 w-8 object-contain grayscale"
-            />
-            <div>
-              <p className="text-[14px] font-semibold">Leviathan</p>
-              <p className="text-[12px] text-black/50">
-                Trustless training for the people's model
-              </p>
+      <footer className="border-t border-black/10">
+        <div className="w-full">
+          <img
+            src="/banner.jpg"
+            alt="Leviathan"
+            className="block w-full max-h-[220px] md:max-h-[280px] object-cover object-center grayscale"
+            width={1400}
+            height={653}
+          />
+        </div>
+        <div className="px-5 md:px-12 py-10 md:py-12">
+          <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <img
+                src="/mascot.png"
+                alt=""
+                className="h-8 w-8 object-contain grayscale"
+              />
+              <div>
+                <p className="text-[14px] font-semibold">Leviathan</p>
+                <p className="text-[12px] text-black/50">
+                  Trustless training for the people's model
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <a
-              href="https://x.com/leviathanfront"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center h-10 px-5 rounded-full border border-black text-[12px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              Follow on X
-            </a>
-            <a
-              href="https://github.com/wienerlabs/leviathan-net"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center h-10 px-5 rounded-full bg-black text-white text-[12px] font-medium hover:bg-black/80 transition-colors duration-200"
-            >
-              GitHub
-            </a>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="https://x.com/leviathanfront"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center h-10 px-5 rounded-full border border-black text-[12px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+              >
+                Follow on X
+              </a>
+              <a
+                href="https://github.com/wienerlabs/leviathan-net"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center h-10 px-5 rounded-full bg-black text-white text-[12px] font-medium hover:bg-black/80 transition-colors duration-200"
+              >
+                GitHub
+              </a>
+            </div>
           </div>
         </div>
       </footer>
