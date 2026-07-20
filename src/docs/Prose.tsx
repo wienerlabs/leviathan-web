@@ -91,8 +91,8 @@ export function Table({
   rows: ReactNode[][]
 }) {
   return (
-    <div className="my-6 overflow-x-auto rounded-[18px] border border-black/10">
-      <table className="w-full min-w-[560px] border-collapse text-left text-[15px] md:text-[17px]">
+    <div className="my-6 -mx-1 sm:mx-0 overflow-x-auto rounded-[18px] border border-black/10 max-w-[100vw]">
+      <table className="w-full min-w-[520px] sm:min-w-[560px] border-collapse text-left text-[13px] sm:text-[15px] md:text-[17px]">
         <thead>
           <tr className="border-b border-black/10 bg-black/[0.03]">
             {headers.map((h) => (

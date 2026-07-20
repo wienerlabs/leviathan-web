@@ -208,7 +208,7 @@ export default function AuditVisual() {
             style={{ display: inView ? 'block' : 'none' }}
           />
 
-          <div className="grid grid-cols-8 gap-2 md:gap-2.5">
+          <div className="grid grid-cols-4 xs:grid-cols-4 sm:grid-cols-8 gap-1.5 sm:gap-2 md:gap-2.5">
             {Array.from({ length: WORKERS }, (_, i) => {
               const bad = MALICIOUS.has(i)
               const catchRound = bad ? CATCH[i] : null
@@ -233,7 +233,7 @@ export default function AuditVisual() {
                       : '0 0 0 0px rgba(0,0,0,0)',
                   }}
                   transition={{ duration: 0.35, ease: EASE }}
-                  className="relative aspect-square rounded-[14px] border border-black flex flex-col items-center justify-center text-[11px] md:text-[13px] tabular-nums overflow-hidden"
+                  className="relative aspect-square rounded-[10px] sm:rounded-[14px] border border-black flex flex-col items-center justify-center text-[10px] sm:text-[11px] md:text-[13px] tabular-nums overflow-hidden"
                 >
                   {pending ? (
                     <motion.span

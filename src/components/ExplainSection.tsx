@@ -5,15 +5,15 @@ import { MathTex } from './math/Math'
 
 export default function ExplainSection() {
   return (
-    <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
-      <div className="max-w-[1100px] mx-auto">
-        <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+    <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
+      <div className="max-w-[1100px] mx-auto w-full">
+        <p className="text-[14px] sm:text-[15px] md:text-[17px] text-black/50 font-medium mb-5 sm:mb-6 tracking-[0.06em]">
           Explain · 3B1B style
         </p>
-        <h2 className="text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[920px] font-normal">
+        <h2 className="text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-5 sm:mb-6 max-w-[920px] font-normal">
           The math that makes strangers safe to train with
         </h2>
-        <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[760px] mb-12 md:mb-16">
+        <p className="text-[16px] sm:text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[760px] mb-10 sm:mb-12 md:mb-16">
           Looping chalkboard scenes with step progress, equation history, and a
           live audit lottery. Formulas render in LaTeX and advance on a steady
           beat.

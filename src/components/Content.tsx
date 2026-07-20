@@ -205,13 +205,13 @@ function SectionLabel({ children }: { children: string }) {
 export default function Content() {
   return (
     <div className="relative z-10 bg-white text-black">
-      <section className="px-5 md:px-12 pt-14 md:pt-20 pb-20 md:pb-32 max-w-[1100px] mx-auto">
+      <section className="px-4 sm:px-5 md:px-12 pt-12 sm:pt-14 md:pt-20 pb-16 sm:pb-20 md:pb-32 max-w-[1100px] mx-auto w-full">
         <SectionLabel>Thesis</SectionLabel>
-        <h2 className="font-italiana text-[42px] md:text-[72px] leading-[1.06] max-w-[1000px] mb-10 md:mb-14">
+        <h2 className="font-italiana text-[32px] sm:text-[42px] md:text-[72px] leading-[1.06] max-w-[1000px] mb-8 sm:mb-10 md:mb-14">
           Hobbes drew Leviathan as a giant made of thousands of people. This one
           is made of thousands of GPUs.
         </h2>
-        <div className="grid md:grid-cols-2 gap-8 md:gap-16 text-[18px] md:text-[22px] leading-relaxed text-black/80">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-16 text-[16px] sm:text-[18px] md:text-[22px] leading-relaxed text-black/80">
           <p>
             Frontier AI today sits on five balance sheets. The math of training
             over the open internet is already solved and shipping. What remains
@@ -227,15 +227,15 @@ export default function Content() {
         </div>
       </section>
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
-        <div className="max-w-[1100px] mx-auto">
-          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-start mb-12 md:mb-16">
-            <div>
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
+        <div className="max-w-[1100px] mx-auto w-full">
+          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-8 sm:gap-10 lg:gap-14 items-start mb-10 sm:mb-12 md:mb-16">
+            <div className="min-w-0">
               <SectionLabel>The open slot</SectionLabel>
-              <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
+              <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-5 sm:mb-6 max-w-[900px]">
                 Everyone picked one column. Nobody picked both.
               </h2>
-              <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[640px] mb-6">
+              <p className="text-[16px] sm:text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[640px] mb-6">
                 Decentralized training has two hard problems: proving a stranger
                 did real work, and making lying cost more than it earns. Live
                 networks keep choosing only one.
@@ -273,15 +273,15 @@ export default function Content() {
               </p>
             </div>
 
-            <figure className="rounded-[28px] border border-black overflow-hidden bg-black/[0.02] lg:sticky lg:top-8">
+            <figure className="rounded-[24px] sm:rounded-[28px] border border-black overflow-hidden bg-black/[0.02] lg:sticky lg:top-8 min-w-0">
               <img
                 src="/open-slot.jpg"
                 alt="Leviathan open slot figure"
                 width={1080}
                 height={1200}
-                className="block w-full h-auto max-h-[520px] object-cover object-center grayscale"
+                className="block w-full h-auto max-h-[360px] sm:max-h-[440px] md:max-h-[520px] object-cover object-center grayscale"
               />
-              <figcaption className="px-5 py-4 border-t border-black/10 text-[14px] md:text-[15px] text-black/50 leading-relaxed">
+              <figcaption className="px-4 sm:px-5 py-3 sm:py-4 border-t border-black/10 text-[13px] sm:text-[14px] md:text-[15px] text-black/50 leading-relaxed">
                 The missing cell: verification guarantees and live bond economics
                 in one network.
               </figcaption>
@@ -354,7 +354,7 @@ export default function Content() {
                     training network.
                   </p>
                 </div>
-                <div className="grid gap-3 min-w-[240px]">
+                <div className="grid gap-3 w-full md:min-w-[240px] md:w-auto">
                   <div className="rounded-[18px] border border-white/25 px-4 py-3">
                     <p className="text-[12px] text-white/45 mb-1">Verification</p>
                     <p className="text-[15px] md:text-[16px] text-white/90">
@@ -380,10 +380,10 @@ export default function Content() {
         <ExplainSection />
       </Suspense>
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
           <SectionLabel>How it works</SectionLabel>
-          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16 max-w-[860px]">
+          <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16 max-w-[860px]">
             One daemon. One wallet. From a gaming GPU to a datacenter.
           </h2>
           <div className="grid md:grid-cols-3 gap-10 md:gap-12">
@@ -436,10 +436,10 @@ export default function Content() {
         </div>
       </section>
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
           <SectionLabel>Phase 0 proof</SectionLabel>
-          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[920px]">
+          <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[920px]">
             Security economics on real transformer gradients
           </h2>
           <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[760px] mb-10 md:mb-14">
@@ -505,12 +505,12 @@ export default function Content() {
         </div>
       </section>
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
           <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-start mb-12 md:mb-16">
             <div>
               <SectionLabel>Security</SectionLabel>
-              <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
+              <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-6 max-w-[900px]">
                 Defection becomes economically irrational
               </h2>
               <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[640px] mb-6">
@@ -597,15 +597,15 @@ export default function Content() {
           </div>
 
           <div className="rounded-[28px] border border-black bg-black text-white p-6 md:p-8">
-            <div className="grid md:grid-cols-[1fr_auto] gap-8 items-end">
-              <div>
+            <div className="grid md:grid-cols-[1fr_auto] gap-6 md:gap-8 items-end">
+              <div className="min-w-0">
                 <p className="text-[13px] tracking-[0.1em] text-white/45 mb-3">
                   Verified on live devnet
                 </p>
-                <h3 className="text-[26px] md:text-[34px] leading-[1.1] mb-4">
+                <h3 className="text-[24px] sm:text-[26px] md:text-[34px] leading-[1.1] mb-4">
                   A real slash, not a slide
                 </h3>
-                <p className="text-[16px] md:text-[18px] leading-relaxed text-white/70 max-w-[640px]">
+                <p className="text-[15px] sm:text-[16px] md:text-[18px] leading-relaxed text-white/70 max-w-[640px]">
                   Bond posted at 500. Stranger dispute rejected. Authority
                   convicts mid-epoch via treasurer CPI into{' '}
                   <span className="text-white">slash_client</span>. Epoch end
@@ -614,18 +614,18 @@ export default function Content() {
                   vault.
                 </p>
               </div>
-              <div className="grid grid-cols-3 gap-3 min-w-[260px]">
-                <div className="rounded-[18px] border border-white/20 px-3 py-3 text-center">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full md:w-auto md:min-w-[260px]">
+                <div className="rounded-[18px] border border-white/20 px-2 sm:px-3 py-3 text-center">
                   <p className="text-[11px] text-white/45 mb-1">Bond</p>
-                  <p className="text-[22px] tabular-nums">500</p>
+                  <p className="text-[18px] sm:text-[22px] tabular-nums">500</p>
                 </div>
-                <div className="rounded-[18px] border border-white/20 px-3 py-3 text-center">
+                <div className="rounded-[18px] border border-white/20 px-2 sm:px-3 py-3 text-center">
                   <p className="text-[11px] text-white/45 mb-1">Slashed</p>
-                  <p className="text-[22px] tabular-nums">200</p>
+                  <p className="text-[18px] sm:text-[22px] tabular-nums">200</p>
                 </div>
-                <div className="rounded-[18px] border border-white/20 px-3 py-3 text-center">
+                <div className="rounded-[18px] border border-white/20 px-2 sm:px-3 py-3 text-center">
                   <p className="text-[11px] text-white/45 mb-1">Recovered</p>
-                  <p className="text-[22px] tabular-nums">300</p>
+                  <p className="text-[18px] sm:text-[22px] tabular-nums">300</p>
                 </div>
               </div>
             </div>
@@ -633,11 +633,11 @@ export default function Content() {
         </div>
       </section>
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-start">
           <div>
             <SectionLabel>Ownership</SectionLabel>
-            <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-8">
+            <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-8">
               Weights public. Revenue circular. Governance by futarchy.
             </h2>
           </div>
@@ -656,30 +656,35 @@ export default function Content() {
         </div>
       </section>
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
           <SectionLabel>Roadmap</SectionLabel>
-          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16 max-w-[820px]">
+          <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16 max-w-[820px]">
             Honest status, not vapor timeline
           </h2>
           <div className="space-y-4 md:space-y-5">
             {ROADMAP.map((item) => (
               <div
                 key={item.phase}
-                className="rounded-[28px] border border-black p-6 md:p-8 grid md:grid-cols-[140px_1fr_auto] gap-4 md:gap-8 items-start"
+                className="rounded-[24px] sm:rounded-[28px] border border-black p-5 sm:p-6 md:p-8 grid md:grid-cols-[140px_1fr_auto] gap-3 sm:gap-4 md:gap-8 items-start"
               >
-                <div>
-                  <p className="text-[14px] md:text-[15px] text-black/45 mb-1">
-                    {item.phase}
-                  </p>
-                  <p className="text-[20px] md:text-[24px] font-semibold">
-                    {item.title}
-                  </p>
+                <div className="flex items-start justify-between gap-3 md:block">
+                  <div>
+                    <p className="text-[13px] sm:text-[14px] md:text-[15px] text-black/45 mb-1">
+                      {item.phase}
+                    </p>
+                    <p className="text-[18px] sm:text-[20px] md:text-[24px] font-semibold">
+                      {item.title}
+                    </p>
+                  </div>
+                  <span className="inline-flex h-9 sm:h-10 w-fit items-center justify-center rounded-full border border-black px-3 sm:px-4 text-[12px] sm:text-[13px] md:text-[14px] font-medium whitespace-nowrap md:hidden shrink-0">
+                    {item.status}
+                  </span>
                 </div>
-                <p className="text-[17px] md:text-[19px] leading-relaxed text-black/70">
+                <p className="text-[15px] sm:text-[17px] md:text-[19px] leading-relaxed text-black/70 min-w-0">
                   {item.body}
                 </p>
-                <span className="inline-flex h-10 w-fit items-center justify-center rounded-full border border-black px-4 text-[13px] md:text-[14px] font-medium whitespace-nowrap">
+                <span className="hidden md:inline-flex h-10 w-fit items-center justify-center rounded-full border border-black px-4 text-[13px] md:text-[14px] font-medium whitespace-nowrap">
                   {item.status}
                 </span>
               </div>
@@ -696,16 +701,16 @@ export default function Content() {
         </div>
       </section>
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
           <SectionLabel>Devnet</SectionLabel>
-          <div className="flex items-start gap-4 md:gap-5 mb-6 max-w-[820px]">
+          <div className="flex items-start gap-3 sm:gap-4 md:gap-5 mb-6 max-w-[820px]">
             <img
               src="/logos/solana.png"
               alt="Solana"
-              className="h-12 w-12 md:h-14 md:w-14 object-contain grayscale shrink-0 mt-2"
+              className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain grayscale shrink-0 mt-1 sm:mt-2"
             />
-            <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08]">
+            <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] min-w-0">
               Programs live on Solana devnet
             </h2>
           </div>
@@ -752,10 +757,10 @@ export default function Content() {
 
       <Waitlist />
 
-      <section className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28">
+      <section className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28">
         <div className="max-w-[1100px] mx-auto">
           <SectionLabel>Open source</SectionLabel>
-          <h2 className="font-italiana text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16">
+          <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-12 md:mb-16">
             Read the code
           </h2>
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
@@ -801,7 +806,7 @@ export default function Content() {
       </section>
 
       <footer className="border-t border-black/10">
-        <div className="w-full flex justify-center px-5 md:px-12 pt-10 md:pt-12">
+        <div className="w-full flex justify-center px-4 sm:px-5 md:px-12 pt-8 sm:pt-10 md:pt-12">
           <img
             src="/banner.jpg"
             alt="Leviathan"
@@ -810,7 +815,7 @@ export default function Content() {
             height={653}
           />
         </div>
-        <div className="px-5 md:px-12 py-10 md:py-12">
+        <div className="px-4 sm:px-5 md:px-12 py-8 sm:py-10 md:py-12">
           <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img

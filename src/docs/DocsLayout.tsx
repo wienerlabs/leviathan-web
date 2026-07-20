@@ -59,18 +59,19 @@ export default function DocsLayout() {
               Docs
             </Link>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <a
               href="https://github.com/wienerlabs/leviathan-net"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-9 items-center justify-center rounded-full border border-black px-5 text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
+              className="inline-flex h-9 items-center justify-center rounded-full border border-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
             >
-              GitHub
+              <span className="sm:hidden">Git</span>
+              <span className="hidden sm:inline">GitHub</span>
             </a>
             <Link
               to="/"
-              className="inline-flex h-9 items-center justify-center rounded-full bg-black px-5 text-[17px] font-medium text-white hover:bg-black/80 transition-colors"
+              className="inline-flex h-9 items-center justify-center rounded-full bg-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium text-white hover:bg-black/80 transition-colors"
             >
               Site
             </Link>
@@ -127,8 +128,8 @@ export default function DocsLayout() {
           />
         )}
 
-        <main className="min-w-0 flex-1 px-5 py-8 md:px-10 md:py-12 lg:px-14">
-          <div className="mx-auto max-w-[820px]">
+        <main className="min-w-0 flex-1 px-4 sm:px-5 py-8 md:px-10 md:py-12 lg:px-14 w-full overflow-x-hidden">
+          <div className="mx-auto max-w-[820px] w-full min-w-0">
             <p className="mb-3 text-[14px] text-black/45 tracking-[0.06em]">
               {groupTitle}
             </p>

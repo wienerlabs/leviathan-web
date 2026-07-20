@@ -124,14 +124,14 @@ export function FormulaScene({
         </div>
       </div>
 
-      <div className="grid md:grid-cols-[200px_1fr] min-h-[320px] md:min-h-[360px]">
-        <div className="border-b md:border-b-0 md:border-r border-black/10 px-5 md:px-6 py-5 md:py-8">
-          <ol className="space-y-1">
+      <div className="grid md:grid-cols-[200px_1fr] min-h-0 md:min-h-[360px]">
+        <div className="border-b md:border-b-0 md:border-r border-black/10 px-4 sm:px-5 md:px-6 py-4 sm:py-5 md:py-8 overflow-x-auto">
+          <ol className="flex md:block gap-2 md:gap-0 md:space-y-1 min-w-0">
             {steps.map((s, i) => {
               const state =
                 i === step ? 'active' : i < step ? 'done' : 'todo'
               return (
-                <li key={s.label}>
+                <li key={s.label} className="shrink-0 md:shrink md:w-full">
                   <button
                     type="button"
                     onClick={() => {
@@ -139,7 +139,7 @@ export function FormulaScene({
                       setManual(true)
                     }}
                     className={[
-                      'w-full text-left rounded-[16px] px-3 py-2.5 transition-colors',
+                      'w-full text-left rounded-[16px] px-3 py-2.5 transition-colors whitespace-nowrap md:whitespace-normal',
                       state === 'active'
                         ? 'bg-black text-white'
                         : state === 'done'
@@ -150,7 +150,7 @@ export function FormulaScene({
                     <span className="block text-[11px] tracking-[0.1em] opacity-60 mb-0.5">
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span className="block text-[14px] md:text-[15px]">
+                    <span className="block text-[13px] sm:text-[14px] md:text-[15px]">
                       {s.label}
                     </span>
                   </button>
@@ -160,7 +160,7 @@ export function FormulaScene({
           </ol>
         </div>
 
-        <div className="relative px-5 md:px-10 py-8 md:py-10 flex flex-col justify-center overflow-hidden">
+        <div className="relative px-4 sm:px-5 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col justify-center overflow-hidden min-w-0">
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.035]"
             style={{
@@ -195,7 +195,7 @@ export function FormulaScene({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -12, scale: 0.99 }}
                 transition={{ duration: 0.5, ease: EASE }}
-                className="text-center text-[24px] md:text-[38px] leading-relaxed"
+                className="text-center text-[18px] sm:text-[24px] md:text-[38px] leading-relaxed overflow-x-auto"
               >
                 <MathTex tex={active.tex} display />
               </motion.div>

@@ -230,37 +230,37 @@ export default function Hero() {
   const loadPct = Math.round((loaded / FRAME_COUNT) * 100)
 
   return (
-    <section ref={heroRef} className="relative h-screen w-full bg-white">
-      <div className="h-full w-full bg-white flex flex-col">
-        <header className="flex-shrink-0 z-20 flex items-center justify-between px-4 pt-3 pb-1 md:px-8 md:pt-5 md:pb-2">
-          <div className="flex items-center gap-2.5 md:gap-3">
+    <section ref={heroRef} className="relative h-svh w-full max-w-[100vw] bg-white overflow-hidden">
+      <div className="h-full w-full bg-white flex flex-col min-h-0">
+        <header className="flex-shrink-0 z-20 flex items-center justify-between gap-2 px-3 pt-3 pb-1 sm:px-4 md:px-8 md:pt-5 md:pb-2">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
             <img
               src="/mascot.png"
               alt="Leviathan"
-              className="h-10 w-10 md:h-12 md:w-12 object-contain grayscale"
+              className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-contain grayscale shrink-0"
             />
-            <span className="text-black text-[18px] md:text-[22px] font-semibold tracking-tight">
+            <span className="text-black text-[16px] sm:text-[18px] md:text-[22px] font-semibold tracking-tight truncate">
               Leviathan
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <a
               href="https://x.com/leviathanfront"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+              className="inline-flex items-center justify-center h-9 px-3 sm:h-11 sm:px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
             >
               X
             </a>
             <a
               href="#waitlist"
-              className="hidden sm:inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+              className="hidden md:inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
             >
               Waitlist
             </a>
             <Link
               to="/docs/developer/quickstart"
-              className="inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
+              className="inline-flex items-center justify-center h-9 px-3 sm:h-11 sm:px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
             >
               Docs
             </Link>
@@ -268,28 +268,30 @@ export default function Hero() {
               href="https://github.com/wienerlabs/leviathan-net"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full bg-black text-white text-[15px] md:text-[17px] font-medium hover:bg-black/80 transition-colors duration-200"
+              className="inline-flex items-center justify-center h-9 px-3 sm:h-11 sm:px-5 md:h-12 md:px-8 rounded-full bg-black text-white text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black/80 transition-colors duration-200"
             >
-              Network
+              <span className="sm:hidden">Git</span>
+              <span className="hidden sm:inline">Network</span>
             </a>
           </div>
         </header>
 
-        <div className="flex-1 min-h-0 flex flex-col items-center justify-start md:justify-center px-3 md:px-6 pt-1 md:pt-2 pb-3 gap-2 md:gap-3">
-          <div className="text-center flex-shrink-0 max-w-[920px]">
-            <p className="text-black/55 text-[14px] md:text-[17px] font-medium tracking-[0.08em] mb-1 md:mb-1.5">
+        <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-3 sm:px-4 md:px-6 pt-1 md:pt-2 pb-3 gap-2 md:gap-3">
+          <div className="text-center flex-shrink-0 max-w-[920px] px-1">
+            <p className="text-black/55 text-[12px] sm:text-[14px] md:text-[17px] font-medium tracking-[0.08em] mb-1 md:mb-1.5">
               Trustless training for the people's model
             </p>
-            <h1 className="text-black font-italiana text-[32px] leading-[1.05] sm:text-[42px] md:text-[56px] md:leading-[1.02]">
+            <h1 className="text-black font-italiana text-[28px] leading-[1.08] sm:text-[38px] md:text-[56px] md:leading-[1.02]">
               The people own their frontier model
             </h1>
           </div>
 
           <div
-            className="relative flex-shrink-0 overflow-hidden rounded-[18px] md:rounded-[28px] border border-black/10 bg-black/[0.03]"
+            className="relative flex-shrink min-h-0 overflow-hidden rounded-[16px] sm:rounded-[18px] md:rounded-[28px] border border-black/10 bg-black/[0.03]"
             style={{
-              width: 'min(94vw, calc(100svh - 9.5rem))',
-              height: 'min(94vw, calc(100svh - 9.5rem))',
+              width: 'min(92vw, calc(100svh - 13.5rem))',
+              height: 'min(92vw, calc(100svh - 13.5rem))',
+              maxHeight: 'min(58svh, 720px)',
             }}
           >
             <canvas
@@ -298,14 +300,14 @@ export default function Hero() {
             />
             {!ready && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/70">
-                <p className="text-black/50 text-[15px] md:text-[16px]">
+                <p className="text-black/50 text-[14px] sm:text-[15px] md:text-[16px]">
                   Loading {loadPct}%
                 </p>
               </div>
             )}
           </div>
 
-          <div className="flex-shrink-0 w-full max-w-[min(94vw,calc(100svh-9.5rem))] h-[2px] bg-black/10 overflow-hidden rounded-full">
+          <div className="flex-shrink-0 w-full max-w-[min(92vw,calc(100svh-13.5rem))] h-[2px] bg-black/10 overflow-hidden rounded-full">
             <div
               ref={progressBarRef}
               className="h-full bg-black"

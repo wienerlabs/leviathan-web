@@ -144,18 +144,18 @@ export default function Waitlist() {
   return (
     <section
       id="waitlist"
-      className="border-t border-black/10 px-5 md:px-12 py-20 md:py-28 scroll-mt-8"
+      className="border-t border-black/10 px-4 sm:px-5 md:px-12 py-16 sm:py-20 md:py-28 scroll-mt-8"
     >
-      <div className="max-w-[1100px] mx-auto">
-        <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 lg:gap-16 items-start">
-          <div>
-            <p className="text-[15px] md:text-[17px] text-black/50 font-medium mb-6 tracking-[0.06em]">
+      <div className="max-w-[1100px] mx-auto w-full">
+        <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-10 sm:gap-12 lg:gap-16 items-start">
+          <div className="min-w-0">
+            <p className="text-[14px] sm:text-[15px] md:text-[17px] text-black/50 font-medium mb-5 sm:mb-6 tracking-[0.06em]">
               Waitlist
             </p>
-            <h2 className="text-[38px] md:text-[64px] leading-[1.08] mb-6">
+            <h2 className="text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] mb-5 sm:mb-6">
               Be early for the Genesis Run
             </h2>
-            <p className="text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[520px] mb-8">
+            <p className="text-[16px] sm:text-[18px] md:text-[22px] leading-relaxed text-black/70 max-w-[520px] mb-8">
               Phase 1 trust and training are live on Solana devnet. Phase 2 opens
               the public swarm. Tell us how you show up and what you want first.
             </p>
@@ -199,7 +199,7 @@ export default function Waitlist() {
             </div>
           </div>
 
-          <div className="rounded-[32px] border border-black p-6 md:p-8 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.04)]">
+          <div className="rounded-[24px] sm:rounded-[32px] border border-black p-5 sm:p-6 md:p-8 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.04)] min-w-0">
             <AnimatePresence mode="wait">
               {done ? (
                 <motion.div

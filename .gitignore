@@ -27,3 +27,4 @@ dist-ssr
 
 manim/media
 manim/__pycache__
+.vercel
