@@ -810,7 +810,7 @@ export default function Content() {
           <img
             src="/banner.jpg"
             alt="Leviathan"
-            className="block w-full max-w-[120px] sm:max-w-[140px] md:max-w-[160px] h-auto object-contain"
+            className="block w-full max-w-[64px] sm:max-w-[72px] md:max-w-[80px] h-auto object-contain"
             width={1400}
             height={653}
           />
