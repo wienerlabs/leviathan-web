@@ -96,14 +96,17 @@ export type PresetEconomics = {
   fill: string
 }
 
+export const REWARD_MARGIN = 1.35
+export const AUDIT_FEE_MULTIPLIER = 1.1
+
 export const PRESET_ECONOMICS: PresetEconomics[] = [
   {
     key: '125m',
     label: '125M proof',
     short: '125M',
     roundCostUsd: 0.01198902210024556,
-    roundRewardUsd: 0.014386826520294672,
-    bondAtP10Usd: 0.12948143868265205,
+    roundRewardUsd: 0.016185179835331506,
+    bondAtP10Usd: 0.14566661851798357,
     fill: '#d4d4d4',
   },
   {
@@ -111,8 +114,8 @@ export const PRESET_ECONOMICS: PresetEconomics[] = [
     label: '1B genesis',
     short: '1B',
     roundCostUsd: 0.2397804420049112,
-    roundRewardUsd: 0.2877365304058934,
-    bondAtP10Usd: 2.589628773653041,
+    roundRewardUsd: 0.3237035967066301,
+    bondAtP10Usd: 2.913332370359671,
     fill: '#737373',
   },
   {
@@ -120,8 +123,8 @@ export const PRESET_ECONOMICS: PresetEconomics[] = [
     label: '7B scale',
     short: '7B',
     roundCostUsd: 3.356926188068757,
-    roundRewardUsd: 4.028311425682508,
-    bondAtP10Usd: 36.25480283114257,
+    roundRewardUsd: 4.531850353892822,
+    bondAtP10Usd: 40.7866531850354,
     fill: '#000000',
   },
 ]
@@ -152,24 +155,24 @@ export const BURN_AT_P10 = {
   auditProbability: 0.1,
   auditFeeUsd: 0.2637584862054023,
   treasuryBurnPerRoundUsd: 2.637584862054023,
-  burnShareOfRewards: 0.09166666666666667,
+  burnShareOfRewards: 0.08148148148148149,
 }
 
 export const burnShareData = AUDIT_PS.map((p) => ({
   p,
   pLabel: `${Math.round(p * 100)}%`,
-  burnShare: Number(((p * 1.1) / 1.2).toFixed(4)),
-  burnPct: Number((((p * 1.1) / 1.2) * 100).toFixed(2)),
+  burnShare: Number(((p * AUDIT_FEE_MULTIPLIER) / REWARD_MARGIN).toFixed(4)),
+  burnPct: Number((((p * AUDIT_FEE_MULTIPLIER) / REWARD_MARGIN) * 100).toFixed(2)),
 }))
 
 export const GENESIS_OP = {
   auditProbability: 0.1,
   toleranceBand: 0.05,
-  roundRewardUsd: 0.2877365304058934,
-  bondUsd: 2.589628773653041,
+  roundRewardUsd: 0.3237035967066301,
+  bondUsd: 2.913332370359671,
   bondRoundsOfReward: 9,
   expectedCatchRounds: 10,
-  auditBurnShare: 0.09166666666666669,
+  auditBurnShare: 0.08148148148148149,
 }
 
 export const SLASH_BOUNTY = {

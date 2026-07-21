@@ -648,10 +648,10 @@ telemetry -> web`}</Pre>
         </P>
         <H2 id="calibration">Calibration</H2>
         <P>
-          Reward per round = 1.2x the H100-market cost of the round&apos;s FLOPs.
+          Reward per round = 1.35x the H100-market cost of the round&apos;s FLOPs.
           At audit rate p = 0.1 the break-even bond is nine rounds of reward at
-          every scale. Whitepaper examples: about $0.13 per worker for the 125M
-          proof run, $2.60 for the 1B genesis run, $36 for the 7B scale run.
+          every scale. Whitepaper examples: about $0.15 per worker for the 125M
+          proof run, $2.91 for the 1B genesis run, $41 for the 7B scale run.
         </P>
         <H2 id="flywheel">Flywheel</H2>
         <P>
@@ -794,21 +794,21 @@ telemetry -> web`}</Pre>
         <H2 id="operating">Operating economics (coded)</H2>
         <P>
           From <Code>genesis_parameters()</Code> and{' '}
-          <Code>calibration_table()</Code>. Reward per round is 1.2× H100-market
+          <Code>calibration_table()</Code>. Reward per round is 1.35× H100-market
           cost of the round&apos;s FLOPs.
         </P>
         <Table
           headers={[
             'Preset',
             'Round cost (H100)',
-            'Round reward (1.2×)',
+            'Round reward (1.35×)',
             'Bond at p=0.1',
             'Expected catch rounds',
           ]}
           rows={[
-            ['125M proof', '$0.0120', '$0.0144', '$0.129', '10'],
-            ['1B genesis', '$0.240', '$0.288', '$2.59', '10'],
-            ['7B scale', '$3.36', '$4.03', '$36.25', '10'],
+            ['125M proof', '$0.0120', '$0.0162', '$0.15', '10'],
+            ['1B genesis', '$0.240', '$0.324', '$2.91', '10'],
+            ['7B scale', '$3.36', '$4.53', '$40.79', '10'],
           ]}
         />
         <H3 id="zero-fraud-burn">Zero-fraud audit burn</H3>

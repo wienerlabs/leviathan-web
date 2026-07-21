@@ -451,121 +451,121 @@
     {
       "preset": "125M proof run",
       "round_cost_usd": 0.01198902210024556,
-      "round_reward_usd": 0.014386826520294672,
+      "round_reward_usd": 0.016185179835331506,
       "audit_probability": 0.02,
-      "break_even_bond_usd": 0.7049544994944389,
+      "break_even_bond_usd": 0.7930738119312438,
       "expected_rounds_to_catch": 50.0
     },
     {
       "preset": "125M proof run",
       "round_cost_usd": 0.01198902210024556,
-      "round_reward_usd": 0.014386826520294672,
+      "round_reward_usd": 0.016185179835331506,
       "audit_probability": 0.05,
-      "break_even_bond_usd": 0.27334970388559876,
+      "break_even_bond_usd": 0.3075184168712986,
       "expected_rounds_to_catch": 20.0
     },
     {
       "preset": "125M proof run",
       "round_cost_usd": 0.01198902210024556,
-      "round_reward_usd": 0.014386826520294672,
+      "round_reward_usd": 0.016185179835331506,
       "audit_probability": 0.1,
-      "break_even_bond_usd": 0.12948143868265205,
+      "break_even_bond_usd": 0.14566661851798354,
       "expected_rounds_to_catch": 10.0
     },
     {
       "preset": "125M proof run",
       "round_cost_usd": 0.01198902210024556,
-      "round_reward_usd": 0.014386826520294672,
+      "round_reward_usd": 0.016185179835331506,
       "audit_probability": 0.2,
-      "break_even_bond_usd": 0.05754730608117869,
+      "break_even_bond_usd": 0.06474071934132603,
       "expected_rounds_to_catch": 5.0
     },
     {
       "preset": "125M proof run",
       "round_cost_usd": 0.01198902210024556,
-      "round_reward_usd": 0.014386826520294672,
+      "round_reward_usd": 0.016185179835331506,
       "audit_probability": 0.3,
-      "break_even_bond_usd": 0.03356926188068757,
+      "break_even_bond_usd": 0.03776541961577352,
       "expected_rounds_to_catch": 3.3333333333333335
     },
     {
       "preset": "1B genesis run",
       "round_cost_usd": 0.2397804420049112,
-      "round_reward_usd": 0.2877365304058934,
+      "round_reward_usd": 0.3237035967066301,
       "audit_probability": 0.02,
-      "break_even_bond_usd": 14.099089989888776,
+      "break_even_bond_usd": 15.861476238624874,
       "expected_rounds_to_catch": 50.0
     },
     {
       "preset": "1B genesis run",
       "round_cost_usd": 0.2397804420049112,
-      "round_reward_usd": 0.2877365304058934,
+      "round_reward_usd": 0.3237035967066301,
       "audit_probability": 0.05,
-      "break_even_bond_usd": 5.466994077711975,
+      "break_even_bond_usd": 6.150368337425972,
       "expected_rounds_to_catch": 20.0
     },
     {
       "preset": "1B genesis run",
       "round_cost_usd": 0.2397804420049112,
-      "round_reward_usd": 0.2877365304058934,
+      "round_reward_usd": 0.3237035967066301,
       "audit_probability": 0.1,
-      "break_even_bond_usd": 2.589628773653041,
+      "break_even_bond_usd": 2.9133323703596714,
       "expected_rounds_to_catch": 10.0
     },
     {
       "preset": "1B genesis run",
       "round_cost_usd": 0.2397804420049112,
-      "round_reward_usd": 0.2877365304058934,
+      "round_reward_usd": 0.3237035967066301,
       "audit_probability": 0.2,
-      "break_even_bond_usd": 1.1509461216235737,
+      "break_even_bond_usd": 1.2948143868265205,
       "expected_rounds_to_catch": 5.0
     },
     {
       "preset": "1B genesis run",
       "round_cost_usd": 0.2397804420049112,
-      "round_reward_usd": 0.2877365304058934,
+      "round_reward_usd": 0.3237035967066301,
       "audit_probability": 0.3,
-      "break_even_bond_usd": 0.6713852376137512,
+      "break_even_bond_usd": 0.7553083923154702,
       "expected_rounds_to_catch": 3.3333333333333335
     },
     {
       "preset": "7B scale run",
       "round_cost_usd": 3.356926188068757,
-      "round_reward_usd": 4.028311425682508,
+      "round_reward_usd": 4.531850353892822,
       "audit_probability": 0.02,
-      "break_even_bond_usd": 197.3872598584429,
+      "break_even_bond_usd": 222.06066734074827,
       "expected_rounds_to_catch": 50.0
     },
     {
       "preset": "7B scale run",
       "round_cost_usd": 3.356926188068757,
-      "round_reward_usd": 4.028311425682508,
+      "round_reward_usd": 4.531850353892822,
       "audit_probability": 0.05,
-      "break_even_bond_usd": 76.53791708796764,
+      "break_even_bond_usd": 86.10515672396362,
       "expected_rounds_to_catch": 20.0
     },
     {
       "preset": "7B scale run",
       "round_cost_usd": 3.356926188068757,
-      "round_reward_usd": 4.028311425682508,
+      "round_reward_usd": 4.531850353892822,
       "audit_probability": 0.1,
-      "break_even_bond_usd": 36.25480283114257,
+      "break_even_bond_usd": 40.7866531850354,
       "expected_rounds_to_catch": 10.0
     },
     {
       "preset": "7B scale run",
       "round_cost_usd": 3.356926188068757,
-      "round_reward_usd": 4.028311425682508,
+      "round_reward_usd": 4.531850353892822,
       "audit_probability": 0.2,
-      "break_even_bond_usd": 16.113245702730033,
+      "break_even_bond_usd": 18.12740141557129,
       "expected_rounds_to_catch": 5.0
     },
     {
       "preset": "7B scale run",
       "round_cost_usd": 3.356926188068757,
-      "round_reward_usd": 4.028311425682508,
+      "round_reward_usd": 4.531850353892822,
       "audit_probability": 0.3,
-      "break_even_bond_usd": 9.399393326592518,
+      "break_even_bond_usd": 10.574317492416585,
       "expected_rounds_to_catch": 3.3333333333333335
     }
   ]

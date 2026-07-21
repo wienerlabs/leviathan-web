@@ -15,7 +15,7 @@ const ROLES = [
   {
     id: 'datacenter',
     label: 'Datacenter supply',
-    detail: 'H100 / B200 fleets. Predictable GPU-hour yield and settlement.',
+    detail: 'H100 / B200 fleets. Predictable GPU-hour settlement.',
   },
   {
     id: 'builder',

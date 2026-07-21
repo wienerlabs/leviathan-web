@@ -1,23 +1,28 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'motion/react'
 
-const TERMS = [
-  { id: 'flex', label: 'Flexible', days: 0, apr: 8 },
-  { id: '90', label: '90 days', days: 90, apr: 14 },
-  { id: '180', label: '180 days', days: 180, apr: 22 },
+const LOCK_OPTIONS = [
+  {
+    id: 'flexible',
+    label: 'Flexible',
+    detail: 'Withdraw after the challenge window',
+  },
+  {
+    id: 'epoch',
+    label: 'Epoch-bound',
+    detail: 'Stays locked through the current epoch',
+  },
+  {
+    id: 'run',
+    label: 'Run-bound',
+    detail: 'Released when the training run finishes',
+  },
 ] as const
 
 export default function LeviStake() {
   const [amount, setAmount] = useState('')
-  const [term, setTerm] = useState<(typeof TERMS)[number]['id']>('90')
-  const selected = TERMS.find((t) => t.id === term) ?? TERMS[1]
-
-  const projected = useMemo(() => {
-    const n = Number(amount)
-    if (!Number.isFinite(n) || n <= 0) return null
-    const yearFrac = selected.days > 0 ? selected.days / 365 : 30 / 365
-    return n * (selected.apr / 100) * yearFrac
-  }, [amount, selected])
+  const [lock, setLock] = useState<(typeof LOCK_OPTIONS)[number]['id']>('epoch')
+  const selected = LOCK_OPTIONS.find((t) => t.id === lock) ?? LOCK_OPTIONS[1]
 
   return (
     <motion.section
@@ -30,21 +35,20 @@ export default function LeviStake() {
       <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-5 border-b border-black/10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <p className="text-[12px] tracking-[0.08em] text-black/40 mb-2">
-            Stake
+            Bond lock
           </p>
           <h2 className="font-italiana text-[32px] sm:text-[40px] leading-[1.08]">
-            Stake $LEVI
+            Lock $LEVI
           </h2>
-          <p className="mt-2 text-[15px] sm:text-[17px] text-black/55 max-w-[520px]">
-            Lock LEVI to back network security and earn protocol rewards when
-            staking ships with mainnet economics.
+          <p className="mt-2 text-[15px] sm:text-[17px] text-black/55 max-w-[560px]">
+            Post-TGE, LEVI can be locked as economic security for runs and
+            disputes. This is a bond surface, not a yield product. No APR, APY
+            or guaranteed returns.
           </p>
         </div>
         <div className="rounded-[18px] border border-black/15 px-4 py-3">
-          <p className="text-[12px] text-black/40">Selected apr</p>
-          <p className="text-[28px] tabular-nums leading-none mt-1">
-            {selected.apr}%
-          </p>
+          <p className="text-[12px] text-black/40">Status</p>
+          <p className="text-[22px] leading-none mt-1 font-medium">Coming soon</p>
         </div>
       </div>
 
@@ -65,15 +69,15 @@ export default function LeviStake() {
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
-            {TERMS.map((t) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {LOCK_OPTIONS.map((t) => (
               <button
                 key={t.id}
                 type="button"
-                onClick={() => setTerm(t.id)}
+                onClick={() => setLock(t.id)}
                 className={[
                   'rounded-[18px] border px-3 py-3 text-left transition-colors',
-                  term === t.id
+                  lock === t.id
                     ? 'border-black bg-black text-white'
                     : 'border-black/15 hover:border-black',
                 ].join(' ')}
@@ -81,11 +85,11 @@ export default function LeviStake() {
                 <p className="text-[14px] font-medium">{t.label}</p>
                 <p
                   className={[
-                    'text-[13px] mt-1',
-                    term === t.id ? 'text-white/70' : 'text-black/45',
+                    'text-[13px] mt-1 leading-snug',
+                    lock === t.id ? 'text-white/70' : 'text-black/45',
                   ].join(' ')}
                 >
-                  {t.apr}% apr
+                  {t.detail}
                 </p>
               </button>
             ))}
@@ -96,28 +100,29 @@ export default function LeviStake() {
             disabled
             className="w-full h-12 sm:h-14 rounded-full bg-black text-white text-[15px] sm:text-[16px] font-medium opacity-45 cursor-not-allowed"
           >
-            Staking opens with mainnet
+            Lock opens with mainnet
           </button>
         </div>
 
         <div className="rounded-[22px] border border-black/15 bg-black/[0.02] px-5 py-5 space-y-4">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[14px] text-black/50">Term</span>
-            <span className="text-[15px] font-medium">{selected.label}</span>
+            <span className="text-[14px] text-black/50">Lock style</span>
+            <span className="text-[15px] font-medium text-right">{selected.label}</span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[14px] text-black/50">Projected yield</span>
-            <span className="text-[15px] tabular-nums font-medium">
-              {projected == null ? '0.00 LEVI' : `${projected.toFixed(2)} LEVI`}
+            <span className="text-[14px] text-black/50">Purpose</span>
+            <span className="text-[15px] font-medium text-right">
+              Economic security
             </span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[14px] text-black/50">Status</span>
-            <span className="text-[15px] font-medium">Awaiting TGE</span>
+            <span className="text-[14px] text-black/50">Returns marketing</span>
+            <span className="text-[15px] font-medium text-right">None</span>
           </div>
           <p className="text-[13px] text-black/50 leading-relaxed pt-2 border-t border-black/10">
-            APR figures are design targets for the post-TGE staking module, not
-            a live yield promise. No tokens are locked from this page yet.
+            Leviathan does not advertise APR, APY or guaranteed returns. Any
+            future lock product will be sized for bond and dispute security,
+            consistent with the legal briefing and tokenomics docs.
           </p>
         </div>
       </div>
