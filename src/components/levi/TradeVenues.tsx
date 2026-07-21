@@ -38,13 +38,26 @@ export default function TradeVenues() {
             className="group rounded-[22px] border border-black/15 hover:border-black px-5 py-5 transition-colors"
           >
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[12px] tracking-[0.07em] text-black/40 mb-1">
-                  {v.kind}
-                </p>
-                <p className="text-[22px] leading-tight">{v.name}</p>
+              <div className="flex items-start gap-3.5 min-w-0">
+                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] border border-black/10 bg-black/[0.02] p-2.5">
+                  <img
+                    src={v.logo}
+                    alt=""
+                    className="h-full w-full object-contain"
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[12px] tracking-[0.07em] text-black/40 mb-1">
+                    {v.kind}
+                  </p>
+                  <p className="text-[22px] leading-tight">{v.name}</p>
+                </div>
               </div>
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black text-[16px] group-hover:bg-black group-hover:text-white transition-colors">
+              <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black text-[16px] group-hover:bg-black group-hover:text-white transition-colors">
                 →
               </span>
             </div>
