@@ -810,7 +810,7 @@ export default function Content() {
           <img
             src="/banner.jpg"
             alt="Leviathan"
-            className="block w-full max-w-[120px] sm:max-w-[140px] md:max-w-[160px] h-auto object-contain grayscale opacity-90"
+            className="block w-full max-w-[60px] sm:max-w-[70px] md:max-w-[80px] h-auto object-contain grayscale opacity-90"
             width={1400}
             height={653}
           />
