@@ -60,6 +60,27 @@ export default function GetLevi() {
       <SiteHeader variant="sticky" />
 
       <div className="mx-auto max-w-[1200px] px-4 sm:px-5 md:px-8 py-8 sm:py-10 md:py-14 space-y-6 md:space-y-8">
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-[22px] border border-black bg-black text-white px-5 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+          role="status"
+        >
+          <div>
+            <p className="text-[12px] tracking-[0.1em] text-white/55 mb-1">
+              Status
+            </p>
+            <p className="text-[22px] sm:text-[26px] leading-tight font-medium">
+              Coming soon
+            </p>
+          </div>
+          <p className="text-[14px] sm:text-[15px] leading-relaxed text-white/70 max-w-[36rem]">
+            $LEVI is not live yet. This page is a preview of markets, swap and
+            staking. Do not treat it as a launched token or an offer to buy.
+          </p>
+        </motion.div>
+
         <motion.section
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
