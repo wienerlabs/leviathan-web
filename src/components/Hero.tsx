@@ -245,21 +245,31 @@ export default function Hero() {
             </h1>
           </div>
 
-          <div className="relative aspect-square w-[168px] sm:w-[200px] md:w-[240px] shrink-0 overflow-hidden rounded-[14px] sm:rounded-[16px] md:rounded-[20px] border border-black/10 bg-black/[0.03]">
+          <div
+            className="relative aspect-square w-full shrink-0 overflow-hidden rounded-[18px] sm:rounded-[22px] md:rounded-[28px] border border-black/10 bg-black/[0.03]"
+            style={{
+              maxWidth: 'min(82vw, 46svh, calc(100svh - 15rem), 440px)',
+            }}
+          >
             <canvas
               ref={canvasRef}
               className="absolute inset-0 h-full w-full object-contain"
             />
             {!ready && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/70">
-                <p className="text-black/50 text-[12px] sm:text-[13px]">
-                  {loadPct}%
+                <p className="text-black/50 text-[14px] sm:text-[15px]">
+                  Loading {loadPct}%
                 </p>
               </div>
             )}
           </div>
 
-          <div className="flex-shrink-0 w-[168px] sm:w-[200px] md:w-[240px] h-[2px] bg-black/10 overflow-hidden rounded-full">
+          <div
+            className="flex-shrink-0 w-full h-[2px] bg-black/10 overflow-hidden rounded-full"
+            style={{
+              maxWidth: 'min(82vw, 46svh, calc(100svh - 15rem), 440px)',
+            }}
+          >
             <div
               ref={progressBarRef}
               className="h-full bg-black"
