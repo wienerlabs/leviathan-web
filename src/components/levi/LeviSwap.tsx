@@ -11,14 +11,16 @@ function TokenBadge({
 }) {
   return (
     <span className="shrink-0 inline-flex items-center gap-2 rounded-full border border-black px-2.5 py-1.5 text-[14px] font-medium bg-white">
-      <img
-        src={logo}
-        alt=""
-        className="h-5 w-5 object-contain"
-        width={20}
-        height={20}
-        decoding="async"
-      />
+      <span className="h-5 w-5 shrink-0 overflow-hidden rounded-full border border-black/10 bg-white">
+        <img
+          src={logo}
+          alt=""
+          className="h-full w-full object-cover"
+          width={20}
+          height={20}
+          decoding="async"
+        />
+      </span>
       {symbol}
     </span>
   )
@@ -132,24 +134,28 @@ export default function LeviSwap() {
         >
           {side === 'buy' ? (
             <>
-              <img
-                src="/logos/solana.png"
-                alt=""
-                className="h-5 w-5 object-contain"
-                width={20}
-                height={20}
-              />
+              <span className="h-5 w-5 shrink-0 overflow-hidden rounded-full bg-white">
+                <img
+                  src="/logos/solana.png"
+                  alt=""
+                  className="h-full w-full object-cover"
+                  width={20}
+                  height={20}
+                />
+              </span>
               <span>Swap SOL for $LEVI</span>
             </>
           ) : (
             <>
-              <img
-                src="/mascot.png"
-                alt=""
-                className="h-5 w-5 object-contain"
-                width={20}
-                height={20}
-              />
+              <span className="h-5 w-5 shrink-0 overflow-hidden rounded-full bg-white">
+                <img
+                  src="/mascot.png"
+                  alt=""
+                  className="h-full w-full object-cover"
+                  width={20}
+                  height={20}
+                />
+              </span>
               <span>Swap $LEVI for SOL</span>
             </>
           )}
