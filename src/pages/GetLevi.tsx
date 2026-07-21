@@ -94,20 +94,17 @@ export default function GetLevi() {
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="order-1 lg:order-2 relative"
+            className="order-1 lg:order-2 w-full flex items-center justify-center"
           >
-            <div className="absolute -inset-3 sm:-inset-4 rounded-[32px] border border-black/10 pointer-events-none" />
-            <div className="relative overflow-hidden rounded-[26px] sm:rounded-[30px] border border-black bg-white shadow-[0_24px_60px_rgba(0,0,0,0.08)]">
-              <img
-                src="/leviathan-block.jpg"
-                alt="Leviathan block"
-                className="block w-full h-auto object-cover aspect-[4/5] sm:aspect-square max-h-[420px] sm:max-h-[480px] mx-auto"
-                width={1254}
-                height={1254}
-                decoding="async"
-                fetchPriority="high"
-              />
-            </div>
+            <img
+              src="/leviathan-block.jpg"
+              alt="Leviathan block"
+              className="block w-full h-auto max-h-[min(52vh,480px)] object-contain"
+              width={1254}
+              height={1254}
+              decoding="async"
+              fetchPriority="high"
+            />
           </motion.div>
         </motion.section>
 
