@@ -2,6 +2,28 @@ import { useMemo, useState } from 'react'
 import { motion } from 'motion/react'
 import { LEVI } from '../../data/levi'
 
+function TokenBadge({
+  symbol,
+  logo,
+}: {
+  symbol: string
+  logo: string
+}) {
+  return (
+    <span className="shrink-0 inline-flex items-center gap-2 rounded-full border border-black px-2.5 py-1.5 text-[14px] font-medium bg-white">
+      <img
+        src={logo}
+        alt=""
+        className="h-5 w-5 object-contain"
+        width={20}
+        height={20}
+        decoding="async"
+      />
+      {symbol}
+    </span>
+  )
+}
+
 export default function LeviSwap() {
   const [side, setSide] = useState<'buy' | 'sell'>('buy')
   const [amount, setAmount] = useState('')
@@ -12,6 +34,13 @@ export default function LeviSwap() {
     if (side === 'buy') return `${LEVI.jupiterBase}${mint}`
     return `https://jup.ag/swap/${mint}-SOL`
   }, [mint, side])
+
+  const pay = side === 'buy'
+    ? { symbol: 'SOL', logo: '/logos/solana.png' }
+    : { symbol: 'LEVI', logo: '/mascot.png' }
+  const receive = side === 'buy'
+    ? { symbol: 'LEVI', logo: '/mascot.png' }
+    : { symbol: 'SOL', logo: '/logos/solana.png' }
 
   return (
     <motion.div
@@ -51,9 +80,7 @@ export default function LeviSwap() {
         <div className="rounded-[20px] border border-black/15 bg-black/[0.02] px-4 py-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[13px] text-black/45">You pay</span>
-            <span className="text-[13px] text-black/45">
-              {side === 'buy' ? 'SOL' : 'LEVI'}
-            </span>
+            <span className="text-[13px] text-black/45">{pay.symbol}</span>
           </div>
           <div className="flex items-center gap-3">
             <input
@@ -64,32 +91,31 @@ export default function LeviSwap() {
               onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
               className="w-full bg-transparent text-[28px] sm:text-[32px] tabular-nums tracking-tight outline-none placeholder:text-black/20"
             />
-            <span className="shrink-0 rounded-full border border-black px-3 py-1.5 text-[14px] font-medium">
-              {side === 'buy' ? 'SOL' : 'LEVI'}
-            </span>
+            <TokenBadge symbol={pay.symbol} logo={pay.logo} />
           </div>
         </div>
 
         <div className="flex justify-center -my-1">
-          <div className="h-10 w-10 rounded-full border border-black bg-white flex items-center justify-center text-[18px]">
+          <button
+            type="button"
+            onClick={() => setSide((s) => (s === 'buy' ? 'sell' : 'buy'))}
+            className="h-10 w-10 rounded-full border border-black bg-white flex items-center justify-center text-[18px] hover:bg-black hover:text-white transition-colors"
+            aria-label="Flip swap direction"
+          >
             ↓
-          </div>
+          </button>
         </div>
 
         <div className="rounded-[20px] border border-black/15 bg-black/[0.02] px-4 py-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[13px] text-black/45">You receive</span>
-            <span className="text-[13px] text-black/45">
-              {side === 'buy' ? 'LEVI' : 'SOL'}
-            </span>
+            <span className="text-[13px] text-black/45">{receive.symbol}</span>
           </div>
           <div className="flex items-center gap-3">
             <p className="w-full text-[28px] sm:text-[32px] tabular-nums tracking-tight text-black/35">
               0.0
             </p>
-            <span className="shrink-0 rounded-full border border-black px-3 py-1.5 text-[14px] font-medium">
-              {side === 'buy' ? 'LEVI' : 'SOL'}
-            </span>
+            <TokenBadge symbol={receive.symbol} logo={receive.logo} />
           </div>
         </div>
 
@@ -102,13 +128,31 @@ export default function LeviSwap() {
           href={href}
           target="_blank"
           rel="noreferrer"
-          className="mt-auto inline-flex h-12 sm:h-14 items-center justify-center rounded-full bg-black text-white text-[15px] sm:text-[16px] font-medium hover:bg-black/80 transition-colors"
+          className="mt-auto inline-flex h-12 sm:h-14 items-center justify-center gap-2.5 rounded-full bg-black text-white text-[15px] sm:text-[16px] font-medium hover:bg-black/80 transition-colors"
         >
-          {mint
-            ? side === 'buy'
-              ? 'Swap SOL for $LEVI'
-              : 'Swap $LEVI for SOL'
-            : 'Open Jupiter (mint pending)'}
+          {side === 'buy' ? (
+            <>
+              <img
+                src="/logos/solana.png"
+                alt=""
+                className="h-5 w-5 object-contain"
+                width={20}
+                height={20}
+              />
+              <span>Swap SOL for $LEVI</span>
+            </>
+          ) : (
+            <>
+              <img
+                src="/mascot.png"
+                alt=""
+                className="h-5 w-5 object-contain"
+                width={20}
+                height={20}
+              />
+              <span>Swap $LEVI for SOL</span>
+            </>
+          )}
         </a>
       </div>
     </motion.div>
