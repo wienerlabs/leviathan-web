@@ -235,7 +235,7 @@ export default function Hero() {
       <div className="h-full w-full bg-white flex flex-col min-h-0">
         <SiteHeader variant="overlay" />
 
-        <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-3 sm:px-4 md:px-6 pt-1 md:pt-2 pb-3 gap-2 md:gap-3">
+        <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-3 sm:px-4 md:px-6 pt-1 md:pt-2 pb-4 gap-3 md:gap-4">
           <div className="text-center flex-shrink-0 max-w-[920px] px-1">
             <p className="text-black/55 text-[12px] sm:text-[14px] md:text-[17px] font-medium tracking-[0.08em] mb-1 md:mb-1.5">
               Trustless training for the people's model
@@ -245,33 +245,21 @@ export default function Hero() {
             </h1>
           </div>
 
-          <div
-            className="relative aspect-square shrink min-h-0 w-full overflow-hidden rounded-[16px] sm:rounded-[18px] md:rounded-[28px] border border-black/10 bg-black/[0.03]"
-            style={{
-              maxWidth:
-                'min(92vw, 58svh, calc(100svh - 14rem), 640px)',
-            }}
-          >
+          <div className="relative aspect-square w-[168px] sm:w-[200px] md:w-[240px] shrink-0 overflow-hidden rounded-[14px] sm:rounded-[16px] md:rounded-[20px] border border-black/10 bg-black/[0.03]">
             <canvas
               ref={canvasRef}
               className="absolute inset-0 h-full w-full object-contain"
             />
             {!ready && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/70">
-                <p className="text-black/50 text-[14px] sm:text-[15px] md:text-[16px]">
-                  Loading {loadPct}%
+                <p className="text-black/50 text-[12px] sm:text-[13px]">
+                  {loadPct}%
                 </p>
               </div>
             )}
           </div>
 
-          <div
-            className="flex-shrink-0 w-full h-[2px] bg-black/10 overflow-hidden rounded-full"
-            style={{
-              maxWidth:
-                'min(92vw, 58svh, calc(100svh - 14rem), 640px)',
-            }}
-          >
+          <div className="flex-shrink-0 w-[168px] sm:w-[200px] md:w-[240px] h-[2px] bg-black/10 overflow-hidden rounded-full">
             <div
               ref={progressBarRef}
               className="h-full bg-black"
