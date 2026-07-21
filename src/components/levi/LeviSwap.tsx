@@ -10,14 +10,14 @@ function TokenBadge({
   logo: string
 }) {
   return (
-    <span className="shrink-0 inline-flex items-center gap-2 rounded-full border border-black px-2.5 py-1.5 text-[14px] font-medium bg-white">
-      <span className="h-5 w-5 shrink-0 overflow-hidden rounded-full border border-black/10 bg-white">
+    <span className="shrink-0 inline-flex items-center gap-2.5 rounded-full border border-black pl-1.5 pr-3 py-1.5 text-[14px] font-medium bg-white">
+      <span className="h-8 w-8 shrink-0 overflow-hidden rounded-full border border-black/10 bg-white p-1.5 flex items-center justify-center">
         <img
           src={logo}
           alt=""
-          className="h-full w-full object-cover"
-          width={20}
-          height={20}
+          className="h-full w-full object-contain"
+          width={32}
+          height={32}
           decoding="async"
         />
       </span>
@@ -134,26 +134,26 @@ export default function LeviSwap() {
         >
           {side === 'buy' ? (
             <>
-              <span className="h-5 w-5 shrink-0 overflow-hidden rounded-full bg-white">
+              <span className="h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white p-1 flex items-center justify-center">
                 <img
                   src="/logos/solana.png"
                   alt=""
-                  className="h-full w-full object-cover"
-                  width={20}
-                  height={20}
+                  className="h-full w-full object-contain"
+                  width={28}
+                  height={28}
                 />
               </span>
               <span>Swap SOL for $LEVI</span>
             </>
           ) : (
             <>
-              <span className="h-5 w-5 shrink-0 overflow-hidden rounded-full bg-white">
+              <span className="h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white p-1 flex items-center justify-center">
                 <img
                   src="/mascot.png"
                   alt=""
-                  className="h-full w-full object-cover"
-                  width={20}
-                  height={20}
+                  className="h-full w-full object-contain"
+                  width={28}
+                  height={28}
                 />
               </span>
               <span>Swap $LEVI for SOL</span>
