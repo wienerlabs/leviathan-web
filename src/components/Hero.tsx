@@ -287,16 +287,15 @@ export default function Hero() {
           </div>
 
           <div
-            className="relative flex-shrink min-h-0 overflow-hidden rounded-[16px] sm:rounded-[18px] md:rounded-[28px] border border-black/10 bg-black/[0.03]"
+            className="relative aspect-square shrink min-h-0 w-full overflow-hidden rounded-[16px] sm:rounded-[18px] md:rounded-[28px] border border-black/10 bg-black/[0.03]"
             style={{
-              width: 'min(92vw, calc(100svh - 13.5rem))',
-              height: 'min(92vw, calc(100svh - 13.5rem))',
-              maxHeight: 'min(58svh, 720px)',
+              maxWidth:
+                'min(92vw, 58svh, calc(100svh - 14rem), 640px)',
             }}
           >
             <canvas
               ref={canvasRef}
-              className="absolute inset-0 h-full w-full"
+              className="absolute inset-0 h-full w-full object-contain"
             />
             {!ready && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/70">
@@ -307,7 +306,13 @@ export default function Hero() {
             )}
           </div>
 
-          <div className="flex-shrink-0 w-full max-w-[min(92vw,calc(100svh-13.5rem))] h-[2px] bg-black/10 overflow-hidden rounded-full">
+          <div
+            className="flex-shrink-0 w-full h-[2px] bg-black/10 overflow-hidden rounded-full"
+            style={{
+              maxWidth:
+                'min(92vw, 58svh, calc(100svh - 14rem), 640px)',
+            }}
+          >
             <div
               ref={progressBarRef}
               className="h-full bg-black"
