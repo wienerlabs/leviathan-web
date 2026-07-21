@@ -28,10 +28,6 @@ export default function GetLevi() {
   const [loading, setLoading] = useState(Boolean(LEVI.mint))
 
   useEffect(() => {
-    document.title = 'Get $LEVI · Leviathan'
-  }, [])
-
-  useEffect(() => {
     let cancelled = false
     if (!LEVI.mint) {
       setLoading(false)
