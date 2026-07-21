@@ -15,12 +15,6 @@ export default function DocsLayout() {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
-  useEffect(() => {
-    if (page) {
-      document.title = `${page.title} - Leviathan docs`
-    }
-  }, [page])
-
   if (!page) {
     return <Navigate to={DOCS_DEFAULT} replace />
   }

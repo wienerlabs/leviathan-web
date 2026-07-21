@@ -48,31 +48,7 @@ export default function Hero() {
     const frames: HTMLImageElement[] = []
     let done = 0
 
-    const mark = () => {
-      done += 1
-      if (!cancelled) {
-        setLoaded(done)
-        if (done >= FRAME_COUNT) setReady(true)
-      }
-    }
-
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      const img = new Image()
-      img.decoding = 'async'
-      img.onload = mark
-      img.onerror = mark
-      img.src = frameSrc(i)
-      frames.push(img)
-    }
-
-    framesRef.current = frames
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  useEffect(() => {
-    const applyFrame = (value: number) => {
+    const drawFrame = (value: number, force = false) => {
       const index = clamp(Math.round(value), 0, FRAME_MAX)
       unlockedRef.current = value >= FRAME_MAX - 0.001
 
@@ -82,14 +58,14 @@ export default function Hero() {
       }
 
       const canvas = canvasRef.current
-      const frames = framesRef.current
-      if (!canvas || frames.length === 0 || index === drawnRef.current) return
+      if (!canvas || frames.length === 0) return false
+      if (!force && index === drawnRef.current) return true
 
       const img = frames[index]
-      if (!img || !img.complete || img.naturalWidth === 0) return
+      if (!img || !img.complete || img.naturalWidth === 0) return false
 
       const ctx = canvas.getContext('2d', { alpha: false })
-      if (!ctx) return
+      if (!ctx) return false
 
       if (
         canvas.width !== img.naturalWidth ||
@@ -101,7 +77,29 @@ export default function Hero() {
 
       ctx.drawImage(img, 0, 0)
       drawnRef.current = index
+      return true
     }
+
+    const mark = (index: number) => {
+      done += 1
+      if (cancelled) return
+      setLoaded(done)
+      if (index === 0 && drawFrame(0, true)) {
+        setReady(true)
+      }
+      if (done >= FRAME_COUNT) setReady(true)
+    }
+
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const img = new Image()
+      img.decoding = 'async'
+      img.onload = () => mark(i)
+      img.onerror = () => mark(i)
+      img.src = frameSrc(i)
+      frames.push(img)
+    }
+
+    framesRef.current = frames
 
     const tick = () => {
       rafRef.current = requestAnimationFrame(tick)
@@ -110,21 +108,24 @@ export default function Hero() {
       const delta = target - current
 
       if (Math.abs(delta) < SNAP_EPS) {
-        if (current !== target) {
-          current = target
-          currentRef.current = current
-          applyFrame(current)
+        current = target
+        currentRef.current = current
+        if (drawnRef.current < 0 || current !== drawnRef.current) {
+          drawFrame(current, drawnRef.current < 0)
         }
         return
       }
 
       current += delta * LERP
       currentRef.current = current
-      applyFrame(current)
+      drawFrame(current)
     }
 
     rafRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafRef.current)
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(rafRef.current)
+    }
   }, [])
 
   useEffect(() => {
