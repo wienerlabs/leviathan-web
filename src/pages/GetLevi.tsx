@@ -96,15 +96,17 @@ export default function GetLevi() {
             transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
             className="order-1 lg:order-2 w-full flex items-center justify-center"
           >
-            <img
-              src="/leviathan-block.jpg"
-              alt="Leviathan block"
-              className="block w-full h-auto max-h-[min(52vh,480px)] object-contain rounded-[22px] sm:rounded-[28px] md:rounded-[32px] grayscale"
-              width={1254}
-              height={1254}
-              decoding="async"
-              fetchPriority="high"
-            />
+            <div className="w-full max-w-[min(100%,480px)] rounded-[22px] sm:rounded-[28px] md:rounded-[32px] border border-black bg-white p-2.5 sm:p-3 md:p-3.5">
+              <img
+                src="/leviathan-block.jpg"
+                alt="Leviathan block"
+                className="block w-full h-auto max-h-[min(48vh,440px)] object-contain rounded-[16px] sm:rounded-[20px] md:rounded-[24px] grayscale"
+                width={1254}
+                height={1254}
+                decoding="async"
+                fetchPriority="high"
+              />
+            </div>
           </motion.div>
         </motion.section>
 
