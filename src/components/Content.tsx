@@ -806,16 +806,16 @@ export default function Content() {
       </section>
 
       <footer className="border-t border-black/10">
-        <div className="w-full flex justify-center px-4 sm:px-5 md:px-12 pt-4 sm:pt-5">
+        <div className="w-full flex justify-center px-4 sm:px-5 md:px-12 pt-5 sm:pt-6 md:pt-8">
           <img
             src="/banner.jpg"
             alt="Leviathan"
-            className="block h-5 sm:h-6 w-auto max-w-[96px] object-contain grayscale opacity-80"
+            className="block w-full max-w-[120px] sm:max-w-[140px] md:max-w-[160px] h-auto object-contain"
             width={1400}
             height={653}
           />
         </div>
-        <div className="px-4 sm:px-5 md:px-12 py-6 sm:py-8 md:py-9">
+        <div className="px-4 sm:px-5 md:px-12 py-7 sm:py-9 md:py-10">
           <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img
