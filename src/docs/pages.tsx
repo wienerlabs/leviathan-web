@@ -665,6 +665,327 @@ telemetry -> web`}</Pre>
           suites prove the same path deterministically at 17/17 (
           <Code>cargo test -p psyche-solana-tooling</Code>).
         </P>
+        <P>
+          Full token design, supply allocation, collateral and TGE plan:{' '}
+          <A href="/docs/protocol/tokenomics">Tokenomics</A>.
+        </P>
+      </>
+    ),
+  },
+  {
+    path: '/docs/protocol/tokenomics',
+    title: 'Tokenomics',
+    description:
+      'Units, operating economics, supply allocation, collateral, PoG conversion and TGE plan.',
+    body: (
+      <>
+        <H1>Tokenomics</H1>
+        <Lead>
+          Engineering and product design for bonds, Proof of Gradient rewards,
+          supply allocation and TGE. Source of truth:{' '}
+          <A href="https://github.com/wienerlabs/leviathan/blob/main/docs/TOKENOMICS.md">
+            docs/TOKENOMICS.md
+          </A>{' '}
+          in wienerlabs/leviathan. Round economics are coded in{' '}
+          <Code>sim/leviathan_sim/economy.py</Code>. This is not a legal opinion;
+          counsel review gates any public token offer.
+        </Lead>
+
+        <H2 id="goals">Design goals</H2>
+        <Ol>
+          <Li>
+            Pay for accepted learning work (Proof of Gradient), not raw hash
+            power.
+          </Li>
+          <Li>
+            Keep fraud expected-negative at the published{' '}
+            <Code>(p, bond, reward)</Code> point.
+          </Li>
+          <Li>
+            Fund continuous audit pressure even when nobody is cheating
+            (zero-fraud equilibrium).
+          </Li>
+          <Li>
+            Avoid yield promises. Utility is training rewards, run-selection
+            governance, and later inference settlement.
+          </Li>
+          <Li>
+            Stay compatible with a compliant launch structure after legal review.
+          </Li>
+        </Ol>
+
+        <H2 id="units">Units</H2>
+        <Table
+          headers={['Unit', 'Role', 'Issued by']}
+          rows={[
+            [
+              'Collateral',
+              'Bond deposits, slash forfeiture, optional reward redemption',
+              'Mainnet mint TBD; external mint or network stable collateral',
+            ],
+            [
+              'PoG points',
+              'Per-epoch earned counter on the coordinator (live on devnet)',
+              'Coordinator epoch settlement',
+            ],
+            [
+              'Network token (working name LEV)',
+              'Long-term reward and governance unit after TGE',
+              'Mint authority under multisig',
+            ],
+          ]}
+        />
+        <P>
+          Before TGE, testnet and genesis rehearsal pay only in the testnet
+          collateral mint (
+          <Code>BWLv1Fj5RKJbcr3ZMLVKhviFq1i3tq6afgVS2ngyot3X</Code> on devnet).
+          PoG points convert to collateral through the treasurer claim path
+          already deployed.
+        </P>
+
+        <H2 id="collateral">How collateral works</H2>
+        <P>
+          Collateral is an SPL token held in the run vault (treasurer program).
+          It is not a yield stake. It is the deposit for honest participation
+          and, for now, the unit used to pay rewards.
+        </P>
+        <Ul>
+          <Li>
+            <strong>Bond deposit.</strong> You transfer collateral into the run
+            vault. Your <Code>bond_amount</Code> increases. Claims require bond
+            at or above <Code>bond_minimum_amount</Code>.
+          </Li>
+          <Li>
+            <strong>Rewards.</strong> Healthy epochs accrue PoG points. Claim
+            pays 1 collateral unit per claimed point from the same vault (rate
+            is set by the coordinator earning schedule).
+          </Li>
+          <Li>
+            <strong>Exit.</strong> Request withdraw, wait the challenge window,
+            then finalize. If you were slashed, unsettled slash points forfeit
+            bond into the vault (and may pay a reporter bounty). The rest returns
+            to your wallet.
+          </Li>
+        </Ul>
+        <P>
+          Break-even bond law (coded):{' '}
+          <Code>bond = reward × (1 − p) / p</Code>. At p = 0.1 the bond is nine
+          rounds of reward. See also{' '}
+          <A href="/docs/protocol/economics">Economics</A> and the{' '}
+          <A href="/docs/developer/conviction-demo">conviction demo</A>.
+        </P>
+
+        <H2 id="operating">Operating economics (coded)</H2>
+        <P>
+          From <Code>genesis_parameters()</Code> and{' '}
+          <Code>calibration_table()</Code>. Reward per round is 1.2× H100-market
+          cost of the round&apos;s FLOPs.
+        </P>
+        <Table
+          headers={[
+            'Preset',
+            'Round cost (H100)',
+            'Round reward (1.2×)',
+            'Bond at p=0.1',
+            'Expected catch rounds',
+          ]}
+          rows={[
+            ['125M proof', '$0.0120', '$0.0144', '$0.129', '10'],
+            ['1B genesis', '$0.240', '$0.288', '$2.59', '10'],
+            ['7B scale', '$3.36', '$4.03', '$36.25', '10'],
+          ]}
+        />
+        <H3 id="zero-fraud-burn">Zero-fraud audit burn</H3>
+        <P>
+          When nobody cheats, verifier income is pure treasury spend. Audit fee
+          floor is 1.1× H100 cost per audited contribution.
+        </P>
+        <Table
+          headers={[
+            'Preset at p=0.1, 100 workers',
+            'Audit fee / contribution',
+            'Treasury burn / round',
+            'Burn share of rewards',
+          ]}
+          rows={[['1B genesis', '$0.264', '$2.64', '9.17%']]}
+        />
+        <P>
+          That is the sustained cost of security in the honest equilibrium. The
+          audit / security treasury must be sized for it.
+        </P>
+
+        <H2 id="allocation">Supply allocation</H2>
+        <P>
+          Working totals for modelling only. Counsel may require structural
+          change. These percentages live only in the tokenomics design; they are
+          not encoded in <Code>economy.py</Code> (that file covers
+          bond/reward/audit math).
+        </P>
+        <Table
+          headers={['Allocation', 'Share', 'Vesting', 'Purpose']}
+          rows={[
+            [
+              'Training rewards endowment',
+              '35%',
+              'Emission over multi-year PoG schedule',
+              'Pay accepted work',
+            ],
+            [
+              'Audit / security treasury',
+              '15%',
+              'Continuous draw for audit fees and red-team bounties',
+              'Fund p=0.1 pressure and paid breaks',
+            ],
+            [
+              'Ecosystem / grants',
+              '10%',
+              'Multisig, milestone grants',
+              'Tooling, relays, research',
+            ],
+            [
+              'Team',
+              '25%',
+              '1y cliff, 3y linear',
+              'Build and operate',
+            ],
+            [
+              'Early contributors / community',
+              '10%',
+              'TGE unlock + short vest',
+              'Genesis participants, bug bounties',
+            ],
+            [
+              'Liquidity / market making',
+              '5%',
+              'At TGE under multisig policy',
+              'CEX/DEX depth if pursued',
+            ],
+          ]}
+        />
+        <Note>
+          Total 100%. Team rose from 15% to 25% entirely by reducing the
+          training rewards endowment from 45% to 35%. Training rewards remain the
+          largest single bucket (35% &gt; 25%), so the thesis that the network
+          that trains the model holds the primary emission share still holds.
+        </Note>
+        <P>
+          Emission is not a fixed block subsidy. Each run configures epoch
+          earning rates on the coordinator; the treasury tops up the run vault.
+          Unused endowment stays unminted or locked, never inflated ad hoc.
+        </P>
+
+        <H2 id="pog-conversion">PoG to token conversion</H2>
+        <Ol>
+          <Li>
+            Trainer stays Healthy through an epoch and accrues{' '}
+            <Code>earned</Code> points (existing coordinator behaviour).
+          </Li>
+          <Li>
+            Treasurer <Code>participant_claim</Code> redeems points for
+            collateral while the run is collateral-denominated.
+          </Li>
+          <Li>
+            After TGE, conversion is fixed per run at run-create time:{' '}
+            <Code>tokens_per_point = run_reward_budget / expected_total_points</Code>
+            .
+          </Li>
+          <Li>
+            Slashed points reduce redeemable balance (bond finalize forfeits into
+            the vault; claim path must continue to respect <Code>slashed</Code>).
+          </Li>
+          <Li>No retroactive reprice of settled claims.</Li>
+        </Ol>
+
+        <H2 id="bond-slash-bounty">Bond, slash, bounty</H2>
+        <Table
+          headers={['Mechanism', 'Parameter', 'Source of truth']}
+          rows={[
+            [
+              'Bond size',
+              '>= break-even at published p',
+              'Run bond config + sim table',
+            ],
+            [
+              'Audit probability',
+              'verification_percent / 100',
+              'Coordinator config',
+            ],
+            [
+              'Slash on conviction',
+              'Earned points + bond forfeit path',
+              'Coordinator eject + treasurer settle',
+            ],
+            [
+              'Reporter bounty',
+              'slash_bounty_bps of forfeited bond',
+              'Treasurer (default design 5000 = 50%)',
+            ],
+            [
+              'Challenge window',
+              'Withdraw delay on bond request',
+              'Treasurer withdraw instructions',
+            ],
+          ]}
+        />
+
+        <H2 id="tge">TGE plan</H2>
+        <P>Phases, each gated:</P>
+        <Ol>
+          <Li>
+            Legal structure lock (entity, jurisdiction, token classification,
+            KYC/AML for any custodial surface).
+          </Li>
+          <Li>
+            Independent security audit of coordinator, treasurer and authorizer;
+            critical and high findings closed.
+          </Li>
+          <Li>
+            Mainnet programs with fresh program IDs, Squads multisig
+            authorities, upgrade keys secured.
+          </Li>
+          <Li>
+            Genesis run complete on testnet with published metrics and a go
+            decision.
+          </Li>
+          <Li>
+            TGE via Wiener Launchpad rails (or equivalent): mint under multisig,
+            distributor for airdrop and vesting, public tokenomics page, no APY
+            marketing copy.
+          </Li>
+          <Li>
+            Post-TGE: inference revenue (later) routes to treasury; futarchy for
+            next model selection remains a later phase.
+          </Li>
+        </Ol>
+
+        <H2 id="not-claimed">What is deliberately not claimed</H2>
+        <Ul>
+          <Li>
+            The token is not marketed as equity, debt, or a guaranteed return.
+          </Li>
+          <Li>
+            Security is economic, not cryptographic. Uncaught rate, band width
+            and bond curve remain public metrics.
+          </Li>
+          <Li>
+            Supply shares above are a planning sketch until counsel and
+            governance lock them.
+          </Li>
+        </Ul>
+
+        <H2 id="reproduce">Reproduce the numbers</H2>
+        <Pre>{`cd sim
+uv run python -c "from leviathan_sim.economy import genesis_parameters, calibration_table, audit_burn_projection; print(genesis_parameters()); print(calibration_table([0.1])); print(audit_burn_projection([0.1]))"`}</Pre>
+        <P>
+          Related docs:{' '}
+          <A href="/docs/protocol/economics">Economics</A>,{' '}
+          <A href="/docs/protocol/security">Security model</A>,{' '}
+          <A href="/docs/project/roadmap">Roadmap</A>. Upstream design file:{' '}
+          <A href="https://github.com/wienerlabs/leviathan/blob/main/docs/TOKENOMICS.md">
+            TOKENOMICS.md
+          </A>
+          .
+        </P>
       </>
     ),
   },

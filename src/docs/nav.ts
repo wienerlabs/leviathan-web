@@ -30,6 +30,7 @@ export const DOCS_NAV: DocsNavGroup[] = [
       { title: 'Security model', path: '/docs/protocol/security' },
       { title: 'Verification', path: '/docs/protocol/verification' },
       { title: 'Economics', path: '/docs/protocol/economics' },
+      { title: 'Tokenomics', path: '/docs/protocol/tokenomics' },
       { title: 'Round lifecycle', path: '/docs/protocol/round-lifecycle' },
     ],
   },
