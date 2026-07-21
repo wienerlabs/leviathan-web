@@ -99,7 +99,7 @@ export default function GetLevi() {
             <img
               src="/leviathan-block.jpg"
               alt="Leviathan block"
-              className="block w-full h-auto max-h-[min(52vh,480px)] object-contain"
+              className="block w-full h-auto max-h-[min(52vh,480px)] object-contain rounded-[22px] sm:rounded-[28px] md:rounded-[32px] grayscale"
               width={1254}
               height={1254}
               decoding="async"
