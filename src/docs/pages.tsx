@@ -745,7 +745,7 @@ telemetry -> web`}</Pre>
               'Coordinator epoch settlement',
             ],
             [
-              'Network token (working name LEV)',
+              'Network token ($LEVI)',
               'Long-term reward and governance unit after TGE',
               'Mint authority under multisig',
             ],
