@@ -21,6 +21,7 @@ export type LeviVenue = {
   kind: string
   href: string
   blurb: string
+  logo: string
 }
 
 export function leviVenues(mint: string): LeviVenue[] {
@@ -31,24 +32,28 @@ export function leviVenues(mint: string): LeviVenue[] {
       kind: 'Aggregator',
       href: mint ? `${LEVI.jupiterBase}${mint}` : 'https://jup.ag',
       blurb: 'Best-route Solana swaps across venues',
+      logo: '/logos/jupiter.png',
     },
     {
       name: 'Raydium',
       kind: 'AMM',
       href: mint ? `${LEVI.raydiumBase}${mint}` : 'https://raydium.io',
       blurb: 'Primary concentrated liquidity pool',
+      logo: '/logos/raydium.png',
     },
     {
       name: 'Dexscreener',
       kind: 'Market data',
       href: mint ? `${LEVI.dexscreenerBase}${mint}` : 'https://dexscreener.com/solana',
       blurb: 'Live pair charts and volume',
+      logo: '/logos/dexscreener.png',
     },
     {
       name: 'Birdeye',
       kind: 'Analytics',
       href: mint ? `${LEVI.birdeyeBase}${m}?chain=solana` : 'https://birdeye.so',
       blurb: 'Token analytics and traders',
+      logo: '/logos/birdeye.png',
     },
   ]
 }
