@@ -70,10 +70,11 @@ export default function DocsLayout() {
               <span className="hidden sm:inline">GitHub</span>
             </a>
             <Link
-              to="/"
+              to="/get-levi"
               className="inline-flex h-9 items-center justify-center rounded-full bg-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium text-white hover:bg-black/80 transition-colors"
             >
-              Site
+              <span className="sm:hidden">$LEVI</span>
+              <span className="hidden sm:inline">Get $LEVI</span>
             </Link>
           </div>
         </div>

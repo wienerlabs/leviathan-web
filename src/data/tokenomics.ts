@@ -193,7 +193,14 @@ export const bountySplitData = [
   },
 ]
 
+export const TOKEN_SYMBOL = 'LEVI'
+
 export const TOKENOMICS_KPIS = [
+  {
+    label: 'Token',
+    value: '$LEVI',
+    hint: 'Network reward unit',
+  },
   {
     label: 'Training rewards',
     value: '35%',
@@ -208,11 +215,6 @@ export const TOKENOMICS_KPIS = [
     label: 'Genesis bond @ p=0.1',
     value: `$${GENESIS_OP.bondUsd.toFixed(2)}`,
     hint: '9 rounds of reward',
-  },
-  {
-    label: 'Zero-fraud burn',
-    value: '9.2%',
-    hint: 'Of rewards at p=0.1',
   },
 ]
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import SiteHeader from './SiteHeader'
 
 const FRAME_COUNT = 145
 const FRAME_MAX = FRAME_COUNT - 1
@@ -232,49 +232,7 @@ export default function Hero() {
   return (
     <section ref={heroRef} className="relative h-svh w-full max-w-[100vw] bg-white overflow-hidden">
       <div className="h-full w-full bg-white flex flex-col min-h-0">
-        <header className="flex-shrink-0 z-20 flex items-center justify-between gap-2 px-3 pt-3 pb-1 sm:px-4 md:px-8 md:pt-5 md:pb-2">
-          <div className="flex items-center gap-2 md:gap-3 min-w-0">
-            <img
-              src="/mascot.png"
-              alt="Leviathan"
-              className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-contain grayscale shrink-0"
-            />
-            <span className="text-black text-[16px] sm:text-[18px] md:text-[22px] font-semibold tracking-tight truncate">
-              Leviathan
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <a
-              href="https://x.com/leviathanfront"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center h-9 px-3 sm:h-11 sm:px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              X
-            </a>
-            <a
-              href="#waitlist"
-              className="hidden md:inline-flex items-center justify-center h-11 px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              Waitlist
-            </a>
-            <Link
-              to="/docs/developer/quickstart"
-              className="inline-flex items-center justify-center h-9 px-3 sm:h-11 sm:px-5 md:h-12 md:px-8 rounded-full border border-black text-black text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
-            >
-              Docs
-            </Link>
-            <a
-              href="https://github.com/wienerlabs/leviathan-net"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center h-9 px-3 sm:h-11 sm:px-5 md:h-12 md:px-8 rounded-full bg-black text-white text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black/80 transition-colors duration-200"
-            >
-              <span className="sm:hidden">Git</span>
-              <span className="hidden sm:inline">Network</span>
-            </a>
-          </div>
-        </header>
+        <SiteHeader variant="overlay" />
 
         <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-3 sm:px-4 md:px-6 pt-1 md:pt-2 pb-3 gap-2 md:gap-3">
           <div className="text-center flex-shrink-0 max-w-[920px] px-1">
