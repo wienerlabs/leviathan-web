@@ -18,6 +18,7 @@ type EconomyRow = {
   break_even_bond_usd: number
   expected_rounds_to_catch: number
   round_reward_usd: number
+  round_cost_usd: number
 }
 
 type ResultsFile = {
@@ -168,6 +169,8 @@ export const economyByPreset = (() => {
   return map
 })()
 
+const REWARD_MARGIN = 1.35
+
 export const bondChartData = [0.02, 0.05, 0.1, 0.2, 0.3].map((p) => {
   const row: Record<string, number | string> = {
     pLabel: `${Math.round(p * 100)}%`,
@@ -181,7 +184,8 @@ export const bondChartData = [0.02, 0.05, 0.1, 0.2, 0.3].map((p) => {
       : preset.startsWith('1B')
         ? 'genesis1B'
         : 'scale7B'
-    row[short] = Number(hit.break_even_bond_usd.toFixed(4))
+    const reward = hit.round_cost_usd * REWARD_MARGIN
+    row[short] = Number(((reward * (1 - p)) / p).toFixed(4))
     row.expectedCatch = hit.expected_rounds_to_catch
   }
   return row

@@ -151,7 +151,7 @@ function BurnTooltip({
           swatch: '#000',
         },
       ]}
-      footer="fee = 1.1× cost · reward = 1.2× cost → burn/rewards = p × 1.1 / 1.2"
+      footer="fee = 1.1× cost · reward = 1.35× cost → burn/rewards = p × 1.1 / 1.35"
     />
   )
 }
@@ -492,7 +492,7 @@ function OperatingBars() {
     <ChartShell
       eyebrow="Figure T04"
       title="Round economics by preset"
-      subtitle="Reward = 1.2× H100-market round cost. Bond at p = 0.1 is nine rounds of that reward."
+      subtitle="Reward = 1.35× H100-market round cost. Bond at p = 0.1 is nine rounds of that reward."
       meta={
         <div className="flex flex-wrap gap-x-4 gap-y-2 md:justify-end text-[14px] text-black/60">
           <span className="inline-flex items-center gap-2">
@@ -617,8 +617,8 @@ function BurnCurve() {
       heightClass="h-[320px] md:h-[360px]"
       footer={
         <p className="text-[14px] md:text-[15px] text-black/50 leading-relaxed">
-          Audit fee floor = 1.1× H100 contribution cost. Reward = 1.2× cost.
-          So burn / rewards = p × 1.1 / 1.2, preset-independent.
+          Audit fee floor = 1.1× H100 contribution cost. Reward = 1.35× cost.
+          So burn / rewards = p × 1.1 / 1.35, preset-independent.
         </p>
       }
     >

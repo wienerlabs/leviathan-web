@@ -28,7 +28,7 @@ export default function ExplainSection() {
               {
                 label: 'Reward',
                 tex: 'R = \\text{round reward}',
-                note: 'Calibrated to ~1.2x H100 market cost of the round FLOPs.',
+                note: 'Calibrated to ~1.35x H100 market cost of the round FLOPs.',
               },
               {
                 label: 'Audit p',
@@ -50,10 +50,10 @@ export default function ExplainSection() {
               <p className="text-[15px] md:text-[16px] text-black/55 leading-relaxed">
                 At <MathTex tex="p=0.1" className="text-[15px]" />, Phase 0
                 calibration gives roughly{' '}
-                <MathTex tex={String.raw`\$0.13`} className="text-[15px]" />{' '}
+                <MathTex tex={String.raw`\$0.15`} className="text-[15px]" />{' '}
                 (125M),{' '}
-                <MathTex tex={String.raw`\$2.60`} className="text-[15px]" />{' '}
-                (1B), <MathTex tex={String.raw`\$36`} className="text-[15px]" />{' '}
+                <MathTex tex={String.raw`\$2.91`} className="text-[15px]" />{' '}
+                (1B), <MathTex tex={String.raw`\$41`} className="text-[15px]" />{' '}
                 (7B) per worker.
               </p>
             }
