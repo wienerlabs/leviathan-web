@@ -5,6 +5,7 @@ const FRAME_COUNT = 145
 const FRAME_MAX = FRAME_COUNT - 1
 const WHEEL_SENSITIVITY = 14
 const LERP = 0.22
+const LERP_MOBILE = 0.38
 const SNAP_EPS = 0.03
 
 function frameSrc(index: number) {
@@ -13,6 +14,11 @@ function frameSrc(index: number) {
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))
+}
+
+function isMobileScrub() {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(max-width: 768px), (pointer: coarse)').matches
 }
 
 function normalizeWheelDelta(e: WheelEvent) {
@@ -116,7 +122,8 @@ export default function Hero() {
         return
       }
 
-      current += delta * LERP
+      const lerp = isMobileScrub() ? LERP_MOBILE : LERP
+      current += delta * lerp
       currentRef.current = current
       drawFrame(current)
     }
@@ -187,16 +194,20 @@ export default function Hero() {
       touchYRef.current = y
       const atLast = targetRef.current >= FRAME_MAX - 0.001
       const atFirst = targetRef.current <= 0.001
+      const mobile = isMobileScrub()
+      const step = mobile
+        ? (delta / Math.max(window.innerHeight, 1)) * FRAME_MAX * 1.35
+        : delta / (WHEEL_SENSITIVITY * 0.55)
 
       if (delta > 0 && !atLast) {
         e.preventDefault()
-        nudgeTarget(delta / (WHEEL_SENSITIVITY * 0.55))
+        nudgeTarget(step)
         return
       }
 
       if (delta < 0 && window.scrollY <= 0 && !atFirst) {
         e.preventDefault()
-        nudgeTarget(delta / (WHEEL_SENSITIVITY * 0.55))
+        nudgeTarget(step)
       }
     }
 
