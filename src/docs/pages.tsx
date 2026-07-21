@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { lazy, Suspense } from 'react'
 import {
   A,
   Code,
@@ -14,6 +15,17 @@ import {
   Table,
   Ul,
 } from './Prose'
+
+const TokenomicsCharts = lazy(() => import('../components/charts/TokenomicsCharts'))
+
+function TokenomicsChartsFallback() {
+  return (
+    <div className="my-10 space-y-4">
+      <div className="h-24 rounded-[24px] border border-black/10 bg-black/[0.03] animate-pulse" />
+      <div className="h-[360px] rounded-[32px] border border-black/10 bg-black/[0.03] animate-pulse" />
+    </div>
+  )
+}
 
 export type DocsPage = {
   path: string
@@ -690,6 +702,10 @@ telemetry -> web`}</Pre>
           <Code>sim/leviathan_sim/economy.py</Code>. This is not a legal opinion;
           counsel review gates any public token offer.
         </Lead>
+
+        <Suspense fallback={<TokenomicsChartsFallback />}>
+          <TokenomicsCharts />
+        </Suspense>
 
         <H2 id="goals">Design goals</H2>
         <Ol>
