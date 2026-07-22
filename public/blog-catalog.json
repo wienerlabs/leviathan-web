@@ -1,5 +1,12 @@
 [
   {
+    "slug": "verifier-as-jury-member",
+    "title": "Leviathan: the verifier is no longer a judge, but a jury member",
+    "description": "The autonomous daemon no longer slashes alone. It casts a bonded verdict; conviction lands only when enough independent verifiers agree.",
+    "date": "2026-07-23",
+    "dateLabel": "23 July 2026"
+  },
+  {
     "slug": "cheat-catching-machine-is-live",
     "title": "Leviathan: the cheat-catching machine is live",
     "description": "The verifier daemon now detects fraudulent gradients on live Solana devnet and writes the slash on-chain itself. One process, end to end, with a permanent proof transaction.",

@@ -1,9 +1,11 @@
 import type { BlogPost } from '../types'
 import { BLOG_CATALOG } from '../catalog'
 import { cheatCatchingMachineIsLive } from './cheat-catching-machine-is-live'
+import { verifierAsJuryMember } from './verifier-as-jury-member'
 import { verifierDaemonFusion } from './verifier-daemon-fusion'
 
 export const BLOG_POSTS: BlogPost[] = [
+  verifierAsJuryMember,
   cheatCatchingMachineIsLive,
   verifierDaemonFusion,
 ]
