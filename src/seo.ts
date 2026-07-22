@@ -4,7 +4,7 @@ export const SITE = {
   description:
     'Leviathan AI is a Solana-coordinated trustless training network. Anyone with a GPU joins by posting a bond, earns Proof of Gradient for verified work, and owns the model the swarm trains.',
   url: (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\/$/, '') ||
-    'https://leviathan.ai',
+    'https://leviathan.run',
   twitter: '@leviathanfront',
   locale: 'en_US',
   imagePath: '/banner.jpg',

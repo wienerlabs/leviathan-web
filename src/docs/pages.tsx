@@ -747,7 +747,7 @@ telemetry -> web`}</Pre>
             [
               'Network token ($LEVI)',
               'Long-term reward and governance unit after TGE',
-              'Mint authority under multisig',
+              'Mint authority under a Squads multisig',
             ],
           ]}
         />
@@ -823,7 +823,7 @@ telemetry -> web`}</Pre>
             'Treasury burn / round',
             'Burn share of rewards',
           ]}
-          rows={[['1B genesis', '$0.264', '$2.64', '9.17%']]}
+          rows={[['1B genesis', '$0.264', '$2.64', '8.15%']]}
         />
         <P>
           That is the sustained cost of security in the honest equilibrium. The
@@ -855,7 +855,7 @@ telemetry -> web`}</Pre>
             [
               'Ecosystem / grants',
               '10%',
-              'Multisig, milestone grants',
+              'Squads multisig, milestone grants',
               'Tooling, relays, research',
             ],
             [
@@ -873,7 +873,7 @@ telemetry -> web`}</Pre>
             [
               'Liquidity / market making',
               '5%',
-              'At TGE under multisig policy',
+              'At TGE under Squads multisig policy',
               'CEX/DEX depth if pursued',
             ],
           ]}
@@ -964,7 +964,7 @@ telemetry -> web`}</Pre>
             decision.
           </Li>
           <Li>
-            TGE via Wiener Launchpad rails (or equivalent): mint under multisig,
+            TGE directly on Solana rails, no launchpad dependency: mint under the Squads multisig,
             distributor for airdrop and vesting, public tokenomics page, no APY
             marketing copy.
           </Li>
