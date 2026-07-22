@@ -165,7 +165,7 @@ export function FormulaScene({
             className="pointer-events-none absolute inset-0 opacity-[0.035]"
             style={{
               backgroundImage:
-                'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)',
+                'linear-gradient(var(--ink) 1px, transparent 1px), linear-gradient(90deg, var(--ink) 1px, transparent 1px)',
               backgroundSize: '28px 28px',
             }}
           />

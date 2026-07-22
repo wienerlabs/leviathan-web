@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import ThemeToggle from './ThemeToggle'
 
 const btn =
   'inline-flex items-center justify-center h-9 px-3 sm:h-11 sm:px-5 md:h-12 md:px-6 rounded-full border border-black text-black text-[13px] sm:text-[15px] md:text-[16px] font-medium hover:bg-black hover:text-white transition-colors duration-200'
@@ -32,7 +33,7 @@ export default function SiteHeader({
           <img
             src="/mascot.png"
             alt="Leviathan"
-            className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-contain grayscale shrink-0"
+            className="theme-mark h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-contain shrink-0"
           />
           <span className="text-black text-[16px] sm:text-[18px] md:text-[22px] font-semibold tracking-tight truncate">
             Leviathan
@@ -40,6 +41,7 @@ export default function SiteHeader({
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <ThemeToggle />
           <a
             href="https://x.com/leviathanfront"
             target="_blank"
@@ -48,10 +50,7 @@ export default function SiteHeader({
           >
             X
           </a>
-          <Link
-            to="/blog"
-            className={`${btn} hidden sm:inline-flex`}
-          >
+          <Link to="/blog" className={`${btn} hidden sm:inline-flex`}>
             Blog
           </Link>
           <Link

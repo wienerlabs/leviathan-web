@@ -15,7 +15,12 @@ function TokenBadge({
         <img
           src={logo}
           alt=""
-          className="h-full w-full object-contain"
+          className={[
+            'h-full w-full object-contain',
+            logo.includes('mascot') ? 'theme-mark' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
           width={32}
           height={32}
           decoding="async"
@@ -151,7 +156,7 @@ export default function LeviSwap() {
                 <img
                   src="/mascot.png"
                   alt=""
-                  className="h-full w-full object-contain"
+                  className="theme-mark h-full w-full object-contain"
                   width={28}
                   height={28}
                 />

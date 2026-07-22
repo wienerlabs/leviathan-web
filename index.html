@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      (function () {
+        try {
+          var key = 'leviathan-theme'
+          var stored = localStorage.getItem(key)
+          var dark =
+            stored === 'dark' ||
+            (stored !== 'light' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches)
+          if (dark) document.documentElement.classList.add('dark')
+          document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
+        } catch (e) {}
+      })()
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leviathan AI</title>
@@ -15,7 +29,7 @@
     <meta name="author" content="Leviathan AI" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href="https://leviathan.run/" />
     <link rel="icon" type="image/png" href="/mascot.png" />
     <link rel="apple-touch-icon" href="/mascot.png" />

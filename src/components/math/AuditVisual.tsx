@@ -130,7 +130,7 @@ export default function AuditVisual() {
                 cy="36"
                 r="30"
                 fill="none"
-                stroke="rgba(0,0,0,0.08)"
+                stroke="var(--line)"
                 strokeWidth="4"
               />
               <motion.circle
@@ -138,7 +138,7 @@ export default function AuditVisual() {
                 cy="36"
                 r="30"
                 fill="none"
-                stroke="#000"
+                stroke="var(--ink)"
                 strokeWidth="4"
                 strokeLinecap="round"
                 strokeDasharray={2 * Math.PI * 30}
@@ -152,7 +152,7 @@ export default function AuditVisual() {
                 cy="36"
                 r="30"
                 fill="none"
-                stroke="rgba(0,0,0,0.18)"
+                stroke="var(--ink-faint)"
                 strokeWidth="1.5"
                 strokeDasharray="2 6"
                 strokeDashoffset={2 * Math.PI * 30 * (1 - theoryProgress)}
@@ -179,7 +179,7 @@ export default function AuditVisual() {
         <div className="relative mb-3 h-8">
           <div className="absolute inset-x-0 top-1/2 h-px bg-black/10" />
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-black border-2 border-white shadow-[0_0_0_1px_#000]"
+            className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-black border-2 border-white shadow-[0_0_0_1px_var(--ink)]"
             animate={{ left: `${(round / MAX_ROUND) * 100}%` }}
             transition={{ duration: 0.28, ease: 'easeOut' }}
             style={{ x: '-50%' }}
@@ -222,11 +222,11 @@ export default function AuditVisual() {
                   layout
                   animate={{
                     backgroundColor: hit
-                      ? '#000000'
+                      ? 'var(--ink)'
                       : pending
                         ? 'rgba(0,0,0,0.1)'
-                        : '#ffffff',
-                    color: hit ? '#ffffff' : '#000000',
+                        : 'var(--canvas)',
+                    color: hit ? 'var(--canvas)' : 'var(--ink)',
                     scale: justCaught ? [1, 1.12, 1] : 1,
                     boxShadow: justCaught
                       ? '0 0 0 3px rgba(0,0,0,0.2)'

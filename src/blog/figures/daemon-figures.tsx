@@ -136,8 +136,8 @@ export function IndexGuardFigure() {
             width="120"
             height="48"
             rx="8"
-            fill="#fff"
-            stroke="#000"
+            fill="var(--canvas)"
+            stroke="var(--ink)"
             strokeWidth="1.25"
           />
           <text
@@ -145,7 +145,7 @@ export function IndexGuardFigure() {
             y="64"
             textAnchor="middle"
             fontSize="11"
-            fill="#666"
+            fill="var(--ink-muted)"
             fontFamily="ui-monospace, monospace"
           >
             committer
@@ -155,7 +155,7 @@ export function IndexGuardFigure() {
             y="80"
             textAnchor="middle"
             fontSize="12"
-            fill="#000"
+            fill="var(--ink)"
             fontFamily="ui-monospace, monospace"
             fontWeight="600"
           >
@@ -167,16 +167,16 @@ export function IndexGuardFigure() {
             y1="68"
             x2="188"
             y2="68"
-            stroke="#000"
+            stroke="var(--ink)"
             strokeWidth="1.25"
           />
-          <polygon points="188,64 198,68 188,72" fill="#000" />
+          <polygon points="188,64 198,68 188,72" fill="var(--ink)" />
           <text
             x="165"
             y="58"
             textAnchor="middle"
             fontSize="10"
-            fill="#888"
+            fill="var(--ink-faint)"
             fontFamily="ui-sans-serif, system-ui"
           >
             lookup
@@ -188,8 +188,8 @@ export function IndexGuardFigure() {
             width="150"
             height="64"
             rx="8"
-            fill="#fff"
-            stroke="#000"
+            fill="var(--canvas)"
+            stroke="var(--ink)"
             strokeWidth="1.25"
           />
           <text
@@ -197,7 +197,7 @@ export function IndexGuardFigure() {
             y="58"
             textAnchor="middle"
             fontSize="11"
-            fill="#666"
+            fill="var(--ink-muted)"
             fontFamily="ui-monospace, monospace"
           >
             epoch_state.clients
@@ -207,7 +207,7 @@ export function IndexGuardFigure() {
             y="78"
             textAnchor="middle"
             fontSize="13"
-            fill="#000"
+            fill="var(--ink)"
             fontFamily="ui-monospace, monospace"
             fontWeight="600"
           >
@@ -217,16 +217,16 @@ export function IndexGuardFigure() {
           <path
             d="M350 56 H390 Q410 56 410 40 H460"
             fill="none"
-            stroke="#000"
+            stroke="var(--ink)"
             strokeWidth="1.25"
           />
-          <polygon points="460,36 470,40 460,44" fill="#000" />
+          <polygon points="460,36 470,40 460,44" fill="var(--ink)" />
           <text
             x="420"
             y="32"
             textAnchor="middle"
             fontSize="10"
-            fill="#888"
+            fill="var(--ink-faint)"
             fontFamily="ui-sans-serif, system-ui"
           >
             found
@@ -238,14 +238,14 @@ export function IndexGuardFigure() {
             width="148"
             height="44"
             rx="8"
-            fill="#000"
+            fill="var(--ink)"
           />
           <text
             x="546"
             y="38"
             textAnchor="middle"
             fontSize="11"
-            fill="#fff"
+            fill="var(--canvas)"
             fontFamily="ui-monospace, monospace"
           >
             process_slash
@@ -264,13 +264,13 @@ export function IndexGuardFigure() {
           <path
             d="M350 80 H390 Q410 80 410 108 H460"
             fill="none"
-            stroke="#000"
+            stroke="var(--ink)"
             strokeWidth="1.25"
             strokeDasharray="4 3"
           />
           <polygon
             points="460,104 470,108 460,112"
-            fill="#000"
+            fill="var(--ink)"
             opacity="0.55"
           />
           <text
@@ -278,7 +278,7 @@ export function IndexGuardFigure() {
             y="126"
             textAnchor="middle"
             fontSize="10"
-            fill="#888"
+            fill="var(--ink-faint)"
             fontFamily="ui-sans-serif, system-ui"
           >
             missing
@@ -290,8 +290,8 @@ export function IndexGuardFigure() {
             width="148"
             height="44"
             rx="8"
-            fill="#fff"
-            stroke="#000"
+            fill="var(--canvas)"
+            stroke="var(--ink)"
             strokeWidth="1.25"
             strokeDasharray="4 3"
           />
@@ -300,7 +300,7 @@ export function IndexGuardFigure() {
             y="108"
             textAnchor="middle"
             fontSize="12"
-            fill="#000"
+            fill="var(--ink)"
             fontFamily="ui-monospace, monospace"
             fontWeight="600"
           >
@@ -311,7 +311,7 @@ export function IndexGuardFigure() {
             y="122"
             textAnchor="middle"
             fontSize="10"
-            fill="#888"
+            fill="var(--ink-faint)"
             fontFamily="ui-sans-serif, system-ui"
           >
             wrong-index guard

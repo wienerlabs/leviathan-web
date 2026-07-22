@@ -496,11 +496,11 @@ function OperatingBars() {
       meta={
         <div className="flex flex-wrap gap-x-4 gap-y-2 md:justify-end text-[14px] text-black/60">
           <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-[3px] border border-black bg-[#d4d4d4]" />
+            <span className="w-3 h-3 rounded-[3px] border border-black bg-[var(--chart-faint)]" />
             Cost
           </span>
           <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-[3px] border border-black bg-[#737373]" />
+            <span className="w-3 h-3 rounded-[3px] border border-black bg-[var(--chart-mid)]" />
             Reward
           </span>
           <span className="inline-flex items-center gap-2">

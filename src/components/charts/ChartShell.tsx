@@ -75,7 +75,7 @@ export function ChartTooltipBox({
   footer?: string
 }) {
   return (
-    <div className="chart-latex min-w-[200px] rounded-[18px] border border-black bg-white/95 backdrop-blur-sm px-4 py-3.5 shadow-[0_18px_50px_rgba(0,0,0,0.12)]">
+    <div className="chart-latex min-w-[200px] rounded-[18px] border border-black bg-white/95 backdrop-blur-sm px-4 py-3.5 shadow-[0_18px_50px_var(--shadow)]">
       <p className="text-[12px] tracking-[0.06em] text-black/40 mb-2.5">{label}</p>
       <div className="space-y-1.5">
         {rows.map((row) => (

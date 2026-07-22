@@ -133,7 +133,7 @@ function CatchTimeline() {
                         damping: 18,
                       }}
                     >
-                      <div className="w-4 h-4 rounded-full bg-black border-2 border-white shadow-[0_0_0_1px_#000]" />
+                      <div className="w-4 h-4 rounded-full bg-black border-2 border-white shadow-[0_0_0_1px_var(--ink)]" />
                       <div className="absolute left-1/2 -translate-x-1/2 top-5 text-[12px] tabular-nums text-black/55 whitespace-nowrap latex-math">
                         r{w.round}
                       </div>

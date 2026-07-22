@@ -11,22 +11,72 @@
   --font-italiana: var(--font-latex);
 }
 
+:root {
+  color-scheme: light;
+  --canvas: #ffffff;
+  --canvas-elevated: #ffffff;
+  --canvas-muted: #f6f6f4;
+  --ink: #000000;
+  --ink-soft: rgba(0, 0, 0, 0.72);
+  --ink-muted: rgba(0, 0, 0, 0.55);
+  --ink-faint: rgba(0, 0, 0, 0.38);
+  --line: rgba(0, 0, 0, 0.12);
+  --line-strong: rgba(0, 0, 0, 0.88);
+  --overlay: rgba(255, 255, 255, 0.9);
+  --shadow: rgba(0, 0, 0, 0.12);
+  --chart-ink: #000000;
+  --chart-grid: rgba(0, 0, 0, 0.12);
+  --chart-faint: #d4d4d4;
+  --chart-mid: #737373;
+  --chart-soft: #b3b3b3;
+  --chart-deep: #404040;
+  --theme-color: #ffffff;
+  --color-black: #000000;
+  --color-white: #ffffff;
+}
+
+html.dark {
+  color-scheme: dark;
+  --canvas: #0b0b0b;
+  --canvas-elevated: #121212;
+  --canvas-muted: #161616;
+  --ink: #f2f1ec;
+  --ink-soft: rgba(242, 241, 236, 0.78);
+  --ink-muted: rgba(242, 241, 236, 0.58);
+  --ink-faint: rgba(242, 241, 236, 0.4);
+  --line: rgba(242, 241, 236, 0.14);
+  --line-strong: rgba(242, 241, 236, 0.9);
+  --overlay: rgba(11, 11, 11, 0.92);
+  --shadow: rgba(0, 0, 0, 0.55);
+  --chart-ink: #f2f1ec;
+  --chart-grid: rgba(242, 241, 236, 0.14);
+  --chart-faint: #3a3a3a;
+  --chart-mid: #8a8a8a;
+  --chart-soft: #5c5c5c;
+  --chart-deep: #cfcfcf;
+  --theme-color: #0b0b0b;
+  --color-black: #f2f1ec;
+  --color-white: #0b0b0b;
+}
+
 html {
   scroll-behavior: auto;
   overflow-x: clip;
   max-width: 100%;
+  background: var(--canvas);
 }
 
 body {
   margin: 0;
-  background: #ffffff;
-  color: #000000;
+  background: var(--canvas);
+  color: var(--ink);
   font-family: var(--font-latex);
   font-variant-numeric: lining-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
   max-width: 100%;
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
 img,
@@ -38,6 +88,11 @@ svg {
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+  color: var(--ink);
 }
 
 code,
@@ -56,6 +111,11 @@ samp {
   font-family: var(--font-latex-tt);
 }
 
+.katex,
+.katex-display {
+  color: var(--ink);
+}
+
 .chart-latex .recharts-text,
 .chart-latex .recharts-cartesian-axis-tick-value,
 .chart-latex .recharts-label,
@@ -63,6 +123,41 @@ samp {
 .recharts-cartesian-axis-tick-value,
 .recharts-label {
   font-family: var(--font-latex) !important;
+  fill: var(--ink-muted) !important;
+}
+
+.chart-latex .recharts-cartesian-grid line {
+  stroke: var(--chart-grid) !important;
+}
+
+html.dark img.theme-mark {
+  filter: grayscale(1) invert(1);
+}
+
+html:not(.dark) img.theme-mark {
+  filter: grayscale(1);
+}
+
+.theme-mark-on-ink {
+  filter: grayscale(1) invert(1);
+}
+
+html.dark .theme-mark-on-ink {
+  filter: grayscale(1);
+}
+
+html.dark .chart-latex .recharts-surface,
+html.dark .theme-ink-svg {
+  filter: invert(1);
+}
+
+.theme-surface {
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+.theme-elevated {
+  background: var(--canvas-elevated);
 }
 
 @keyframes fadeUp {

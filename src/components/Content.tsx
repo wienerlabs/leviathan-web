@@ -336,7 +336,7 @@ export default function Content() {
                     <img
                       src={row.logo}
                       alt=""
-                      className="h-12 w-12 md:h-14 md:w-14 object-contain grayscale shrink-0 invert"
+                      className="theme-mark-on-ink h-12 w-12 md:h-14 md:w-14 object-contain shrink-0"
                     />
                     <div>
                       <p className="text-[12px] md:text-[13px] tracking-[0.08em] text-white/50 mb-1">
@@ -821,7 +821,7 @@ export default function Content() {
               <img
                 src="/mascot.png"
                 alt=""
-                className="h-10 w-10 object-contain grayscale"
+                className="theme-mark h-10 w-10 object-contain"
               />
               <div>
                 <p className="text-[17px] font-semibold">Leviathan</p>

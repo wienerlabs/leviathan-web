@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { DOCS_DEFAULT, DOCS_NAV, docsNeighbors, flatDocsNav } from './nav'
 import { getDocsPage } from './pages'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function DocsLayout() {
   const location = useLocation()
@@ -39,7 +40,7 @@ export default function DocsLayout() {
               <img
                 src="/mascot.png"
                 alt=""
-                className="h-9 w-9 object-contain grayscale"
+                className="theme-mark h-9 w-9 object-contain"
               />
               <span className="text-[17px] md:text-[19px] font-semibold tracking-tight">
                 Leviathan
@@ -54,6 +55,7 @@ export default function DocsLayout() {
             </Link>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <ThemeToggle />
             <a
               href="https://github.com/wienerlabs/leviathan-net"
               target="_blank"
