@@ -49,6 +49,12 @@ export default function SiteHeader({
             X
           </a>
           <Link
+            to="/blog"
+            className={`${btn} hidden sm:inline-flex`}
+          >
+            Blog
+          </Link>
+          <Link
             to="/docs/developer/quickstart"
             className={`${btn} hidden sm:inline-flex`}
           >
