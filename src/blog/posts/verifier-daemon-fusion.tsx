@@ -13,6 +13,7 @@ import {
   Ul,
 } from '../../docs/Prose'
 import type { BlogPost } from '../types'
+import { getBlogMeta } from '../catalog'
 import {
   CoverageModesFigure,
   DutyCycleFigure,
@@ -30,13 +31,10 @@ const MEMNET =
 const DAEMON_RS =
   'https://github.com/wienerlabs/leviathan-net/blob/main/architectures/decentralized/solana-tooling/src/daemon.rs'
 
+const meta = getBlogMeta('verifier-daemon-fusion')!
+
 export const verifierDaemonFusion: BlogPost = {
-  slug: 'verifier-daemon-fusion',
-  title: 'Fusing detection and conviction into one verifier daemon',
-  description:
-    'leviathan-verifier-daemon now closes the loop in one always-on process: read the coordinator, audit committed work against an honest reference, and slash on fraud with live roster indexing.',
-  date: '2026-07-22',
-  dateLabel: '22 July 2026',
+  ...meta,
   body: (
     <>
       <H1>Fusing detection and conviction into one verifier daemon</H1>

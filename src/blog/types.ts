@@ -1,11 +1,14 @@
 import type { ReactNode } from 'react'
 
-export type BlogPost = {
+export type BlogMeta = {
   slug: string
   title: string
   description: string
   date: string
   dateLabel: string
+}
+
+export type BlogPost = BlogMeta & {
   body: ReactNode
 }
 

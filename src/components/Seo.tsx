@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { absoluteUrl, applyDocumentTitle, ogImageUrl, SITE } from '../seo'
 import { getBlogPost } from '../blog/posts'
+import { blogOgImageUrl } from '../blog/catalog'
 
 function upsertMeta(
   attr: 'name' | 'property',
@@ -29,12 +30,27 @@ function upsertLink(rel: string, href: string) {
   el.setAttribute('href', href)
 }
 
-function pageMeta(pathname: string): { title: string; description: string } {
+function pageMeta(pathname: string): {
+  title: string
+  description: string
+  image: string
+  imageAlt: string
+  imageWidth: number
+  imageHeight: number
+  imageType: string
+  type: string
+} {
   if (pathname === '/blog' || pathname === '/blog/') {
     return {
       title: `Updates · ${SITE.name}`,
       description:
         'Product and engineering updates from the Leviathan network.',
+      image: ogImageUrl(),
+      imageAlt: SITE.imageAlt,
+      imageWidth: SITE.imageWidth,
+      imageHeight: SITE.imageHeight,
+      imageType: 'image/jpeg',
+      type: 'website',
     }
   }
   const blogMatch = pathname.match(/^\/blog\/([^/]+)\/?$/)
@@ -44,40 +60,56 @@ function pageMeta(pathname: string): { title: string; description: string } {
       return {
         title: `${post.title} · ${SITE.name}`,
         description: post.description,
+        image: blogOgImageUrl(post),
+        imageAlt: post.title,
+        imageWidth: SITE.cardWidth,
+        imageHeight: SITE.cardHeight,
+        imageType: 'image/png',
+        type: 'article',
       }
     }
   }
-  return { title: SITE.title, description: SITE.description }
+  return {
+    title: SITE.title,
+    description: SITE.description,
+    image: ogImageUrl(),
+    imageAlt: SITE.imageAlt,
+    imageWidth: SITE.imageWidth,
+    imageHeight: SITE.imageHeight,
+    imageType: 'image/jpeg',
+    type: 'website',
+  }
 }
 
 export default function Seo() {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    const { title, description } = pageMeta(pathname)
-    document.title = title === SITE.title ? SITE.title : title
-    if (title === SITE.title) {
+    const meta = pageMeta(pathname)
+    document.title = meta.title
+    if (meta.title === SITE.title) {
       applyDocumentTitle()
     }
     const url = absoluteUrl(pathname === '/' ? '/' : pathname)
-    const image = ogImageUrl()
 
     upsertLink('canonical', url)
-    upsertMeta('name', 'description', description)
+    upsertLink('image_src', meta.image)
+    upsertMeta('name', 'description', meta.description)
     upsertMeta('property', 'og:site_name', SITE.name)
-    upsertMeta('property', 'og:title', title)
-    upsertMeta('property', 'og:description', description)
+    upsertMeta('property', 'og:type', meta.type)
+    upsertMeta('property', 'og:title', meta.title)
+    upsertMeta('property', 'og:description', meta.description)
     upsertMeta('property', 'og:url', url)
-    upsertMeta('property', 'og:image', image)
-    upsertMeta('property', 'og:image:secure_url', image)
-    upsertMeta('property', 'og:image:type', 'image/jpeg')
-    upsertMeta('property', 'og:image:width', String(SITE.imageWidth))
-    upsertMeta('property', 'og:image:height', String(SITE.imageHeight))
-    upsertMeta('property', 'og:image:alt', SITE.imageAlt)
-    upsertMeta('name', 'twitter:title', title)
-    upsertMeta('name', 'twitter:description', description)
-    upsertMeta('name', 'twitter:image', image)
-    upsertMeta('name', 'twitter:image:alt', SITE.imageAlt)
+    upsertMeta('property', 'og:image', meta.image)
+    upsertMeta('property', 'og:image:secure_url', meta.image)
+    upsertMeta('property', 'og:image:type', meta.imageType)
+    upsertMeta('property', 'og:image:width', String(meta.imageWidth))
+    upsertMeta('property', 'og:image:height', String(meta.imageHeight))
+    upsertMeta('property', 'og:image:alt', meta.imageAlt)
+    upsertMeta('name', 'twitter:title', meta.title)
+    upsertMeta('name', 'twitter:description', meta.description)
+    upsertMeta('name', 'twitter:image', meta.image)
+    upsertMeta('name', 'twitter:image:alt', meta.imageAlt)
     upsertMeta('name', 'twitter:card', 'summary_large_image')
   }, [pathname])
 

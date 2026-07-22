@@ -12,6 +12,8 @@ export const SITE = {
   imageHeight: 653,
   imageAlt: 'Leviathan AI banner',
   themeColor: '#ffffff',
+  cardWidth: 1200,
+  cardHeight: 630,
 } as const
 
 export function absoluteUrl(path = '/'): string {

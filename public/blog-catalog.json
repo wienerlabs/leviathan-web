@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "verifier-daemon-fusion",
+    "title": "Fusing detection and conviction into one verifier daemon",
+    "description": "leviathan-verifier-daemon closes the loop in one always-on process: read the coordinator, audit committed work against an honest reference, and slash on fraud with live roster indexing.",
+    "date": "2026-07-22",
+    "dateLabel": "22 July 2026"
+  }
+]
