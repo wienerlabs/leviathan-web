@@ -4,35 +4,579 @@ export function JudgeToJuryFigure() {
   return (
     <FigureFrame
       label="Fig. 01"
-      caption="Before: one daemon decides and punishes. After: each bonded daemon votes; the chain only convicts at quorum."
+      caption="Same fraud signal, two authority models. Left: one bonded key both detects and punishes. Right: independent bonded verifiers each cast one verdict; the chain convicts only at quorum."
     >
-      <div className="grid sm:grid-cols-2 gap-3">
-        <div className="rounded-[12px] border border-black/12 bg-white p-4">
-          <p className="text-[11px] tracking-[0.08em] text-black/40 mb-2">
-            Before
-          </p>
-          <p className="text-[16px] font-medium mb-3">Single judge</p>
-          <div className="space-y-2 text-[13px] text-black/65">
-            <p>Detect fraud</p>
-            <p className="text-black/25">↓</p>
-            <p className="font-mono text-black">run_slash</p>
-            <p className="text-black/25">↓</p>
-            <p>Target punished alone</p>
-          </div>
-        </div>
-        <div className="rounded-[12px] border border-black bg-black text-white p-4">
-          <p className="text-[11px] tracking-[0.08em] text-white/45 mb-2">
-            After
-          </p>
-          <p className="text-[16px] font-medium mb-3">Jury member</p>
-          <div className="space-y-2 text-[13px] text-white/75">
-            <p>Detect fraud</p>
-            <p className="text-white/30">↓</p>
-            <p className="font-mono text-white">submit_audit_verdict</p>
-            <p className="text-white/30">↓</p>
-            <p>Quorum convicts on chain</p>
-          </div>
-        </div>
+      <div className="overflow-x-auto -mx-1 px-1">
+        <svg
+          viewBox="0 0 720 360"
+          className="w-full min-w-[560px] h-auto"
+          role="img"
+          aria-label="Single-authority slash versus multiparty committee verdict"
+        >
+          <defs>
+            <marker
+              id="arrow-ink"
+              viewBox="0 0 10 10"
+              refX="8"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse"
+            >
+              <path d="M 0 1.5 L 8 5 L 0 8.5 Z" fill="var(--ink)" />
+            </marker>
+            <marker
+              id="arrow-muted"
+              viewBox="0 0 10 10"
+              refX="8"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse"
+            >
+              <path
+                d="M 0 1.5 L 8 5 L 0 8.5 Z"
+                fill="var(--ink)"
+                fillOpacity="0.35"
+              />
+            </marker>
+          </defs>
+
+          <rect
+            x="8"
+            y="8"
+            width="340"
+            height="344"
+            rx="14"
+            fill="var(--canvas)"
+            stroke="var(--ink)"
+            strokeOpacity="0.12"
+          />
+          <rect
+            x="372"
+            y="8"
+            width="340"
+            height="344"
+            rx="14"
+            fill="var(--canvas)"
+            stroke="var(--ink)"
+            strokeWidth="1.5"
+          />
+
+          <text
+            x="178"
+            y="36"
+            textAnchor="middle"
+            fontSize="11"
+            fill="var(--ink)"
+            fillOpacity="0.4"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            Phase 1
+          </text>
+          <text
+            x="178"
+            y="58"
+            textAnchor="middle"
+            fontSize="16"
+            fill="var(--ink)"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            fontWeight="600"
+          >
+            Single authority
+          </text>
+          <text
+            x="178"
+            y="78"
+            textAnchor="middle"
+            fontSize="12"
+            fill="var(--ink)"
+            fillOpacity="0.5"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            one actor detects and punishes
+          </text>
+
+          <text
+            x="542"
+            y="36"
+            textAnchor="middle"
+            fontSize="11"
+            fill="var(--ink)"
+            fillOpacity="0.4"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            Committee
+          </text>
+          <text
+            x="542"
+            y="58"
+            textAnchor="middle"
+            fontSize="16"
+            fill="var(--ink)"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            fontWeight="600"
+          >
+            Bonded jury
+          </text>
+          <text
+            x="542"
+            y="78"
+            textAnchor="middle"
+            fontSize="12"
+            fill="var(--ink)"
+            fillOpacity="0.5"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            many vote · chain convicts at quorum
+          </text>
+
+          <rect
+            x="108"
+            y="100"
+            width="140"
+            height="36"
+            rx="8"
+            fill="var(--canvas-muted)"
+            stroke="var(--ink)"
+            strokeOpacity="0.2"
+          />
+          <text
+            x="178"
+            y="122"
+            textAnchor="middle"
+            fontSize="12"
+            fill="var(--ink)"
+            fontFamily="ui-monospace, monospace"
+          >
+            fraud signal
+          </text>
+
+          <line
+            x1="178"
+            y1="136"
+            x2="178"
+            y2="158"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            markerEnd="url(#arrow-ink)"
+          />
+
+          <rect
+            x="88"
+            y="162"
+            width="180"
+            height="52"
+            rx="10"
+            fill="var(--ink)"
+          />
+          <text
+            x="178"
+            y="184"
+            textAnchor="middle"
+            fontSize="13"
+            fill="var(--canvas)"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            fontWeight="600"
+          >
+            Daemon (run authority)
+          </text>
+          <text
+            x="178"
+            y="202"
+            textAnchor="middle"
+            fontSize="11"
+            fill="var(--canvas)"
+            fillOpacity="0.65"
+            fontFamily="ui-monospace, monospace"
+          >
+            detect + decide alone
+          </text>
+
+          <line
+            x1="178"
+            y1="214"
+            x2="178"
+            y2="236"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            markerEnd="url(#arrow-ink)"
+          />
+
+          <rect
+            x="98"
+            y="240"
+            width="160"
+            height="32"
+            rx="8"
+            fill="var(--canvas)"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+          />
+          <text
+            x="178"
+            y="260"
+            textAnchor="middle"
+            fontSize="12"
+            fill="var(--ink)"
+            fontFamily="ui-monospace, monospace"
+          >
+            run_slash
+          </text>
+
+          <line
+            x1="178"
+            y1="272"
+            x2="178"
+            y2="292"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            markerEnd="url(#arrow-ink)"
+          />
+
+          <rect
+            x="98"
+            y="296"
+            width="160"
+            height="28"
+            rx="8"
+            fill="var(--ink)"
+            fillOpacity="0.08"
+            stroke="var(--ink)"
+            strokeOpacity="0.35"
+          />
+          <text
+            x="178"
+            y="314"
+            textAnchor="middle"
+            fontSize="12"
+            fill="var(--ink)"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            Target slashed (1 of 1)
+          </text>
+
+          <rect
+            x="472"
+            y="100"
+            width="140"
+            height="36"
+            rx="8"
+            fill="var(--canvas-muted)"
+            stroke="var(--ink)"
+            strokeOpacity="0.2"
+          />
+          <text
+            x="542"
+            y="122"
+            textAnchor="middle"
+            fontSize="12"
+            fill="var(--ink)"
+            fontFamily="ui-monospace, monospace"
+          >
+            fraud signal
+          </text>
+
+          <line
+            x1="542"
+            y1="136"
+            x2="542"
+            y2="150"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            strokeOpacity="0.45"
+          />
+          <line
+            x1="452"
+            y1="150"
+            x2="632"
+            y2="150"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            strokeOpacity="0.45"
+          />
+          <line
+            x1="452"
+            y1="150"
+            x2="452"
+            y2="162"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            strokeOpacity="0.45"
+            markerEnd="url(#arrow-muted)"
+          />
+          <line
+            x1="542"
+            y1="150"
+            x2="542"
+            y2="162"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            strokeOpacity="0.45"
+            markerEnd="url(#arrow-muted)"
+          />
+          <line
+            x1="632"
+            y1="150"
+            x2="632"
+            y2="162"
+            stroke="var(--ink)"
+            strokeWidth="1.25"
+            strokeOpacity="0.45"
+            markerEnd="url(#arrow-muted)"
+          />
+
+          <g>
+            <rect
+              x="402"
+              y="164"
+              width="100"
+              height="44"
+              rx="10"
+              fill="var(--canvas)"
+              stroke="var(--ink)"
+              strokeWidth="1.25"
+            />
+            <text
+              x="452"
+              y="182"
+              textAnchor="middle"
+              fontSize="12"
+              fill="var(--ink)"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              fontWeight="600"
+            >
+              V1
+            </text>
+            <text
+              x="452"
+              y="198"
+              textAnchor="middle"
+              fontSize="10"
+              fill="var(--ink)"
+              fillOpacity="0.5"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+            >
+              bonded
+            </text>
+          </g>
+          <g>
+            <rect
+              x="492"
+              y="164"
+              width="100"
+              height="44"
+              rx="10"
+              fill="var(--canvas)"
+              stroke="var(--ink)"
+              strokeWidth="1.25"
+            />
+            <text
+              x="542"
+              y="182"
+              textAnchor="middle"
+              fontSize="12"
+              fill="var(--ink)"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              fontWeight="600"
+            >
+              V2
+            </text>
+            <text
+              x="542"
+              y="198"
+              textAnchor="middle"
+              fontSize="10"
+              fill="var(--ink)"
+              fillOpacity="0.5"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+            >
+              bonded
+            </text>
+          </g>
+          <g>
+            <rect
+              x="582"
+              y="164"
+              width="100"
+              height="44"
+              rx="10"
+              fill="var(--canvas)"
+              stroke="var(--ink)"
+              strokeWidth="1.25"
+            />
+            <text
+              x="632"
+              y="182"
+              textAnchor="middle"
+              fontSize="12"
+              fill="var(--ink)"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              fontWeight="600"
+            >
+              V3
+            </text>
+            <text
+              x="632"
+              y="198"
+              textAnchor="middle"
+              fontSize="10"
+              fill="var(--ink)"
+              fillOpacity="0.5"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+            >
+              bonded
+            </text>
+          </g>
+
+          <line
+            x1="452"
+            y1="208"
+            x2="452"
+            y2="228"
+            stroke="var(--ink)"
+            strokeWidth="1.1"
+            strokeOpacity="0.5"
+            markerEnd="url(#arrow-muted)"
+          />
+          <line
+            x1="542"
+            y1="208"
+            x2="542"
+            y2="228"
+            stroke="var(--ink)"
+            strokeWidth="1.1"
+            strokeOpacity="0.5"
+            markerEnd="url(#arrow-muted)"
+          />
+          <line
+            x1="632"
+            y1="208"
+            x2="632"
+            y2="228"
+            stroke="var(--ink)"
+            strokeWidth="1.1"
+            strokeOpacity="0.5"
+            markerEnd="url(#arrow-muted)"
+          />
+
+          <text
+            x="452"
+            y="242"
+            textAnchor="middle"
+            fontSize="10"
+            fill="var(--ink)"
+            fillOpacity="0.55"
+            fontFamily="ui-monospace, monospace"
+          >
+            verdict
+          </text>
+          <text
+            x="542"
+            y="242"
+            textAnchor="middle"
+            fontSize="10"
+            fill="var(--ink)"
+            fillOpacity="0.55"
+            fontFamily="ui-monospace, monospace"
+          >
+            verdict
+          </text>
+          <text
+            x="632"
+            y="242"
+            textAnchor="middle"
+            fontSize="10"
+            fill="var(--ink)"
+            fillOpacity="0.55"
+            fontFamily="ui-monospace, monospace"
+          >
+            verdict
+          </text>
+
+          <line
+            x1="452"
+            y1="248"
+            x2="492"
+            y2="268"
+            stroke="var(--ink)"
+            strokeWidth="1.1"
+            strokeOpacity="0.4"
+          />
+          <line
+            x1="542"
+            y1="248"
+            x2="542"
+            y2="268"
+            stroke="var(--ink)"
+            strokeWidth="1.1"
+            strokeOpacity="0.4"
+          />
+          <line
+            x1="632"
+            y1="248"
+            x2="592"
+            y2="268"
+            stroke="var(--ink)"
+            strokeWidth="1.1"
+            strokeOpacity="0.4"
+          />
+
+          <rect
+            x="432"
+            y="268"
+            width="220"
+            height="48"
+            rx="10"
+            fill="var(--ink)"
+          />
+          <text
+            x="542"
+            y="288"
+            textAnchor="middle"
+            fontSize="12"
+            fill="var(--canvas)"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+            fontWeight="600"
+          >
+            AuditVerdict PDA
+          </text>
+          <text
+            x="542"
+            y="306"
+            textAnchor="middle"
+            fontSize="11"
+            fill="var(--canvas)"
+            fillOpacity="0.7"
+            fontFamily="ui-monospace, monospace"
+          >
+            count 3 · quorum 2 · convict
+          </text>
+
+          <text
+            x="542"
+            y="338"
+            textAnchor="middle"
+            fontSize="11"
+            fill="var(--ink)"
+            fillOpacity="0.55"
+            fontFamily="ui-sans-serif, system-ui, sans-serif"
+          >
+            Eject only when count meets quorum
+          </text>
+        </svg>
+      </div>
+
+      <div className="mt-4 grid sm:grid-cols-2 gap-3 text-[12px] sm:text-[13px] leading-relaxed text-black/55">
+        <p>
+          <span className="font-medium text-black/75">Risk:</span> one
+          compromised or captured authority can slash without peer check.
+        </p>
+        <p>
+          <span className="font-medium text-black/75">Guarantee:</span> no
+          single bonded verifier can finish a sentence; the program enforces
+          the threshold.
+        </p>
       </div>
     </FigureFrame>
   )
