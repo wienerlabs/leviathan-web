@@ -1,6 +1,6 @@
 import catalogJson from './catalog.json'
 import type { BlogMeta } from './types'
-import { SITE, absoluteUrl } from '../seo'
+import { absoluteUrl } from '../seo'
 
 export const BLOG_CATALOG: BlogMeta[] = catalogJson as BlogMeta[]
 
@@ -15,10 +15,7 @@ export function sortedBlogMeta() {
 }
 
 export function blogOgImageUrl(meta: BlogMeta) {
-  const params = new URLSearchParams({
-    slug: meta.slug,
-  })
-  return `${SITE.url}/api/og?${params.toString()}`
+  return absoluteUrl(`/og/${meta.slug}.png`)
 }
 
 export function blogPageUrl(slug?: string) {

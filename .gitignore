@@ -28,3 +28,5 @@ dist-ssr
 manim/media
 manim/__pycache__
 .vercel
+
+scripts/.lm-roman.ttf

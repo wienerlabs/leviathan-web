@@ -132,7 +132,7 @@ function inject(
 }
 
 function ogUrl(slug) {
-  return `${siteUrl}/api/og?slug=${encodeURIComponent(slug)}`
+  return `${siteUrl}/og/${encodeURIComponent(slug)}.png`
 }
 
 {
@@ -142,8 +142,8 @@ function ogUrl(slug) {
     title: 'Updates · Leviathan AI',
     description: 'Product and engineering updates from the Leviathan network.',
     url: `${siteUrl}/blog`,
-    image: `${siteUrl}/banner.jpg`,
-    imageAlt: 'Leviathan AI banner',
+    image: `${siteUrl}/og/blog.png`,
+    imageAlt: 'Leviathan updates',
     type: 'website',
   })
   writeFileSync(join(dir, 'index.html'), html)
