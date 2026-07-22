@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 
@@ -13,6 +14,11 @@ export default function SiteHeader({
 }) {
   const { pathname } = useLocation()
   const onLevi = pathname.startsWith('/get-levi')
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
 
   const shell =
     variant === 'sticky'
@@ -46,7 +52,7 @@ export default function SiteHeader({
             href="https://x.com/leviathanfront"
             target="_blank"
             rel="noreferrer"
-            className={btn}
+            className={`${btn} hidden sm:inline-flex`}
           >
             X
           </a>
@@ -61,14 +67,54 @@ export default function SiteHeader({
           </Link>
           <Link
             to="/get-levi"
-            className={btnSolid}
+            className={`${btnSolid} hidden sm:inline-flex`}
             aria-current={onLevi ? 'page' : undefined}
           >
-            <span className="sm:hidden">$LEVI</span>
-            <span className="hidden sm:inline">Get $LEVI</span>
+            Get $LEVI
           </Link>
+          <Link
+            to="/get-levi"
+            className={`${btnSolid} sm:hidden`}
+            aria-current={onLevi ? 'page' : undefined}
+          >
+            $LEVI
+          </Link>
+          <button
+            type="button"
+            className={`${btn} sm:hidden !px-0 w-9`}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            {menuOpen ? '×' : '☰'}
+          </button>
         </div>
       </div>
+
+      {menuOpen ? (
+        <div className="sm:hidden border-t border-black/10 bg-white/95 backdrop-blur-md px-3 py-3 space-y-2">
+          <Link
+            to="/blog"
+            className="block rounded-full border border-black px-4 py-3 text-[15px] font-medium hover:bg-black hover:text-white transition-colors"
+          >
+            Blog
+          </Link>
+          <Link
+            to="/docs/developer/quickstart"
+            className="block rounded-full border border-black px-4 py-3 text-[15px] font-medium hover:bg-black hover:text-white transition-colors"
+          >
+            Docs
+          </Link>
+          <a
+            href="https://x.com/leviathanfront"
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-full border border-black px-4 py-3 text-[15px] font-medium hover:bg-black hover:text-white transition-colors"
+          >
+            X
+          </a>
+        </div>
+      ) : null}
     </header>
   )
 }

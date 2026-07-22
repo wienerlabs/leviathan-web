@@ -1,16 +1,26 @@
 {
   "rewrites": [
+    { "source": "/blog", "destination": "/blog/index.html" },
+    { "source": "/blog/:slug", "destination": "/blog/:slug/index.html" },
     {
-      "source": "/((?!api/|og/|assets/|frames/|logos/).*)",
+      "source": "/((?!api/|og/|assets/|frames/|logos/|blog(?:/|$)).*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/og/(.*)",
+      "source": "/og/(.*).png",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" },
-        { "key": "Content-Type", "value": "image/png" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/blog/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }
   ]

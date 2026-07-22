@@ -27,7 +27,8 @@ import {
   TOKENOMICS_KPIS,
 } from '../../data/tokenomics'
 import { ChartShell, ChartTooltipBox, MetricPill } from './ChartShell'
-import { LATEX_FONT, latexTick, latexTickMuted } from './latex'
+import { LATEX_FONT, makeLatexTick, makeLatexTickMuted } from './latex'
+import { useChartColors } from '../../theme/useChartColors'
 
 function money(v: number) {
   if (v >= 10) return `$${v.toFixed(1)}`
@@ -111,6 +112,7 @@ function OperatingTooltip({
   payload?: { name: string; value: number; dataKey: string; color?: string }[]
   label?: string | number
 }) {
+  const c = useChartColors()
   if (!active || !payload?.length) return null
   return (
     <ChartTooltipBox
@@ -120,10 +122,10 @@ function OperatingTooltip({
         value: money(p.value),
         swatch:
           p.dataKey === 'cost'
-            ? '#d4d4d4'
+            ? c.faint
             : p.dataKey === 'reward'
-              ? '#737373'
-              : '#000000',
+              ? c.mid
+              : c.ink,
       }))}
       footer="At operating p = 0.1 for bond"
     />
@@ -139,6 +141,7 @@ function BurnTooltip({
   payload?: { name: string; value: number }[]
   label?: string | number
 }) {
+  const c = useChartColors()
   if (!active || !payload?.length) return null
   const v = payload[0]?.value
   return (
@@ -148,7 +151,7 @@ function BurnTooltip({
         {
           name: 'Burn share of rewards',
           value: typeof v === 'number' ? `${v.toFixed(2)}%` : 'n/a',
-          swatch: '#000',
+          swatch: c.ink,
         },
       ]}
       footer="fee = 1.1× cost · reward = 1.35× cost → burn/rewards = p × 1.1 / 1.35"
@@ -165,6 +168,7 @@ function RebalanceTooltip({
   payload?: { name: string; value: number; dataKey: string }[]
   label?: string | number
 }) {
+  const c = useChartColors()
   if (!active || !payload?.length) return null
   return (
     <ChartTooltipBox
@@ -172,7 +176,7 @@ function RebalanceTooltip({
       rows={payload.map((p) => ({
         name: p.name,
         value: `${p.value}%`,
-        swatch: p.dataKey === 'previous' ? '#d4d4d4' : '#000000',
+        swatch: p.dataKey === 'previous' ? c.faint : c.ink,
       }))}
       footer="Team +10pp funded entirely from training rewards"
     />
@@ -180,15 +184,20 @@ function RebalanceTooltip({
 }
 
 function AllocationDonut() {
+  const c = useChartColors()
+  const slices = ALLOCATION.map((a, i) => ({
+    ...a,
+    fill: c.allocation[i % c.allocation.length],
+  }))
   const data = useMemo(
     () =>
-      ALLOCATION.map((a) => ({
+      slices.map((a) => ({
         name: a.label,
         value: a.share,
         fill: a.fill,
         purpose: a.purpose,
       })),
-    [],
+    [slices],
   )
 
   return (
@@ -205,7 +214,7 @@ function AllocationDonut() {
       heightClass="h-[380px] md:h-[420px]"
       footer={
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
-          {ALLOCATION.map((a) => (
+          {slices.map((a) => (
             <div
               key={a.key}
               className="flex items-center gap-2.5 rounded-[16px] border border-black/12 px-3 py-2.5"
@@ -234,7 +243,7 @@ function AllocationDonut() {
             innerRadius="48%"
             outerRadius="78%"
             paddingAngle={1.5}
-            stroke="#000"
+            stroke={c.ink}
             strokeWidth={1.25}
             isAnimationActive
             animationDuration={1100}
@@ -253,7 +262,7 @@ function AllocationDonut() {
             y="48%"
             textAnchor="middle"
             dominantBaseline="middle"
-            style={{ fontFamily: LATEX_FONT, fill: '#000', fontSize: 28 }}
+            style={{ fontFamily: LATEX_FONT, fill: c.ink, fontSize: 28 }}
           >
             100%
           </text>
@@ -273,6 +282,8 @@ function AllocationDonut() {
 }
 
 function RebalanceBars() {
+  const c = useChartColors()
+  const tick = makeLatexTick(c.tick)
   return (
     <ChartShell
       eyebrow="Figure T02"
@@ -295,7 +306,7 @@ function RebalanceBars() {
           style={{ fontFamily: LATEX_FONT }}
         >
           <CartesianGrid
-            stroke="#000"
+            stroke={c.ink}
             strokeOpacity={0.05}
             horizontal={false}
             strokeDasharray="3 6"
@@ -304,8 +315,8 @@ function RebalanceBars() {
             type="number"
             domain={[0, 50]}
             tickLine={false}
-            axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-            tick={latexTick}
+            axisLine={{ stroke: c.ink, strokeOpacity: 0.12 }}
+            tick={tick}
             tickFormatter={(v: number) => `${v}%`}
           />
           <YAxis
@@ -314,7 +325,7 @@ function RebalanceBars() {
             width={128}
             tickLine={false}
             axisLine={false}
-            tick={latexTick}
+            tick={tick}
           />
           <Tooltip
             content={<RebalanceTooltip />}
@@ -325,8 +336,8 @@ function RebalanceBars() {
           <Bar
             dataKey="previous"
             name="Previous"
-            fill="#d4d4d4"
-            stroke="#000"
+            fill={c.faint}
+            stroke={c.ink}
             strokeWidth={1}
             radius={[0, 6, 6, 0]}
             barSize={14}
@@ -336,8 +347,8 @@ function RebalanceBars() {
           <Bar
             dataKey="current"
             name="Current"
-            fill="#000000"
-            stroke="#000"
+            fill={c.ink}
+            stroke={c.ink}
             strokeWidth={1}
             radius={[0, 6, 6, 0]}
             barSize={14}
@@ -352,6 +363,13 @@ function RebalanceBars() {
 }
 
 function BondCurve() {
+  const c = useChartColors()
+  const tick = makeLatexTick(c.tick)
+  const tickMuted = makeLatexTickMuted(c.tickMuted)
+  const presets = PRESET_ECONOMICS.map((p, i) => ({
+    ...p,
+    fill: c.series[i % c.series.length],
+  }))
   return (
     <ChartShell
       eyebrow="Figure T03"
@@ -359,7 +377,7 @@ function BondCurve() {
       subtitle="Higher audit probability shrinks the bond. At p = 0.1 the bond is nine rounds of reward at every scale."
       meta={
         <div className="flex flex-wrap gap-x-4 gap-y-2 md:justify-end">
-          {PRESET_ECONOMICS.map((s) => (
+          {presets.map((s) => (
             <div key={s.key} className="inline-flex items-center gap-2">
               <span
                 className="w-3 h-3 rounded-[3px] border border-black"
@@ -373,7 +391,7 @@ function BondCurve() {
       heightClass="h-[360px] md:h-[400px]"
       footer={
         <div className="grid sm:grid-cols-3 gap-3">
-          {PRESET_ECONOMICS.map((p) => (
+          {presets.map((p) => (
             <div
               key={p.key}
               className="rounded-[22px] border border-black/15 px-5 py-4 flex items-center gap-4"
@@ -404,7 +422,7 @@ function BondCurve() {
           style={{ fontFamily: LATEX_FONT }}
         >
           <CartesianGrid
-            stroke="#000"
+            stroke={c.ink}
             strokeOpacity={0.05}
             vertical={false}
             strokeDasharray="3 6"
@@ -412,8 +430,8 @@ function BondCurve() {
           <XAxis
             dataKey="pLabel"
             tickLine={false}
-            axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-            tick={latexTick}
+            axisLine={{ stroke: c.ink, strokeOpacity: 0.12 }}
+            tick={tick}
             tickMargin={10}
           />
           <YAxis
@@ -422,7 +440,7 @@ function BondCurve() {
             domain={[0.02, 250]}
             tickLine={false}
             axisLine={false}
-            tick={latexTick}
+            tick={tick}
             tickFormatter={(v: number) =>
               v >= 1 ? `$${v}` : `$${Number(v).toFixed(2)}`
             }
@@ -434,14 +452,14 @@ function BondCurve() {
             domain={[0, 55]}
             tickLine={false}
             axisLine={false}
-            tick={latexTickMuted}
+            tick={tickMuted}
             tickFormatter={(v: number) => `${v}r`}
             width={44}
           />
           <ReferenceLine
             yAxisId="bond"
             x="10%"
-            stroke="#000"
+            stroke={c.ink}
             strokeOpacity={0.2}
             strokeDasharray="4 4"
           />
@@ -451,14 +469,14 @@ function BondCurve() {
             isAnimationActive={false}
             wrapperStyle={{ fontFamily: LATEX_FONT, outline: 'none' }}
           />
-          {PRESET_ECONOMICS.map((s, i) => (
+          {presets.map((s, i) => (
             <Bar
               key={s.key}
               yAxisId="bond"
               dataKey={s.key}
               name={s.label}
               fill={s.fill}
-              stroke="#000"
+              stroke={c.ink}
               strokeWidth={1}
               radius={[6, 6, 0, 0]}
               isAnimationActive
@@ -472,11 +490,11 @@ function BondCurve() {
             type="monotone"
             dataKey="expectedCatch"
             name="Expected catch"
-            stroke="#000"
+            stroke={c.ink}
             strokeWidth={2.25}
             strokeDasharray="5 4"
-            dot={{ r: 4, fill: '#fff', stroke: '#000', strokeWidth: 1.75 }}
-            activeDot={{ r: 6, fill: '#000', stroke: '#fff', strokeWidth: 2 }}
+            dot={{ r: 4, fill: c.paper, stroke: c.ink, strokeWidth: 1.75 }}
+            activeDot={{ r: 6, fill: c.ink, stroke: c.paper, strokeWidth: 2 }}
             isAnimationActive
             animationDuration={1500}
             animationBegin={350}
@@ -488,6 +506,8 @@ function BondCurve() {
 }
 
 function OperatingBars() {
+  const c = useChartColors()
+  const tick = makeLatexTick(c.tick)
   return (
     <ChartShell
       eyebrow="Figure T04"
@@ -527,7 +547,7 @@ function OperatingBars() {
           style={{ fontFamily: LATEX_FONT }}
         >
           <CartesianGrid
-            stroke="#000"
+            stroke={c.ink}
             strokeOpacity={0.05}
             vertical={false}
             strokeDasharray="3 6"
@@ -535,8 +555,8 @@ function OperatingBars() {
           <XAxis
             dataKey="short"
             tickLine={false}
-            axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-            tick={latexTick}
+            axisLine={{ stroke: c.ink, strokeOpacity: 0.12 }}
+            tick={tick}
             tickMargin={10}
           />
           <YAxis
@@ -544,7 +564,7 @@ function OperatingBars() {
             domain={[0.005, 50]}
             tickLine={false}
             axisLine={false}
-            tick={latexTick}
+            tick={tick}
             tickFormatter={(v: number) =>
               v >= 1 ? `$${v}` : `$${Number(v).toFixed(2)}`
             }
@@ -559,8 +579,8 @@ function OperatingBars() {
           <Bar
             dataKey="cost"
             name="Round cost"
-            fill="#d4d4d4"
-            stroke="#000"
+            fill={c.faint}
+            stroke={c.ink}
             strokeWidth={1}
             radius={[6, 6, 0, 0]}
             isAnimationActive
@@ -569,8 +589,8 @@ function OperatingBars() {
           <Bar
             dataKey="reward"
             name="Round reward"
-            fill="#737373"
-            stroke="#000"
+            fill={c.mid}
+            stroke={c.ink}
             strokeWidth={1}
             radius={[6, 6, 0, 0]}
             isAnimationActive
@@ -580,8 +600,8 @@ function OperatingBars() {
           <Bar
             dataKey="bond"
             name="Bond @ p=0.1"
-            fill="#000000"
-            stroke="#000"
+            fill={c.ink}
+            stroke={c.ink}
             strokeWidth={1}
             radius={[6, 6, 0, 0]}
             isAnimationActive
@@ -595,6 +615,8 @@ function OperatingBars() {
 }
 
 function BurnCurve() {
+  const c = useChartColors()
+  const tick = makeLatexTick(c.tick)
   return (
     <ChartShell
       eyebrow="Figure T05"
@@ -629,7 +651,7 @@ function BurnCurve() {
           style={{ fontFamily: LATEX_FONT }}
         >
           <CartesianGrid
-            stroke="#000"
+            stroke={c.ink}
             strokeOpacity={0.05}
             vertical={false}
             strokeDasharray="3 6"
@@ -637,33 +659,33 @@ function BurnCurve() {
           <XAxis
             dataKey="pLabel"
             tickLine={false}
-            axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-            tick={latexTick}
+            axisLine={{ stroke: c.ink, strokeOpacity: 0.12 }}
+            tick={tick}
             tickMargin={10}
           />
           <YAxis
             domain={[0, 30]}
             tickLine={false}
             axisLine={false}
-            tick={latexTick}
+            tick={tick}
             tickFormatter={(v: number) => `${v}%`}
             width={48}
           />
           <ReferenceLine
             x="10%"
-            stroke="#000"
+            stroke={c.ink}
             strokeOpacity={0.2}
             strokeDasharray="4 4"
           />
           <ReferenceLine
             y={BURN_AT_P10.burnShareOfRewards * 100}
-            stroke="#000"
+            stroke={c.ink}
             strokeOpacity={0.15}
             strokeDasharray="2 4"
           />
           <Tooltip
             content={<BurnTooltip />}
-            cursor={{ stroke: '#000', strokeOpacity: 0.12 }}
+            cursor={{ stroke: c.ink, strokeOpacity: 0.12 }}
             isAnimationActive={false}
             wrapperStyle={{ fontFamily: LATEX_FONT, outline: 'none' }}
           />
@@ -671,10 +693,10 @@ function BurnCurve() {
             type="monotone"
             dataKey="burnPct"
             name="Burn share"
-            stroke="#000"
+            stroke={c.ink}
             strokeWidth={2.5}
-            dot={{ r: 5, fill: '#fff', stroke: '#000', strokeWidth: 1.75 }}
-            activeDot={{ r: 7, fill: '#000', stroke: '#fff', strokeWidth: 2 }}
+            dot={{ r: 5, fill: c.paper, stroke: c.ink, strokeWidth: 1.75 }}
+            activeDot={{ r: 7, fill: c.ink, stroke: c.paper, strokeWidth: 2 }}
             isAnimationActive
             animationDuration={1200}
           />
@@ -685,7 +707,12 @@ function BurnCurve() {
 }
 
 function BountySplit() {
-  const data = bountySplitData.map((d) => ({
+  const c = useChartColors()
+  const bounty = bountySplitData.map((row, i) => ({
+    ...row,
+    fill: i === 0 ? c.ink : c.soft,
+  }))
+  const data = bounty.map((d) => ({
     name: d.label,
     value: d.share,
     fill: d.fill,
@@ -699,7 +726,7 @@ function BountySplit() {
       heightClass="h-[280px] md:h-[300px]"
       footer={
         <div className="grid sm:grid-cols-2 gap-3">
-          {bountySplitData.map((d) => (
+          {bounty.map((d) => (
             <div
               key={d.key}
               className="rounded-[20px] border border-black/15 px-5 py-4 flex items-center gap-4"
@@ -730,7 +757,7 @@ function BountySplit() {
             innerRadius="42%"
             outerRadius="72%"
             paddingAngle={2}
-            stroke="#000"
+            stroke={c.ink}
             strokeWidth={1.25}
             startAngle={90}
             endAngle={-270}

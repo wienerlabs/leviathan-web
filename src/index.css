@@ -126,10 +126,6 @@ samp {
   fill: var(--ink-muted) !important;
 }
 
-.chart-latex .recharts-cartesian-grid line {
-  stroke: var(--chart-grid) !important;
-}
-
 html.dark img.theme-mark {
   filter: grayscale(1) invert(1);
 }
@@ -146,10 +142,6 @@ html.dark .theme-mark-on-ink {
   filter: grayscale(1);
 }
 
-html.dark .chart-latex .recharts-surface,
-html.dark .theme-ink-svg {
-  filter: invert(1);
-}
 
 .theme-surface {
   background: var(--canvas);
@@ -158,6 +150,25 @@ html.dark .theme-ink-svg {
 
 .theme-elevated {
   background: var(--canvas-elevated);
+}
+
+html:not(.dark) img.theme-photo {
+  filter: grayscale(1);
+}
+
+html.dark img.theme-photo {
+  filter: grayscale(1) contrast(1.12) brightness(0.88);
+  opacity: 0.96;
+}
+
+html.dark img.theme-logo-soft {
+  filter: grayscale(1) invert(1);
+  opacity: 0.9;
+}
+
+html:not(.dark) img.theme-logo-soft {
+  filter: grayscale(1);
+  opacity: 0.9;
 }
 
 @keyframes fadeUp {

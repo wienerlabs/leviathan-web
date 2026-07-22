@@ -19,7 +19,8 @@ import {
   PHASE0_KPIS,
 } from '../../data/phase0'
 import { ChartShell, ChartTooltipBox, MetricPill } from './ChartShell'
-import { LATEX_FONT, latexTick, latexTickMuted } from './latex'
+import { LATEX_FONT, makeLatexTick, makeLatexTickMuted } from './latex'
+import { useChartColors } from '../../theme/useChartColors'
 
 function BondTooltip({
   active,
@@ -157,6 +158,9 @@ function CatchTimeline() {
 }
 
 export default function SecurityEconomicsChart() {
+  const c = useChartColors()
+  const tick = makeLatexTick(c.tick)
+  const tickMuted = makeLatexTickMuted(c.tickMuted)
   return (
     <div className="chart-latex space-y-5 md:space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
@@ -229,7 +233,7 @@ export default function SecurityEconomicsChart() {
             style={{ fontFamily: LATEX_FONT }}
           >
             <CartesianGrid
-              stroke="#000"
+              stroke={c.ink}
               strokeOpacity={0.05}
               vertical={false}
               strokeDasharray="3 6"
@@ -237,8 +241,8 @@ export default function SecurityEconomicsChart() {
             <XAxis
               dataKey="pLabel"
               tickLine={false}
-              axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-              tick={latexTick}
+              axisLine={{ stroke: c.ink, strokeOpacity: 0.12 }}
+              tick={tick}
               tickMargin={10}
             />
             <YAxis
@@ -247,7 +251,7 @@ export default function SecurityEconomicsChart() {
               domain={[0.02, 250]}
               tickLine={false}
               axisLine={false}
-              tick={latexTick}
+              tick={tick}
               tickFormatter={(v: number) =>
                 v >= 1 ? `$${v}` : `$${Number(v).toFixed(2)}`
               }
@@ -259,14 +263,14 @@ export default function SecurityEconomicsChart() {
               domain={[0, 55]}
               tickLine={false}
               axisLine={false}
-              tick={latexTickMuted}
+              tick={tickMuted}
               tickFormatter={(v: number) => `${v}r`}
               width={44}
             />
             <ReferenceLine
               yAxisId="bond"
               x="10%"
-              stroke="#000"
+              stroke={c.ink}
               strokeOpacity={0.2}
               strokeDasharray="4 4"
             />
@@ -297,19 +301,19 @@ export default function SecurityEconomicsChart() {
               type="monotone"
               dataKey="expectedCatch"
               name="Expected catch"
-              stroke="#000"
+              stroke={c.ink}
               strokeWidth={2.25}
               strokeDasharray="5 4"
               dot={{
                 r: 4,
-                fill: '#fff',
-                stroke: '#000',
+                fill: c.paper,
+                stroke: c.ink,
                 strokeWidth: 1.75,
               }}
               activeDot={{
                 r: 6,
-                fill: '#000',
-                stroke: '#fff',
+                fill: c.ink,
+                stroke: c.paper,
                 strokeWidth: 2,
               }}
               isAnimationActive

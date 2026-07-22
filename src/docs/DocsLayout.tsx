@@ -32,9 +32,9 @@ export default function DocsLayout() {
               type="button"
               className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-black text-[14px]"
               onClick={() => setOpen((v) => !v)}
-              aria-label="Toggle docs menu"
+              aria-label="Toggle documentation menu" aria-expanded={open}
             >
-              ☰
+              <span aria-hidden="true">{open ? '×' : '☰'}</span>
             </button>
             <Link to="/" className="flex items-center gap-2.5">
               <img
@@ -56,6 +56,12 @@ export default function DocsLayout() {
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <ThemeToggle />
+            <Link
+              to="/blog"
+              className="hidden sm:inline-flex h-9 items-center justify-center rounded-full border border-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              Blog
+            </Link>
             <a
               href="https://github.com/wienerlabs/leviathan-net"
               target="_blank"

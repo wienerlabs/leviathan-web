@@ -9,7 +9,8 @@ import {
 } from 'recharts'
 import { formatUsd, type PricePoint } from '../../data/levi'
 import { ChartTooltipBox } from '../charts/ChartShell'
-import { LATEX_FONT, latexTick } from '../charts/latex'
+import { LATEX_FONT, makeLatexTick } from '../charts/latex'
+import { useChartColors } from '../../theme/useChartColors'
 
 function ChartTip({
   active,
@@ -20,6 +21,7 @@ function ChartTip({
   payload?: { value: number }[]
   label?: string | number
 }) {
+  const c = useChartColors()
   if (!active || !payload?.length) return null
   const ts = typeof label === 'number' ? label : Number(label)
   const when = Number.isFinite(ts)
@@ -36,7 +38,7 @@ function ChartTip({
         {
           name: 'LEVI',
           value: formatUsd(payload[0].value, 6),
-          swatch: '#000',
+          swatch: c.ink,
         },
       ]}
     />
@@ -50,7 +52,10 @@ export default function LeviChart({
   history: PricePoint[]
   loading: boolean
 }) {
+  const c = useChartColors()
+  const tick = makeLatexTick(c.tick)
   const data = history.map((p) => ({ t: p.t, price: p.price }))
+  const fillId = 'leviFill'
 
   return (
     <div className="chart-latex h-full min-h-[320px] rounded-[28px] border border-black bg-white overflow-hidden flex flex-col">
@@ -87,13 +92,13 @@ export default function LeviChart({
               style={{ fontFamily: LATEX_FONT }}
             >
               <defs>
-                <linearGradient id="leviFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#000" stopOpacity={0.18} />
-                  <stop offset="100%" stopColor="#000" stopOpacity={0.01} />
+                <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={c.ink} stopOpacity={0.18} />
+                  <stop offset="100%" stopColor={c.ink} stopOpacity={0.01} />
                 </linearGradient>
               </defs>
               <CartesianGrid
-                stroke="#000"
+                stroke={c.ink}
                 strokeOpacity={0.05}
                 vertical={false}
                 strokeDasharray="3 6"
@@ -103,8 +108,8 @@ export default function LeviChart({
                 type="number"
                 domain={['dataMin', 'dataMax']}
                 tickLine={false}
-                axisLine={{ stroke: '#000', strokeOpacity: 0.1 }}
-                tick={latexTick}
+                axisLine={{ stroke: c.ink, strokeOpacity: 0.1 }}
+                tick={tick}
                 tickFormatter={(v: number) =>
                   new Date(v).toLocaleDateString(undefined, {
                     month: 'short',
@@ -116,7 +121,7 @@ export default function LeviChart({
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                tick={latexTick}
+                tick={tick}
                 width={56}
                 tickFormatter={(v: number) => formatUsd(v, 4)}
                 domain={['auto', 'auto']}
@@ -129,16 +134,16 @@ export default function LeviChart({
               <Area
                 type="monotone"
                 dataKey="price"
-                stroke="#000"
+                stroke={c.ink}
                 strokeWidth={2.25}
-                fill="url(#leviFill)"
+                fill={`url(#${fillId})`}
                 isAnimationActive
                 animationDuration={1200}
                 dot={false}
                 activeDot={{
                   r: 5,
-                  fill: '#000',
-                  stroke: '#fff',
+                  fill: c.ink,
+                  stroke: c.paper,
                   strokeWidth: 2,
                 }}
               />

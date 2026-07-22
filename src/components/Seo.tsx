@@ -113,6 +113,7 @@ export default function Seo() {
     upsertMeta('name', 'twitter:card', 'summary_large_image')
     const dark = document.documentElement.classList.contains('dark')
     upsertMeta('name', 'theme-color', dark ? '#0b0b0b' : '#ffffff')
+    upsertMeta('name', 'color-scheme', dark ? 'dark' : 'light')
   }, [pathname])
 
   return null

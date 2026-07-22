@@ -1,4 +1,5 @@
 import type { BlogPost } from '../types'
+import { BLOG_CATALOG } from '../catalog'
 import { cheatCatchingMachineIsLive } from './cheat-catching-machine-is-live'
 import { verifierDaemonFusion } from './verifier-daemon-fusion'
 
@@ -12,9 +13,9 @@ export function getBlogPost(slug: string) {
 }
 
 export function sortedBlogPosts() {
+  const order = new Map(BLOG_CATALOG.map((item, index) => [item.slug, index]))
   return [...BLOG_POSTS].sort((a, b) => {
-    if (a.date < b.date) return 1
-    if (a.date > b.date) return -1
-    return BLOG_POSTS.indexOf(a) - BLOG_POSTS.indexOf(b)
+    if (a.date !== b.date) return a.date < b.date ? 1 : -1
+    return (order.get(a.slug) ?? 999) - (order.get(b.slug) ?? 999)
   })
 }

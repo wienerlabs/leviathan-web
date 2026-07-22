@@ -279,7 +279,7 @@ export default function Content() {
                 alt="Leviathan open slot figure"
                 width={1080}
                 height={1200}
-                className="block w-full h-auto max-h-[360px] sm:max-h-[440px] md:max-h-[520px] object-cover object-center grayscale"
+                className="theme-photo block w-full h-auto max-h-[360px] sm:max-h-[440px] md:max-h-[520px] object-cover object-center"
               />
               <figcaption className="px-4 sm:px-5 py-3 sm:py-4 border-t border-black/10 text-[13px] sm:text-[14px] md:text-[15px] text-black/50 leading-relaxed">
                 The missing cell: verification guarantees and live bond economics
@@ -306,7 +306,7 @@ export default function Content() {
                   <img
                     src={row.logo}
                     alt=""
-                    className="h-11 w-11 md:h-12 md:w-12 object-contain grayscale shrink-0"
+                    className="theme-logo-soft h-11 w-11 md:h-12 md:w-12 object-contain shrink-0"
                   />
                 </div>
                 <div className="space-y-3 text-[15px] md:text-[16px] leading-snug">
@@ -407,7 +407,7 @@ export default function Content() {
                 <img
                   src="/logos/solana.png"
                   alt="Solana"
-                  className="h-8 w-8 object-contain grayscale shrink-0"
+                  className="theme-logo-soft h-8 w-8 object-contain shrink-0"
                 />
               </div>
               <h3 className="text-[20px] md:text-[24px] font-semibold mb-3">
@@ -545,7 +545,7 @@ export default function Content() {
                 <img
                   src="/franklin.jpg"
                   alt="Honest contribution keeps the bond"
-                  className="block w-full aspect-square object-cover grayscale"
+                  className="theme-photo block w-full aspect-square object-cover"
                 />
                 <figcaption className="px-4 py-3 border-t border-black/10">
                   <p className="text-[13px] tracking-[0.08em] text-black/40 mb-1">
@@ -560,7 +560,7 @@ export default function Content() {
                 <img
                   src="/franklin-cry.jpg"
                   alt="Slashed defector loses bond"
-                  className="block w-full aspect-square object-cover grayscale"
+                  className="theme-photo block w-full aspect-square object-cover"
                 />
                 <figcaption className="px-4 py-3 border-t border-black/10">
                   <p className="text-[13px] tracking-[0.08em] text-black/40 mb-1">
@@ -708,7 +708,7 @@ export default function Content() {
             <img
               src="/logos/solana.png"
               alt="Solana"
-              className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain grayscale shrink-0 mt-1 sm:mt-2"
+              className="theme-logo-soft h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain shrink-0 mt-1 sm:mt-2"
             />
             <h2 className="font-italiana text-[30px] sm:text-[38px] md:text-[64px] leading-[1.08] min-w-0">
               Programs live on Solana devnet

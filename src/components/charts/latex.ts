@@ -7,20 +7,26 @@ export const LATEX_MATH_FONT =
 export const LATEX_TYPE_FONT =
   'KaTeX_Typewriter, KaTeX_Main, "Latin Modern Mono", monospace'
 
-export const latexTick = {
-  fill: 'rgba(0,0,0,0.45)',
-  fontSize: 13,
-  fontFamily: LATEX_FONT,
-} as const
+export function makeLatexTick(fill: string) {
+  return {
+    fill,
+    fontSize: 13,
+    fontFamily: LATEX_FONT,
+  } as const
+}
 
-export const latexTickMuted = {
-  fill: 'rgba(0,0,0,0.35)',
-  fontSize: 12,
-  fontFamily: LATEX_FONT,
-} as const
+export function makeLatexTickMuted(fill: string) {
+  return {
+    fill,
+    fontSize: 12,
+    fontFamily: LATEX_FONT,
+  } as const
+}
 
-export const latexLabel = {
-  fill: 'rgba(0,0,0,0.38)',
-  fontSize: 12,
-  fontFamily: LATEX_FONT,
-} as const
+export function makeLatexLabel(fill: string) {
+  return {
+    fill,
+    fontSize: 12,
+    fontFamily: LATEX_FONT,
+  } as const
+}

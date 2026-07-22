@@ -20,7 +20,8 @@ import {
   PHASE0_CONFIG,
 } from '../../data/phase0'
 import { ChartShell, ChartTooltipBox, MetricPill } from './ChartShell'
-import { LATEX_FONT, latexLabel, latexTick } from './latex'
+import { LATEX_FONT, makeLatexLabel, makeLatexTick } from './latex'
+import { useChartColors } from '../../theme/useChartColors'
 
 const BANKNOTE_SRC = '/banknote.jpg'
 
@@ -63,6 +64,7 @@ function LossTooltip({
 }
 
 function GapWithBanknote({ enabled }: { enabled: boolean }) {
+  const c = useChartColors()
   const xScale = useXAxisScale()
   const yScale = useYAxisScale()
 
@@ -141,7 +143,7 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
       <path
         d={clipPath}
         fill="none"
-        stroke="#000"
+        stroke={c.ink}
         strokeOpacity={0.1}
         strokeWidth={1}
       />
@@ -150,6 +152,9 @@ function GapWithBanknote({ enabled }: { enabled: boolean }) {
 }
 
 export default function LossCurvesChart() {
+  const c = useChartColors()
+  const tick = makeLatexTick(c.tick)
+  const labelStyle = makeLatexLabel(c.tickMuted)
   const [active, setActive] = useState<Set<LossSeriesKey>>(
     () => new Set(DEFAULT_ON),
   )
@@ -232,11 +237,8 @@ export default function LossCurvesChart() {
                         y1="4"
                         x2="22"
                         y2="4"
-                        stroke={
-                          on
-                            ? `rgba(0,0,0,${s.opacity})`
-                            : 'rgba(0,0,0,0.2)'
-                        }
+                        stroke={on ? c.ink : c.tickMuted}
+                        strokeOpacity={on ? s.opacity : 0.35}
                         strokeWidth={s.strokeWidth}
                         strokeDasharray={s.dash}
                         strokeLinecap="round"
@@ -300,7 +302,7 @@ export default function LossCurvesChart() {
             style={{ fontFamily: LATEX_FONT }}
           >
             <CartesianGrid
-              stroke="#000"
+              stroke={c.ink}
               strokeOpacity={0.055}
               vertical={false}
               strokeDasharray="3 6"
@@ -308,8 +310,8 @@ export default function LossCurvesChart() {
             <XAxis
               dataKey="round"
               tickLine={false}
-              axisLine={{ stroke: '#000', strokeOpacity: 0.12 }}
-              tick={latexTick}
+              axisLine={{ stroke: c.ink, strokeOpacity: 0.12 }}
+              tick={tick}
               tickMargin={10}
               ticks={[1, 5, 10, 15, 20, 25, 30]}
             />
@@ -317,7 +319,7 @@ export default function LossCurvesChart() {
               domain={yDomain}
               tickLine={false}
               axisLine={false}
-              tick={latexTick}
+              tick={tick}
               tickMargin={8}
               width={48}
               tickCount={6}
@@ -327,19 +329,19 @@ export default function LossCurvesChart() {
             />
             <ReferenceLine
               y={HONEST_FINAL}
-              stroke="#000"
+              stroke={c.ink}
               strokeOpacity={0.18}
               strokeDasharray="4 4"
               label={{
                 value: 'Honest final',
                 position: 'insideTopRight',
-                ...latexLabel,
+                ...labelStyle,
               }}
             />
             <Tooltip
               content={<LossTooltip />}
               cursor={{
-                stroke: '#000',
+                stroke: c.ink,
                 strokeOpacity: 0.14,
                 strokeDasharray: '2 4',
               }}
@@ -352,14 +354,15 @@ export default function LossCurvesChart() {
                 type="monotone"
                 dataKey={s.key}
                 name={s.label}
-                stroke={`rgba(0,0,0,${s.opacity})`}
+                stroke={c.ink}
+                strokeOpacity={s.opacity}
                 strokeWidth={s.strokeWidth}
                 strokeDasharray={s.dash}
                 dot={false}
                 activeDot={{
                   r: 5,
-                  fill: '#fff',
-                  stroke: '#000',
+                  fill: c.paper,
+                  stroke: c.ink,
                   strokeWidth: 2,
                 }}
                 isAnimationActive

@@ -16,6 +16,12 @@ Local route: `/docs/developer/quickstart`
 
 Content is derived from [wienerlabs/leviathan](https://github.com/wienerlabs/leviathan) and [wienerlabs/leviathan-net](https://github.com/wienerlabs/leviathan-net). Prefer the GitHub sources if anything drifts.
 
+## Theme
+
+Light and dark themes. Preference is stored in `localStorage` under
+`leviathan-theme`. Defaults to the system color scheme. Toggle lives in the
+site header and docs header.
+
 ## Develop
 
 ```bash
