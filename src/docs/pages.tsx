@@ -703,6 +703,20 @@ telemetry -> web`}</Pre>
           counsel review gates any public token offer.
         </Lead>
 
+        <figure className="my-10 rounded-[24px] sm:rounded-[28px] border border-black overflow-hidden bg-black/[0.02] max-w-[420px] mx-auto sm:mx-0">
+          <img
+            src="/tokenomics-benjamin.jpg"
+            alt="Benjamin Franklin with a stack of $LEVI bills"
+            width={1002}
+            height={1002}
+            className="block w-full aspect-square object-cover grayscale"
+          />
+          <figcaption className="px-4 sm:px-5 py-3 sm:py-4 border-t border-black/10 text-[13px] sm:text-[14px] md:text-[15px] text-black/50 leading-relaxed">
+            $LEVI is the network reward and governance unit after TGE. Bonds,
+            PoG and treasury math stay collateral-denominated until then.
+          </figcaption>
+        </figure>
+
         <Suspense fallback={<TokenomicsChartsFallback />}>
           <TokenomicsCharts />
         </Suspense>
