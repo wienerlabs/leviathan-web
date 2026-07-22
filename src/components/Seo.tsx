@@ -32,9 +32,9 @@ function upsertLink(rel: string, href: string) {
 function pageMeta(pathname: string): { title: string; description: string } {
   if (pathname === '/blog' || pathname === '/blog/') {
     return {
-      title: `Blog · ${SITE.name}`,
+      title: `Updates · ${SITE.name}`,
       description:
-        'Dated engineering notes from Leviathan: verifier daemons, on-chain conviction, and protocol economics.',
+        'Product and engineering updates from the Leviathan network.',
     }
   }
   const blogMatch = pathname.match(/^\/blog\/([^/]+)\/?$/)

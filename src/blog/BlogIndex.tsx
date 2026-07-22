@@ -14,12 +14,10 @@ export default function BlogIndex() {
           Blog
         </p>
         <h1 className="font-italiana text-[42px] md:text-[56px] leading-[1.08] tracking-tight mb-4">
-          Engineering notes
+          Updates
         </h1>
         <p className="text-[18px] md:text-[20px] leading-relaxed text-black/70 mb-12 max-w-[40rem]">
-          Dated write-ups from the Leviathan build: security loops, on-chain
-          conviction, and the math that backs them. Set in the same LaTeX face
-          as the rest of the site, with KaTeX for inline formulas.
+          Product and engineering updates from the Leviathan network.
         </p>
 
         <ul className="space-y-4">
