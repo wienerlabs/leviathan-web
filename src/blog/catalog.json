@@ -1,5 +1,12 @@
 [
   {
+    "slug": "cheat-catching-machine-is-live",
+    "title": "Leviathan: the cheat-catching machine is live",
+    "description": "The verifier daemon now detects fraudulent gradients on live Solana devnet and writes the slash on-chain itself. One process, end to end, with a permanent proof transaction.",
+    "date": "2026-07-22",
+    "dateLabel": "22 July 2026"
+  },
+  {
     "slug": "verifier-daemon-fusion",
     "title": "Fusing detection and conviction into one verifier daemon",
     "description": "leviathan-verifier-daemon closes the loop in one always-on process: read the coordinator, audit committed work against an honest reference, and slash on fraud with live roster indexing.",
