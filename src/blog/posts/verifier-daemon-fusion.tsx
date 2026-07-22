@@ -12,8 +12,14 @@ import {
   Table,
   Ul,
 } from '../../docs/Prose'
-import { MathTex } from '../../components/math/Math'
 import type { BlogPost } from '../types'
+import {
+  CoverageModesFigure,
+  DutyCycleFigure,
+  IndexGuardFigure,
+  OpenWorkFigure,
+  ProofStripFigure,
+} from '../figures/daemon-figures'
 
 const COMMIT =
   'https://github.com/wienerlabs/leviathan-net/commit/74f45f3e9a1dc21cf3078e0308507314e4b94d78'
@@ -61,6 +67,7 @@ export const verifierDaemonFusion: BlogPost = {
         One process, one duty cycle. No handoff between a detector box and a
         separate slasher script.
       </P>
+      <DutyCycleFigure />
       <Pre>{`read live coordinator account
   → ingest committed contributions
   → replay-audit each against an honest reference
@@ -71,6 +78,7 @@ export const verifierDaemonFusion: BlogPost = {
         in the live epoch roster before calling the treasurer instruction. Wrong
         index is refused rather than guessed.
       </P>
+      <IndexGuardFigure />
 
       <H2 id="build">How it was built</H2>
       <P>
@@ -106,25 +114,24 @@ export const verifierDaemonFusion: BlogPost = {
           tests still pass without the feature and without a torch environment.
         </Li>
       </Ul>
+      <CoverageModesFigure />
 
       <H2 id="math">What the audit decides</H2>
       <P>
         Replay audit is the decision core. Each contribution is checked against
-        an honest reference under the published audit probability{' '}
-        <MathTex tex="p" />. Expected rounds to catch a persistent cheater is{' '}
-        <MathTex tex="1/p" /> at constant <MathTex tex="p" />. The bond floor is still the break-even
-        law from the economics model:
+        an honest reference under the published audit probability p. Expected
+        rounds to catch a persistent cheater is 1/p at constant p. The bond floor
+        is still the break-even law from the economics model:{' '}
+        <Code>bond &gt;= reward × (1 − p) / p</Code>.
       </P>
-      <div className="my-8 flex justify-center overflow-x-auto text-[22px] md:text-[26px]">
-        <MathTex display tex="B \ge R \cdot \frac{1-p}{p}" />
-      </div>
       <P>
-        where <MathTex tex="R" /> is the per-round reward. The daemon does not
-        invent those parameters. It enforces them: if the dump fails the
-        reference, conviction must land on chain, not only in a log line.
+        The daemon does not invent those parameters. It enforces them: if the
+        dump fails the reference, conviction must land on chain, not only in a
+        log line.
       </P>
 
       <H2 id="evidence">Two-sided verification</H2>
+      <ProofStripFigure />
       <Table
         headers={['Proof', 'What it shows']}
         rows={[
@@ -174,6 +181,7 @@ export const verifierDaemonFusion: BlogPost = {
 
       <H2 id="honest">What is still open (issue #5)</H2>
       <P>Honest remaining work, not a victory lap:</P>
+      <OpenWorkFigure />
       <Ol>
         <Li>Full live devnet slash-through-daemon as a single end-to-end tx.</Li>
         <Li>
