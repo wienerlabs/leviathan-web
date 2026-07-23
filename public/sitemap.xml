@@ -16,6 +16,11 @@
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://leviathan.run/blog/jury-executed-on-devnet</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
     <loc>https://leviathan.run/blog/jury-live-on-devnet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

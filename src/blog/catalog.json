@@ -1,5 +1,12 @@
 [
   {
+    "slug": "jury-executed-on-devnet",
+    "title": "Leviathan: the jury convened on real chain and executed its verdict",
+    "description": "Live devnet e2e: three bonded clients, two verifiers, quorum two. First vote leaves the target healthy; second ejects and settles slashed = 200 on chain.",
+    "date": "2026-07-23",
+    "dateLabel": "23 July 2026"
+  },
+  {
     "slug": "jury-live-on-devnet",
     "title": "Leviathan: the jury now convenes on real chain",
     "description": "Committee-vote left the lab: SBF stack-safe, upgraded in place on devnet at program 9A1kc8\u2026, existing runs unbroken. Multiparty detection-to-conviction now sits on live network.",
