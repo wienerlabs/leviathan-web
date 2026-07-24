@@ -1,5 +1,12 @@
 [
   {
+    "slug": "appeals-court-for-wrongful-convictions",
+    "title": "Leviathan: an appeals court for wrongful convictions",
+    "description": "A verifier majority no longer slashes instantly. The accused can convene a larger bonded tie-breaker jury; overturn burns the accusers, uphold finalises the slash, and false conviction finally has a price.",
+    "date": "2026-07-25",
+    "dateLabel": "25 July 2026"
+  },
+  {
     "slug": "bond-can-actually-be-posted",
     "title": "Leviathan: the bond can finally actually be posted",
     "description": "Bond deposit is no longer library-only. Four run-manager commands plus leviathan-node.sh --bond let a volunteer wallet fund collateral on live devnet before joining a run.",
