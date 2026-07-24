@@ -56,6 +56,13 @@ export default function SiteHeader({
           >
             X
           </a>
+          <Link
+            to="/dashboard"
+            className={`${btn} hidden sm:inline-flex`}
+            aria-current={pathname.startsWith('/dashboard') ? 'page' : undefined}
+          >
+            Dashboard
+          </Link>
           <Link to="/blog" className={`${btn} hidden sm:inline-flex`}>
             Blog
           </Link>
@@ -93,6 +100,12 @@ export default function SiteHeader({
 
       {menuOpen ? (
         <div className="sm:hidden border-t border-black/10 bg-white/95 backdrop-blur-md px-3 py-3 space-y-2">
+          <Link
+            to="/dashboard"
+            className="block rounded-full border border-black px-4 py-3 text-[15px] font-medium hover:bg-black hover:text-white transition-colors"
+          >
+            Dashboard
+          </Link>
           <Link
             to="/blog"
             className="block rounded-full border border-black px-4 py-3 text-[15px] font-medium hover:bg-black hover:text-white transition-colors"

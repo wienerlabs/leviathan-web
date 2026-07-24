@@ -57,6 +57,12 @@ export default function DocsLayout() {
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <ThemeToggle />
             <Link
+              to="/dashboard"
+              className="hidden sm:inline-flex h-9 items-center justify-center rounded-full border border-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              Dashboard
+            </Link>
+            <Link
               to="/blog"
               className="hidden sm:inline-flex h-9 items-center justify-center rounded-full border border-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
             >
