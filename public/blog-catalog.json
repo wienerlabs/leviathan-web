@@ -1,5 +1,12 @@
 [
   {
+    "slug": "verifier-needs-to-eat",
+    "title": "Leviathan: the cheat hunter needs to eat too",
+    "description": "Caught cheaters now fund the jury: the forfeited bond is split equally across the verifiers that voted, with on-chain recipient checks and the old single-reporter path left intact.",
+    "date": "2026-07-24",
+    "dateLabel": "24 July 2026"
+  },
+  {
     "slug": "jury-executed-on-devnet",
     "title": "Leviathan: the jury convened on real chain and executed its verdict",
     "description": "Live devnet e2e: three bonded clients, two verifiers, quorum two. First vote leaves the target healthy; second ejects and settles slashed = 200 on chain.",
