@@ -40,6 +40,19 @@ function pageMeta(pathname: string): {
   imageType: string
   type: string
 } {
+  if (pathname === '/dashboard' || pathname.startsWith('/dashboard/')) {
+    return {
+      title: `Network dashboard · ${SITE.name}`,
+      description:
+        'Live or sample coordinator telemetry: run state, rewards, slashing, and economic security.',
+      image: ogImageUrl(),
+      imageAlt: SITE.imageAlt,
+      imageWidth: SITE.imageWidth,
+      imageHeight: SITE.imageHeight,
+      imageType: 'image/jpeg',
+      type: 'website',
+    }
+  }
   if (pathname === '/blog' || pathname === '/blog/') {
     return {
       title: `Updates · ${SITE.name}`,

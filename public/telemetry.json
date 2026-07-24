@@ -12,12 +12,36 @@
   "audit_probability": 0.1,
   "expected_rounds_to_catch": 10,
   "leaderboard": [
-    { "signer": "9n7v7um3LyvqnDRmB9JmyWgjwqAG3ZU3cLhvZRT6R5s4", "earned": 3200, "slashed": 0 },
-    { "signer": "6fecea42d851553f2ac3353f4eb6b0bcfa5add9e984c6", "earned": 3000, "slashed": 0 },
-    { "signer": "05bd4152ace63b1b2ac3353f4eb6b0bcfa5add9e984c6", "earned": 2800, "slashed": 0 },
-    { "signer": "2cWcT87bC3q3ToWtiYqAxD4DQxhqxNB7dHuk4HNBPZcw", "earned": 2000, "slashed": 0 },
-    { "signer": "3REF8LzdzijJLaT6PQb646MU1npVzTpn8KWCfnzxMYQ1", "earned": 1000, "slashed": 0 },
-    { "signer": "b1e23a6bd851553f2ac3353f4eb6b0bcfa5add9e984c6", "earned": 0, "slashed": 200 }
+    {
+      "signer": "9n7v7um3LyvqnDRmB9JmyWgjwqAG3ZU3cLhvZRT6R5s4",
+      "earned": 3200,
+      "slashed": 0
+    },
+    {
+      "signer": "6fecea42d851553f2ac3353f4eb6b0bcfa5add9e984c6",
+      "earned": 3000,
+      "slashed": 0
+    },
+    {
+      "signer": "05bd4152ace63b1b2ac3353f4eb6b0bcfa5add9e984c6",
+      "earned": 2800,
+      "slashed": 0
+    },
+    {
+      "signer": "2cWcT87bC3q3ToWtiYqAxD4DQxhqxNB7dHuk4HNBPZcw",
+      "earned": 2000,
+      "slashed": 0
+    },
+    {
+      "signer": "3REF8LzdzijJLaT6PQb646MU1npVzTpn8KWCfnzxMYQ1",
+      "earned": 1000,
+      "slashed": 0
+    },
+    {
+      "signer": "b1e23a6bd851553f2ac3353f4eb6b0bcfa5add9e984c6",
+      "earned": 0,
+      "slashed": 200
+    }
   ],
   "security": {
     "audit_probability": 0.1,
@@ -26,5 +50,6 @@
     "expected_fraud_value_per_round": -0.76,
     "economically_secure": true
   },
-  "generated_at": "2026-07-24T00:00:00Z"
+  "generated_at": "2026-07-24T00:00:00Z",
+  "fixture": true
 }
