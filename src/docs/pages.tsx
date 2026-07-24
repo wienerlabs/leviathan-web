@@ -632,6 +632,84 @@ telemetry -> web`}</Pre>
     ),
   },
   {
+    path: '/docs/protocol/committee-vote',
+    title: 'Committee vote',
+    description: 'Slashing by a bonded verifier quorum, not one key.',
+    body: (
+      <>
+        <H1>Committee vote</H1>
+        <Lead>
+          Conviction is no longer a single authority. A cheat is slashed only when
+          a quorum of independent bonded verifiers reaches the same verdict. Live
+          on devnet.
+        </Lead>
+        <H2 id="why">Why a committee</H2>
+        <P>
+          The earlier slash was gated on the run authority: one key decided who was
+          punished. That works, but it is a single point of trust, and the thesis
+          is that you should not have to trust one party. The committee replaces
+          that one key with a two thirds quorum of the verifiers assigned to audit
+          a target.
+        </P>
+        <H2 id="how">How it works</H2>
+        <Ol>
+          <Li>
+            Verifiers are assigned to targets by the on-chain audit lottery,
+            deterministically from the round seed.
+          </Li>
+          <Li>
+            An assigned verifier that finds fraud calls{' '}
+            <Code>run_submit_audit_verdict</Code>. The instruction is permissionless
+            but gated: the caller must be bonded, must be an assigned verifier for
+            the current epoch, and may vote once per target.
+          </Li>
+          <Li>
+            When the verdict count reaches the two thirds quorum, the treasurer
+            fires the existing Run-PDA-signed slash. Everything below the slash
+            (eject, epoch-end penalty) is unchanged.
+          </Li>
+        </Ol>
+        <P>
+          The whole layer lives in the treasurer program; the coordinator's
+          zero-copy account is untouched, so there is no migration.
+        </P>
+        <H2 id="bounty">The bounty pays the committee</H2>
+        <P>
+          A verifier has to post a bond and pay the replay cost, so it needs a
+          reason to participate. When a slash resolves, the forfeited bond's bounty
+          is split equally among the verifiers that voted, and each recipient is
+          checked to be one of the actual voters. This is what turns the security
+          layer into a self-funding economy rather than volunteer work.
+        </P>
+        <Note>
+          The committee economics carry a finding: the bond that keeps verifiers
+          profitable is larger than the bond that merely deters a cheater. See{' '}
+          <A href="/docs/protocol/economics">Economics</A>.
+        </Note>
+        <H2 id="daemon">The verifier daemon votes</H2>
+        <P>
+          The verifier daemon runs the whole loop as one process: it reads the live
+          coordinator account, replay-audits committed contributions, and on a fraud
+          verdict submits a vote instead of a unilateral slash. Because it votes,
+          one daemon cannot convict on its own, which is the point. Run it with{' '}
+          <Code>--verdict</Code> as one bonded verifier in the committee.
+        </P>
+        <H2 id="verified">Verified live</H2>
+        <P>
+          On devnet with three bonded clients and two verifiers at quorum two: one
+          verifier's vote leaves the target healthy, and the second reaches quorum,
+          ejects the target, and settles the slash at epoch end. The same flow is
+          proven deterministically in memnet against the real program.
+        </P>
+        <P>
+          Related: <A href="/docs/protocol/security">Security model</A>,{' '}
+          <A href="/docs/protocol/verification">Verification</A>,{' '}
+          <A href="/docs/developer/run-a-node">Run a training node</A>.
+        </P>
+      </>
+    ),
+  },
+  {
     path: '/docs/protocol/economics',
     title: 'Economics',
     description: 'Proof of Gradient, bonds, flywheel.',
