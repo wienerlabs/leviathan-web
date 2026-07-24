@@ -1,5 +1,12 @@
 [
   {
+    "slug": "bond-was-too-low",
+    "title": "Leviathan: I found my own number was wrong",
+    "description": "Committee economics shows the published break-even bond was about 3.6x too low: verifier pay, not only cheater deterrence, sets the binding floor. For three verifiers: $2.91 becomes $10.55.",
+    "date": "2026-07-24",
+    "dateLabel": "24 July 2026"
+  },
+  {
     "slug": "verifier-needs-to-eat",
     "title": "Leviathan: the cheat hunter needs to eat too",
     "description": "Caught cheaters now fund the jury: the forfeited bond is split equally across the verifiers that voted, with on-chain recipient checks and the old single-reporter path left intact.",
