@@ -71,6 +71,11 @@ Regenerate cards locally:
 npm run og:generate
 ```
 
+That also rebuilds X-style link preview mockups under `public/previews/`
+(per-post cards + stack + grid). Every new blog post must ship with those
+previews; `npm run build` runs the same pipeline.
+
+
 ## Links
 
 - Network: https://github.com/wienerlabs/leviathan-net
