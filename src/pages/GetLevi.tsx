@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import SiteHeader from '../components/SiteHeader'
 import ContractBar from '../components/levi/ContractBar'
@@ -72,12 +73,13 @@ export default function GetLevi() {
               Status
             </p>
             <p className="text-[22px] sm:text-[26px] leading-tight font-medium">
-              Coming soon
+              Mint live · pool pending
             </p>
           </div>
           <p className="text-[14px] sm:text-[15px] leading-relaxed text-white/70 max-w-[36rem]">
-            $LEVI is not live yet. This page is a preview of markets, swap and
-            staking. Do not treat it as a launched token or an offer to buy.
+            $LEVI mint is on Solana. No liquidity pool is connected yet, so
+            market cards may show TBA. Swap links use the mint address when you
+            are ready to route.
           </p>
         </motion.div>
 
@@ -108,6 +110,22 @@ export default function GetLevi() {
               <span className="inline-flex h-10 items-center rounded-full border border-black/15 px-4 text-[14px] text-black/60">
                 Supply {LEVI.supplyShort}
               </span>
+            </div>
+            <div className="mt-5 sm:mt-6 flex flex-wrap gap-2.5">
+              <Link
+                to="/docs/protocol/tokenomics"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-black px-6 text-[15px] font-medium text-white hover:bg-black/80 transition-colors"
+              >
+                Tokenomics
+              </Link>
+              <a
+                href={`https://solscan.io/token/${LEVI.mint}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-black px-6 text-[15px] font-medium hover:bg-black hover:text-white transition-colors"
+              >
+                View mint
+              </a>
             </div>
           </div>
 

@@ -8,7 +8,10 @@ export const LEVI = {
   pair: 'LEVI / SOL',
   supply: '1,000,000,000',
   supplyShort: '1B',
-  mint: (import.meta.env.VITE_LEVI_MINT as string | undefined)?.trim() || '',
+  logo: '/logos/levi.png',
+  mint:
+    (import.meta.env.VITE_LEVI_MINT as string | undefined)?.trim() ||
+    'LeViePUwqFYuKzA5sDXHkU2Jec1xwDn8Tdk55ecSqvv',
   explorerBase: 'https://solscan.io/token/',
   jupiterBase: 'https://jup.ag/swap/SOL-',
   raydiumBase: 'https://raydium.io/swap/?inputMint=sol&outputMint=',

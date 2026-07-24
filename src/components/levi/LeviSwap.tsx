@@ -16,7 +16,7 @@ function TokenBadge({
           src={logo}
           alt=""
           className={[
-            'h-full w-full object-contain',
+            'h-full w-full object-cover',
             logo.includes('mascot') ? 'theme-mark' : '',
           ]
             .filter(Boolean)
@@ -42,11 +42,12 @@ export default function LeviSwap() {
     return `https://jup.ag/swap/${mint}-SOL`
   }, [mint, side])
 
+  const leviLogo = LEVI.logo
   const pay = side === 'buy'
     ? { symbol: 'SOL', logo: '/logos/solana.png' }
-    : { symbol: 'LEVI', logo: '/mascot.png' }
+    : { symbol: 'LEVI', logo: leviLogo }
   const receive = side === 'buy'
-    ? { symbol: 'LEVI', logo: '/mascot.png' }
+    ? { symbol: 'LEVI', logo: leviLogo }
     : { symbol: 'SOL', logo: '/logos/solana.png' }
 
   return (
@@ -152,11 +153,11 @@ export default function LeviSwap() {
             </>
           ) : (
             <>
-              <span className="h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white p-1 flex items-center justify-center">
+              <span className="h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white p-0.5 flex items-center justify-center">
                 <img
-                  src="/mascot.png"
+                  src={LEVI.logo}
                   alt=""
-                  className="theme-mark h-full w-full object-contain"
+                  className="h-full w-full object-cover rounded-full"
                   width={28}
                   height={28}
                 />
