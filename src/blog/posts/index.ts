@@ -1,5 +1,6 @@
 import type { BlogPost } from '../types'
 import { BLOG_CATALOG } from '../catalog'
+import { bondCanActuallyBePosted } from './bond-can-actually-be-posted'
 import { bondWasTooLow } from './bond-was-too-low'
 import { cheatCatchingMachineIsLive } from './cheat-catching-machine-is-live'
 import { verifierNeedsToEat } from './verifier-needs-to-eat'
@@ -9,6 +10,7 @@ import { verifierAsJuryMember } from './verifier-as-jury-member'
 import { verifierDaemonFusion } from './verifier-daemon-fusion'
 
 export const BLOG_POSTS: BlogPost[] = [
+  bondCanActuallyBePosted,
   bondWasTooLow,
   verifierNeedsToEat,
   juryExecutedOnDevnet,

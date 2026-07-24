@@ -1,5 +1,12 @@
 [
   {
+    "slug": "bond-can-actually-be-posted",
+    "title": "Leviathan: the bond can finally actually be posted",
+    "description": "Bond deposit is no longer library-only. Four run-manager commands plus leviathan-node.sh --bond let a volunteer wallet fund collateral on live devnet before joining a run.",
+    "date": "2026-07-24",
+    "dateLabel": "24 July 2026"
+  },
+  {
     "slug": "bond-was-too-low",
     "title": "Leviathan: I found my own number was wrong",
     "description": "Committee economics shows the published break-even bond was about 3.6x too low: verifier pay, not only cheater deterrence, sets the binding floor. For three verifiers: $2.91 becomes $10.55.",
