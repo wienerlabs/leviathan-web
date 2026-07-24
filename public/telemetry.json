@@ -1,55 +1,39 @@
 {
   "run_id": "leviathan-devnet",
-  "run_state": "RoundTrain",
-  "epoch": 3,
-  "step": 42,
-  "registered_clients": 6,
-  "active_clients": 5,
-  "total_earned": 12000,
-  "total_slashed": 200,
-  "convicted_clients": 1,
-  "verification_percent": 67,
-  "audit_probability": 0.1,
-  "expected_rounds_to_catch": 10,
+  "run_state": "Witness",
+  "epoch": 2,
+  "step": 40,
+  "registered_clients": 3,
+  "active_clients": 1,
+  "total_earned": 1000,
+  "total_slashed": 0,
+  "convicted_clients": 0,
+  "verification_percent": 0,
+  "audit_probability": 0.0,
+  "expected_rounds_to_catch": null,
   "leaderboard": [
     {
-      "signer": "9n7v7um3LyvqnDRmB9JmyWgjwqAG3ZU3cLhvZRT6R5s4",
-      "earned": 3200,
-      "slashed": 0
-    },
-    {
-      "signer": "6fecea42d851553f2ac3353f4eb6b0bcfa5add9e984c6",
-      "earned": 3000,
-      "slashed": 0
-    },
-    {
-      "signer": "05bd4152ace63b1b2ac3353f4eb6b0bcfa5add9e984c6",
-      "earned": 2800,
-      "slashed": 0
-    },
-    {
-      "signer": "2cWcT87bC3q3ToWtiYqAxD4DQxhqxNB7dHuk4HNBPZcw",
-      "earned": 2000,
-      "slashed": 0
-    },
-    {
-      "signer": "3REF8LzdzijJLaT6PQb646MU1npVzTpn8KWCfnzxMYQ1",
+      "signer": "05bd4152792ef4655db712ceee83b04483f733dc55806197004e32d03aeb0328",
       "earned": 1000,
       "slashed": 0
     },
     {
-      "signer": "b1e23a6bd851553f2ac3353f4eb6b0bcfa5add9e984c6",
+      "signer": "6fecea42d7ba07d65506df55759d103746f13a9fd41396ef930e822a212fa27d",
       "earned": 0,
-      "slashed": 200
+      "slashed": 0
+    },
+    {
+      "signer": "f5cecaedd5fbc9b4df9e5b550936e7a74b81dfce8b3f51e69cc738a6fc836bb7",
+      "earned": 0,
+      "slashed": 0
     }
   ],
   "security": {
-    "audit_probability": 0.1,
-    "break_even_penalty": 2.91,
+    "audit_probability": 0.0,
+    "break_even_penalty": null,
     "effective_penalty": 10.55,
-    "expected_fraud_value_per_round": -0.76,
-    "economically_secure": true
+    "expected_fraud_value_per_round": 0.324,
+    "economically_secure": false
   },
-  "generated_at": "2026-07-24T00:00:00Z",
-  "fixture": true
+  "generated_at": "2026-07-24T15:45:10Z"
 }
