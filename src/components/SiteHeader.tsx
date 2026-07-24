@@ -74,17 +74,10 @@ export default function SiteHeader({
           </Link>
           <Link
             to="/get-levi"
-            className={`${btnSolid} hidden sm:inline-flex`}
+            className={btnSolid}
             aria-current={onLevi ? 'page' : undefined}
           >
             Get $LEVI
-          </Link>
-          <Link
-            to="/get-levi"
-            className={`${btnSolid} sm:hidden`}
-            aria-current={onLevi ? 'page' : undefined}
-          >
-            $LEVI
           </Link>
           <button
             type="button"

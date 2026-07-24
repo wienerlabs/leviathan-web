@@ -17,8 +17,8 @@ from pathlib import Path
 try:
     from PIL import Image, ImageDraw, ImageFont
 except ImportError:
-    print("Pillow required: pip install Pillow", file=sys.stderr)
-    sys.exit(1)
+    print("skip link previews: Pillow not installed (pip install Pillow)", file=sys.stderr)
+    sys.exit(0)
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "src" / "blog" / "catalog.json"
