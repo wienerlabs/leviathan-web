@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { DOCS_DEFAULT, DOCS_NAV, docsNeighbors, flatDocsNav } from './nav'
 import { getDocsPage } from './pages'
-import ThemeToggle from '../components/ThemeToggle'
+import SiteHeader from '../components/SiteHeader'
 
 export default function DocsLayout() {
   const location = useLocation()
@@ -25,68 +25,7 @@ export default function DocsLayout() {
 
   return (
     <div className="min-h-screen bg-white text-black font-manrope">
-      <header className="sticky top-0 z-40 border-b border-black/10 bg-white/90 backdrop-blur-md">
-        <div className="mx-auto flex h-14 md:h-16 max-w-[1400px] items-center justify-between px-4 md:px-6">
-          <div className="flex items-center gap-3 md:gap-4">
-            <button
-              type="button"
-              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-black text-[14px]"
-              onClick={() => setOpen((v) => !v)}
-              aria-label="Toggle documentation menu" aria-expanded={open}
-            >
-              <span aria-hidden="true">{open ? '×' : '☰'}</span>
-            </button>
-            <Link to="/" className="flex items-center gap-2.5">
-              <img
-                src="/mascot.png"
-                alt=""
-                className="theme-mark h-9 w-9 object-contain"
-              />
-              <span className="text-[17px] md:text-[19px] font-semibold tracking-tight">
-                Leviathan
-              </span>
-            </Link>
-            <span className="hidden sm:inline text-black/25">/</span>
-            <Link
-              to={DOCS_DEFAULT}
-              className="hidden sm:inline text-[15px] md:text-[17px] text-black/60 hover:text-black"
-            >
-              Docs
-            </Link>
-          </div>
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <ThemeToggle />
-            <Link
-              to="/dashboard"
-              className="hidden sm:inline-flex h-9 items-center justify-center rounded-full border border-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/blog"
-              className="hidden sm:inline-flex h-9 items-center justify-center rounded-full border border-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
-            >
-              Blog
-            </Link>
-            <a
-              href="https://github.com/wienerlabs/leviathan-net"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex h-9 items-center justify-center rounded-full border border-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium hover:bg-black hover:text-white transition-colors"
-            >
-              <span className="sm:hidden">Git</span>
-              <span className="hidden sm:inline">GitHub</span>
-            </a>
-            <Link
-              to="/get-levi"
-              className="inline-flex h-9 items-center justify-center rounded-full bg-black px-3 sm:px-5 text-[13px] sm:text-[15px] md:text-[17px] font-medium text-white hover:bg-black/80 transition-colors"
-            >
-              <span className="sm:hidden">$LEVI</span>
-              <span className="hidden sm:inline">Get $LEVI</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader variant="sticky" />
 
       <div className="mx-auto flex max-w-[1400px]">
         <aside
@@ -139,6 +78,15 @@ export default function DocsLayout() {
 
         <main className="min-w-0 flex-1 px-4 sm:px-5 py-8 md:px-10 md:py-12 lg:px-14 w-full overflow-x-hidden">
           <div className="mx-auto max-w-[820px] w-full min-w-0">
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              className="lg:hidden mb-6 inline-flex h-10 items-center gap-2 rounded-full border border-black px-4 text-[14px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              <span aria-hidden="true">☰</span>
+              Docs menu
+            </button>
             <p className="mb-3 text-[14px] text-black/45 tracking-[0.06em]">
               {groupTitle}
             </p>
