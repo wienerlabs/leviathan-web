@@ -2,8 +2,8 @@
 // Reports whether the caller has a valid verified-identity session cookie, and
 // if so returns the public-safe fields the page shows. The X id stays server-side.
 
-import { SESSION_COOKIE, readEnv, verifySession } from './_lib/auth'
-import { json, parseCookies } from './_lib/http'
+import { SESSION_COOKIE, readEnv, verifySession } from '../_lib/auth'
+import { json, parseCookies } from '../_lib/http'
 
 export default async function handler(req: Request): Promise<Response> {
   const env = readEnv()
@@ -29,4 +29,4 @@ export default async function handler(req: Request): Promise<Response> {
   })
 }
 
-export const config = { path: '/api/waitlist/session' }
+export const config = { runtime: 'edge' }

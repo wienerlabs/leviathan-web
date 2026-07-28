@@ -3,9 +3,9 @@
 // from the request body, so the client cannot claim to be someone else. Idempotent:
 // the same X account can resubmit to update its email/role.
 
-import { SESSION_COOKIE, missingEnv, readEnv, verifySession } from './_lib/auth'
-import { json, parseCookies } from './_lib/http'
-import { countWaitlist, upsertWaitlistEntry } from './_lib/supabase'
+import { SESSION_COOKIE, missingEnv, readEnv, verifySession } from '../_lib/auth'
+import { json, parseCookies } from '../_lib/http'
+import { countWaitlist, upsertWaitlistEntry } from '../_lib/supabase'
 
 const ALLOWED_ROLES = new Set([
   'gpu',
@@ -84,4 +84,4 @@ export default async function handler(req: Request): Promise<Response> {
   return json({ ok: true, count, username: identity.username })
 }
 
-export const config = { path: '/api/waitlist/submit', method: ['POST'] }
+export const config = { runtime: 'edge' }

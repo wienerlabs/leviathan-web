@@ -3,9 +3,9 @@
 // Returns { count: 0 } (never an error) when storage isn't configured yet, so
 // the UI can show it unconditionally.
 
-import { missingEnv, readEnv } from './_lib/auth'
-import { json } from './_lib/http'
-import { countWaitlist } from './_lib/supabase'
+import { missingEnv, readEnv } from '../_lib/auth'
+import { json } from '../_lib/http'
+import { countWaitlist } from '../_lib/supabase'
 
 export default async function handler(): Promise<Response> {
   const env = readEnv()
@@ -19,4 +19,4 @@ export default async function handler(): Promise<Response> {
   }
 }
 
-export const config = { path: '/api/waitlist/count' }
+export const config = { runtime: 'edge' }

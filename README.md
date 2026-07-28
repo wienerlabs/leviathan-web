@@ -39,8 +39,8 @@ npm run preview
 ## Waitlist
 
 The `/waitlist` page verifies each signup with X (Twitter) via OAuth 2.0 and
-stores verified entries in Supabase. All logic lives in Netlify Functions under
-`netlify/functions/`; the browser only ever talks to same-origin `/api/...` routes,
+stores verified entries in Supabase. All logic lives in Vercel edge functions
+under `api/waitlist/`; the browser only ever talks to same-origin `/api/...` routes,
 so no secrets reach the client. The X identity is carried in a signed, HttpOnly
 cookie and re-checked server-side on submit, so a spot can't be claimed for an
 account the user didn't actually authenticate.
@@ -53,8 +53,8 @@ account the user didn't actually authenticate.
    redirect URLs (exact match). Copy the Client ID and Client Secret.
 2. **Supabase** — create a project, then run `supabase/schema.sql` in the SQL
    editor. Copy the project URL and the service-role key (Settings > API).
-3. **Env** — set the variables from `.env.example` in Netlify (Site
-   configuration > Environment variables). Generate the session secret with
+3. **Env** — set the variables from `.env.example` in Vercel (Project >
+   Settings > Environment Variables). Generate the session secret with
    `openssl rand -base64 32`.
 4. Redeploy. Until every variable is set, the page shows a friendly "not
    configured yet" state instead of erroring.
@@ -83,7 +83,7 @@ X/Twitter shows a large preview when you paste the link.
 
 ### Share a post
 
-1. Deploy main (Netlify).
+1. Deploy main (Vercel).
 2. Open the post URL, e.g. `https://leviathan.run/blog/verifier-daemon-fusion`.
 3. Paste that URL into X. Card fields:
    - **Title** from `catalog.json` → `title`

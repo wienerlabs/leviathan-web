@@ -13,14 +13,14 @@ import {
   readEnv,
   signSession,
   verifyOAuthState,
-} from './_lib/auth'
+} from '../../_lib/auth'
 import {
   clearCookie,
   parseCookies,
   serializeCookie,
   waitlistRedirect,
-} from './_lib/http'
-import { exchangeCode, fetchTwitterUser } from './_lib/twitter'
+} from '../../_lib/http'
+import { exchangeCode, fetchTwitterUser } from '../../_lib/twitter'
 
 export default async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url)
@@ -89,4 +89,4 @@ export default async function handler(req: Request): Promise<Response> {
   }
 }
 
-export const config = { path: '/api/waitlist/twitter/callback' }
+export const config = { runtime: 'edge' }

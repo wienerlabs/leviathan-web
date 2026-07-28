@@ -9,10 +9,10 @@ import {
   missingEnv,
   readEnv,
   signOAuthState,
-} from './_lib/auth'
-import { redirect, serializeCookie, waitlistRedirect } from './_lib/http'
-import { buildAuthorizeUrl } from './_lib/twitter'
-import { pkceChallengeFromVerifier, randomToken } from './_lib/webcrypto'
+} from '../../_lib/auth'
+import { redirect, serializeCookie, waitlistRedirect } from '../../_lib/http'
+import { buildAuthorizeUrl } from '../../_lib/twitter'
+import { pkceChallengeFromVerifier, randomToken } from '../../_lib/webcrypto'
 
 export default async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url)
@@ -45,4 +45,4 @@ export default async function handler(req: Request): Promise<Response> {
   return redirect(authorizeUrl, [cookie])
 }
 
-export const config = { path: '/api/waitlist/twitter/start' }
+export const config = { runtime: 'edge' }
