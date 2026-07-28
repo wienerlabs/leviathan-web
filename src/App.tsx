@@ -6,6 +6,7 @@ import { DOCS_DEFAULT } from './docs/nav'
 import { ThemeProvider } from './theme/ThemeProvider'
 
 const GetLevi = lazy(() => import('./pages/GetLevi'))
+const WaitlistPage = lazy(() => import('./pages/Waitlist'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const DocsLayout = lazy(() => import('./docs/DocsLayout'))
 const BlogIndex = lazy(() => import('./blog/BlogIndex'))
@@ -28,6 +29,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/get-levi" element={<GetLevi />} />
+            <Route path="/waitlist" element={<WaitlistPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/blog" element={<BlogIndex />} />
             <Route path="/blog/:slug" element={<BlogPost />} />

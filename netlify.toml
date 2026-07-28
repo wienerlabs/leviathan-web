@@ -1,0 +1,42 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
+
+# --- Redirects (mirror the former vercel.json rewrites) ---------------------
+# Function routes (config.path in netlify/functions/*.mts) and real static files
+# (/assets/*, /og/*.png) take precedence over these rewrites, so only unmatched
+# paths fall through.
+
+# Pre-rendered blog HTML carrying crawler meta.
+[[redirects]]
+  from = "/blog"
+  to = "/blog/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog/:slug"
+  to = "/blog/:slug/index.html"
+  status = 200
+
+# SPA fallback for all client-side routes (/waitlist, /get-levi, /dashboard, …).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# --- Headers (mirror the former vercel.json caching) -----------------------
+[[headers]]
+  for = "/og/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/blog/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

@@ -831,12 +831,12 @@ export default function Content() {
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
-              <a
-                href="#waitlist"
+              <Link
+                to="/waitlist"
                 className="inline-flex items-center justify-center h-12 px-6 rounded-full border border-black text-[15px] font-medium hover:bg-black hover:text-white transition-colors duration-200"
               >
                 Waitlist
-              </a>
+              </Link>
               <a
                 href="https://x.com/leviathanfront"
                 target="_blank"

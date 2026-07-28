@@ -36,6 +36,38 @@ npm run build
 npm run preview
 ```
 
+## Waitlist
+
+The `/waitlist` page verifies each signup with X (Twitter) via OAuth 2.0 and
+stores verified entries in Supabase. All logic lives in Netlify Functions under
+`netlify/functions/`; the browser only ever talks to same-origin `/api/...` routes,
+so no secrets reach the client. The X identity is carried in a signed, HttpOnly
+cookie and re-checked server-side on submit, so a spot can't be claimed for an
+account the user didn't actually authenticate.
+
+### One-time setup
+
+1. **X app** — at https://developer.x.com create an app with OAuth 2.0 ("Web
+   App" / confidential client). Scopes: `tweet.read`, `users.read`. Add the
+   callback `https://YOUR-DOMAIN/api/waitlist/twitter/callback` to the app's
+   redirect URLs (exact match). Copy the Client ID and Client Secret.
+2. **Supabase** — create a project, then run `supabase/schema.sql` in the SQL
+   editor. Copy the project URL and the service-role key (Settings > API).
+3. **Env** — set the variables from `.env.example` in Netlify (Site
+   configuration > Environment variables). Generate the session secret with
+   `openssl rand -base64 32`.
+4. Redeploy. Until every variable is set, the page shows a friendly "not
+   configured yet" state instead of erroring.
+
+### Flow
+
+`Connect X` → `/api/waitlist/twitter/start` (PKCE verifier + state in a signed
+cookie) → X authorize → `/api/waitlist/twitter/callback` (verifies state,
+exchanges the code, reads the profile, sets a signed identity cookie) → back on
+`/waitlist` the user adds an optional email + role and submits to
+`/api/waitlist/submit`, which trusts the cookie identity (never the request
+body) and upserts into Supabase keyed on the X user id.
+
 ## Blog and X cards
 
 Each blog post gets a LaTeX-style Open Graph card (title + summary + date) so
@@ -51,7 +83,7 @@ X/Twitter shows a large preview when you paste the link.
 
 ### Share a post
 
-1. Deploy main (Vercel).
+1. Deploy main (Netlify).
 2. Open the post URL, e.g. `https://leviathan.run/blog/verifier-daemon-fusion`.
 3. Paste that URL into X. Card fields:
    - **Title** from `catalog.json` → `title`

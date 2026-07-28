@@ -1,6 +1,6 @@
-export const config = {
-  runtime: 'edge',
-}
+// GET /api/og?slug=...
+// Redirects to the static Open Graph card for a blog post (or the default card).
+// The cards themselves are pre-generated at build time under /og/*.png.
 
 type BlogMeta = {
   slug: string
@@ -17,7 +17,7 @@ async function loadSlugs(origin: string): Promise<Set<string>> {
   }
 }
 
-export default async function handler(req: Request) {
+export default async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url)
   const slug = (url.searchParams.get('slug') || '').trim()
   const slugs = await loadSlugs(url.origin)
@@ -38,3 +38,5 @@ export default async function handler(req: Request) {
     headers: { 'content-type': 'text/plain; charset=utf-8' },
   })
 }
+
+export const config = { path: '/api/og' }
