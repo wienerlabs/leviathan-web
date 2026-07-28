@@ -1,6 +1,7 @@
 import type { BlogPost } from '../types'
 import { BLOG_CATALOG } from '../catalog'
 import { appealsCourtForWrongfulConvictions } from './appeals-court-for-wrongful-convictions'
+import { daemonRecomputesItsOwnTruth } from './daemon-recomputes-its-own-truth'
 import { tieBreakersNeedToEatToo } from './tie-breakers-need-to-eat-too'
 import { bondCanActuallyBePosted } from './bond-can-actually-be-posted'
 import { bondWasTooLow } from './bond-was-too-low'
@@ -12,6 +13,7 @@ import { verifierAsJuryMember } from './verifier-as-jury-member'
 import { verifierDaemonFusion } from './verifier-daemon-fusion'
 
 export const BLOG_POSTS: BlogPost[] = [
+  daemonRecomputesItsOwnTruth,
   tieBreakersNeedToEatToo,
   appealsCourtForWrongfulConvictions,
   bondCanActuallyBePosted,

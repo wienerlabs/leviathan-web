@@ -1,5 +1,12 @@
 [
   {
+    "slug": "daemon-recomputes-its-own-truth",
+    "title": "Leviathan: the daemon recomputes its own truth",
+    "description": "The verifier daemon no longer needs a published honest dump. An optional replay engine recomputes each target's contribution from the epoch roster; memnet convicts a real forged dump with zero reference files and settles the slash on chain.",
+    "date": "2026-07-28",
+    "dateLabel": "28 July 2026"
+  },
+  {
     "slug": "tie-breakers-need-to-eat-too",
     "title": "Leviathan: the appeals bench needs to eat too",
     "description": "Tie-breakers now earn a symmetric bounty from whoever lost the appeal. First cut paid only on overturn and would have biased the vote; fixed same day so honest adjudication is the Schelling point.",
