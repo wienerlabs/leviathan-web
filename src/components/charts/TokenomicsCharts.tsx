@@ -208,7 +208,7 @@ function AllocationDonut() {
       meta={
         <div className="flex gap-3">
           <MetricPill label="Rewards" value="35%" hint="Primary emission" />
-          <MetricPill label="Team" value="25%" hint="1y cliff · 3y linear" />
+          <MetricPill label="Team" value="25%" hint="250M Streamflow vest" />
         </div>
       }
       heightClass="h-[380px] md:h-[420px]"

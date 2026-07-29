@@ -953,8 +953,8 @@ telemetry -> web`}</Pre>
             [
               'Team',
               '25%',
-              '1y cliff, 3y linear',
-              'Build and operate',
+              'Streamflow vest · 1y cliff, 3y linear',
+              'Build and operate · 250M locked on-chain',
             ],
             [
               'Early contributors / community',
@@ -976,6 +976,30 @@ telemetry -> web`}</Pre>
           largest single bucket (35% &gt; 25%), so the thesis that the network
           that trains the model holds the primary emission share still holds.
         </Note>
+        <H3 id="team-vest">Team lock on Streamflow</H3>
+        <P>
+          250,000,000 $LEVI (the full 25% team allocation) is being vested with{' '}
+          <A href="https://app.streamflow.finance">Streamflow</A> - fully locked
+          and unlocking transparently over time. Trustless. Transparent.
+          On-chain.
+        </P>
+        <Ul>
+          <Li>
+            Live stream:{' '}
+            <A href="https://app.streamflow.finance/contract/solana/mainnet/8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX">
+              <Code>8imUz6ed…qyfX</Code>
+            </A>
+          </Li>
+          <Li>
+            Explorer:{' '}
+            <A href="https://solscan.io/account/8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX">
+              Solscan
+            </A>
+          </Li>
+          <Li>
+            Markets page surfaces the same streams under Get $LEVI.
+          </Li>
+        </Ul>
         <P>
           Emission is not a fixed block subsidy. Each run configures epoch
           earning rates on the coordinator; the treasury tops up the run vault.

@@ -30,7 +30,7 @@ export const ALLOCATION: AllocationSlice[] = [
     short: 'Team',
     share: 25,
     fill: '#404040',
-    purpose: 'Build and operate (1y cliff, 3y linear)',
+    purpose: 'Build and operate · Streamflow vest (1y cliff, 3y linear)',
   },
   {
     key: 'audit',
@@ -212,7 +212,7 @@ export const TOKENOMICS_KPIS = [
   {
     label: 'Team',
     value: '25%',
-    hint: 'From 15% (+10pp from rewards)',
+    hint: '250M on Streamflow vest',
   },
   {
     label: 'Genesis bond @ p=0.1',
@@ -228,3 +228,38 @@ export const presetOperatingData = PRESET_ECONOMICS.map((p) => ({
   reward: Number(p.roundRewardUsd.toFixed(4)),
   bond: Number(p.bondAtP10Usd.toFixed(4)),
 }))
+
+export type VestStream = {
+  id: string
+  label: string
+  address: string
+  status: 'live' | 'pending'
+}
+
+export const TEAM_VEST = {
+  provider: 'Streamflow',
+  providerUrl: 'https://app.streamflow.finance',
+  amount: 250_000_000,
+  amountLabel: '250,000,000',
+  shareOfSupply: 25,
+  schedule: '1y cliff, 3y linear',
+  summary:
+    '250,000,000 $LEVI tokens are being vested with Streamflow - fully locked and unlocking transparently over time. Trustless. Transparent. On-chain.',
+  streams: [
+    {
+      id: 'team-1',
+      label: 'Team stream 1',
+      address: '8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX',
+      status: 'live' as const,
+    },
+  ] satisfies VestStream[],
+} as const
+
+export function streamflowContractUrl(address: string): string {
+  return `https://app.streamflow.finance/contract/solana/mainnet/${address}`
+}
+
+export function vestExplorerUrl(address: string): string {
+  return `https://solscan.io/account/${address}`
+}
+

@@ -10,6 +10,7 @@ import WalletConnect from '../components/levi/WalletConnect'
 import LeviChart from '../components/levi/LeviChart'
 import LeviStake from '../components/levi/LeviStake'
 import TradeVenues from '../components/levi/TradeVenues'
+import TeamVest from '../components/levi/TeamVest'
 import {
   emptyMarket,
   fetchLeviMarket,
@@ -221,6 +222,7 @@ function GetLeviPage() {
           </div>
         </div>
 
+        <TeamVest />
         <LeviStake />
         <TradeVenues />
         <ContractBar position="bottom" />
