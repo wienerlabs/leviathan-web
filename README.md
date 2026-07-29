@@ -36,6 +36,24 @@ npm run build
 npm run preview
 ```
 
+## Solana RPC (`/get-levi`)
+
+The Get $LEVI page reads wallet balances and submits swaps over a Solana RPC
+endpoint, configured by **`VITE_SOLANA_RPC`**.
+
+This variable is **required in production**. With it unset, `SolanaProvider`
+falls back to Solana's public endpoint (`api.mainnet-beta.solana.com`), which
+refuses browser traffic and returns `403 Access forbidden` on every call —
+balances render empty and swaps fail.
+
+Use a dedicated provider (Helius, QuickNode, Alchemy, Triton), e.g.
+`https://mainnet.helius-rpc.com/?api-key=YOUR-KEY`, and set it in Vercel under
+Project > Settings > Environment Variables.
+
+Two things to remember: `VITE_*` values are inlined at **build** time, so a
+change only lands after a redeploy; and they ship inside the public JS bundle,
+so restrict the key by domain in the provider dashboard.
+
 ## Waitlist
 
 The `/waitlist` page verifies each signup with X (Twitter) via OAuth 2.0 and

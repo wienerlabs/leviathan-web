@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletReadyState } from '@solana/wallet-adapter-base'
+import { WalletReadyState, type WalletName } from '@solana/wallet-adapter-base'
 
 export function shortAddress(value: string, lead = 4, tail = 4) {
   if (value.length <= lead + tail + 1) return value
@@ -18,6 +18,10 @@ export default function WalletConnect({
     useWallet()
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Wallet the user just picked. select() is a state update, so the adapter is
+  // still unset in that same tick — connecting there throws WalletNotSelectedError.
+  // We wait for the adapter to actually switch, then connect.
+  const [pending, setPending] = useState<WalletName | null>(null)
 
   const installed = useMemo(
     () =>
@@ -32,6 +36,14 @@ export default function WalletConnect({
   useEffect(() => {
     if (connected) setOpen(false)
   }, [connected])
+
+  useEffect(() => {
+    if (!pending || wallet?.adapter.name !== pending) return
+    setPending(null)
+    connect().catch((e: unknown) => {
+      setError(e instanceof Error ? e.message : 'Could not connect')
+    })
+  }, [pending, wallet, connect])
 
   useEffect(() => {
     if (!open) return
@@ -131,16 +143,10 @@ export default function WalletConnect({
                   <li key={w.adapter.name}>
                     <button
                       type="button"
-                      onClick={async () => {
+                      onClick={() => {
                         setError(null)
-                        try {
-                          select(w.adapter.name)
-                          await connect().catch(() => undefined)
-                        } catch (e) {
-                          setError(
-                            e instanceof Error ? e.message : 'Could not connect',
-                          )
-                        }
+                        setPending(w.adapter.name)
+                        select(w.adapter.name)
                       }}
                       className="w-full inline-flex items-center gap-3 rounded-[18px] border border-black/15 px-4 py-3 text-left hover:border-black transition-colors"
                     >
