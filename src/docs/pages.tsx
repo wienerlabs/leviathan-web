@@ -985,16 +985,17 @@ telemetry -> web`}</Pre>
         </P>
         <Ul>
           <Li>
-            Live stream:{' '}
+            Stream 1:{' '}
             <A href="https://app.streamflow.finance/contract/solana/mainnet/8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX">
               <Code>8imUz6ed…qyfX</Code>
             </A>
           </Li>
           <Li>
-            Explorer:{' '}
-            <A href="https://solscan.io/account/8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX">
-              Solscan
+            Stream 2 (100M, monthly ~4.1666M):{' '}
+            <A href="https://app.streamflow.finance/contract/solana/mainnet/J1L8QzmHGChv3YKduRi2DN6bvtmev2tnjL51W7DnmDHZ">
+              <Code>J1L8QzmH…mDHZ</Code>
             </A>
+            . Next unlock 29 Aug 2026, 07:09 GMT+3.
           </Li>
           <Li>
             Markets page surfaces the same streams under Get $LEVI.

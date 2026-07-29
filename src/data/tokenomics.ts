@@ -234,6 +234,10 @@ export type VestStream = {
   label: string
   address: string
   status: 'live' | 'pending'
+  amountLabel?: string
+  unlockCadence?: string
+  unlockPerPeriodLabel?: string
+  nextUnlockLabel?: string
 }
 
 export const TEAM_VEST = {
@@ -251,6 +255,16 @@ export const TEAM_VEST = {
       label: 'Team stream 1',
       address: '8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX',
       status: 'live' as const,
+    },
+    {
+      id: 'team-2',
+      label: 'Team stream 2',
+      address: 'J1L8QzmHGChv3YKduRi2DN6bvtmev2tnjL51W7DnmDHZ',
+      status: 'live' as const,
+      amountLabel: '100,000,000',
+      unlockCadence: 'Monthly',
+      unlockPerPeriodLabel: '4.1666M LEVI / month',
+      nextUnlockLabel: '29 Aug 2026, 07:09 GMT+3',
     },
   ] satisfies VestStream[],
 } as const

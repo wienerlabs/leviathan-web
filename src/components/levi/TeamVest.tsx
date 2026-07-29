@@ -46,11 +46,14 @@ export default function TeamVest() {
             {TEAM_VEST.shareOfSupply}%
           </p>
           <p className="mt-1 text-[12px] text-black/45">{TEAM_VEST.schedule}</p>
+          <p className="mt-2 text-[12px] text-black/45">
+            {TEAM_VEST.streams.length} live streams
+          </p>
         </div>
       </div>
 
-      <div className="px-5 sm:px-8 py-6 sm:py-8 grid lg:grid-cols-[1.1fr_0.9fr] gap-5">
-        <div className="grid sm:grid-cols-3 gap-3">
+      <div className="px-5 sm:px-8 py-6 sm:py-8 grid lg:grid-cols-[1.05fr_0.95fr] gap-5">
+        <div className="grid sm:grid-cols-3 gap-3 content-start">
           {[
             {
               t: 'Trustless',
@@ -90,6 +93,7 @@ export default function TeamVest() {
                 <div className="min-w-0">
                   <p className="text-[12px] tracking-[0.07em] text-black/40 mb-1">
                     {s.label}
+                    {s.amountLabel ? ` · ${s.amountLabel} LEVI` : ''}
                   </p>
                   <p className="font-mono text-[13px] sm:text-[14px] tracking-tight break-all">
                     {s.address}
@@ -109,6 +113,38 @@ export default function TeamVest() {
                   {s.status === 'live' ? 'Live' : 'Pending'}
                 </span>
               </div>
+
+              {s.amountLabel || s.unlockCadence || s.unlockPerPeriodLabel || s.nextUnlockLabel ? (
+                <div className="mb-3 grid grid-cols-2 gap-2">
+                  {s.amountLabel ? (
+                    <div className="rounded-[14px] border border-black/10 px-3 py-2.5">
+                      <p className="text-[11px] text-black/40 mb-0.5">Total</p>
+                      <p className="text-[14px] font-medium tabular-nums">
+                        {s.amountLabel} LEVI
+                      </p>
+                    </div>
+                  ) : null}
+                  {s.unlockCadence ? (
+                    <div className="rounded-[14px] border border-black/10 px-3 py-2.5">
+                      <p className="text-[11px] text-black/40 mb-0.5">Unlock rate</p>
+                      <p className="text-[14px] font-medium">{s.unlockCadence}</p>
+                    </div>
+                  ) : null}
+                  {s.unlockPerPeriodLabel ? (
+                    <div className="rounded-[14px] border border-black/10 px-3 py-2.5">
+                      <p className="text-[11px] text-black/40 mb-0.5">Per period</p>
+                      <p className="text-[14px] font-medium">{s.unlockPerPeriodLabel}</p>
+                    </div>
+                  ) : null}
+                  {s.nextUnlockLabel ? (
+                    <div className="rounded-[14px] border border-black/10 px-3 py-2.5">
+                      <p className="text-[11px] text-black/40 mb-0.5">Next unlock</p>
+                      <p className="text-[14px] font-medium">{s.nextUnlockLabel}</p>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
@@ -138,8 +174,8 @@ export default function TeamVest() {
           ))}
           <p className="text-[13px] text-black/45 leading-relaxed px-1">
             Team allocation is {TEAM_VEST.amountLabel} $LEVI (
-            {TEAM_VEST.shareOfSupply}% of supply). Additional stream contracts
-            will appear here as they go live.
+            {TEAM_VEST.shareOfSupply}% of supply) across Streamflow contracts.
+            Stream 2 is 100M with monthly unlock (~4.1666M / month).
           </p>
         </div>
       </div>
