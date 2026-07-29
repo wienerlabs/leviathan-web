@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
+    "@solana/wallet-adapter-base": "^0.9.27",
+    "@solana/wallet-adapter-react": "^0.15.39",
+    "@solana/web3.js": "^1.98.4",
     "@types/katex": "^0.16.8",
     "@vercel/og": "^0.11.1",
     "katex": "^0.18.1",

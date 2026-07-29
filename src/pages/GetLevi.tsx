@@ -5,6 +5,8 @@ import SiteHeader from '../components/SiteHeader'
 import ContractBar from '../components/levi/ContractBar'
 import MarketCards from '../components/levi/MarketCards'
 import LeviSwap from '../components/levi/LeviSwap'
+import SolanaProvider from '../components/levi/SolanaProvider'
+import WalletConnect from '../components/levi/WalletConnect'
 import LeviChart from '../components/levi/LeviChart'
 import LeviStake from '../components/levi/LeviStake'
 import TradeVenues from '../components/levi/TradeVenues'
@@ -24,6 +26,14 @@ const META = [
 ] as const
 
 export default function GetLevi() {
+  return (
+    <SolanaProvider>
+      <GetLeviPage />
+    </SolanaProvider>
+  )
+}
+
+function GetLeviPage() {
   const [market, setMarket] = useState<MarketSnapshot>(emptyMarket())
   const [history, setHistory] = useState<PricePoint[]>([])
   const [loading, setLoading] = useState(Boolean(LEVI.mint))
@@ -87,6 +97,10 @@ export default function GetLevi() {
               Jupiter or Raydium; charts fill as indexers pick up the pair.
             </p>
             <div className="flex flex-wrap gap-2">
+              <WalletConnect
+                compact
+                className="!bg-white !text-black hover:!bg-white/90 border-white"
+              />
               <a
                 href={`${LEVI.raydiumBase}${LEVI.mint}`}
                 target="_blank"
