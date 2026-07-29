@@ -1001,6 +1001,15 @@ telemetry -> web`}</Pre>
             Markets page surfaces the same streams under Get $LEVI.
           </Li>
         </Ul>
+        <H3 id="squads-treasury">Squads treasury</H3>
+        <P>
+          Network treasury and mint authority sit behind a Squads multisig. The
+          live vault address is{' '}
+          <A href="https://app.squads.so/squads/ALxuDYPT5BYE5jWW5zF4BK8o1KXAwPcrt7SGdUspjNNr/home">
+            <Code>ALxuDYPT5BYE5jWW5zF4BK8o1KXAwPcrt7SGdUspjNNr</Code>
+          </A>
+          . Get $LEVI surfaces the same address next to mint and pool.
+        </P>
         <P>
           Emission is not a fixed block subsidy. Each run configures epoch
           earning rates on the coordinator; the treasury tops up the run vault.
@@ -1081,8 +1090,12 @@ telemetry -> web`}</Pre>
             decision.
           </Li>
           <Li>
-            TGE directly on Solana rails, no launchpad dependency: mint under the Squads multisig,
-            distributor for airdrop and vesting, public tokenomics page, no APY
+            TGE directly on Solana rails, no launchpad dependency: mint under the Squads
+            treasury multisig (
+            <A href="https://app.squads.so/squads/ALxuDYPT5BYE5jWW5zF4BK8o1KXAwPcrt7SGdUspjNNr/home">
+              <Code>ALxuDYPT…jNNr</Code>
+            </A>
+            ), distributor for airdrop and vesting, public tokenomics page, no APY
             marketing copy.
           </Li>
           <Li>

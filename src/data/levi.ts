@@ -22,6 +22,10 @@ export const LEVI = {
   raydiumPoolBase: 'https://raydium.io/liquidity-pools/?tab=all&pool_id=',
   dexscreenerBase: 'https://dexscreener.com/solana/',
   birdeyeBase: 'https://birdeye.so/token/',
+  squads:
+    (import.meta.env.VITE_LEVI_SQUADS as string | undefined)?.trim() ||
+    'ALxuDYPT5BYE5jWW5zF4BK8o1KXAwPcrt7SGdUspjNNr',
+  squadsAppBase: 'https://app.squads.so/squads/',
 } as const
 
 export type LeviVenue = {
@@ -131,6 +135,16 @@ export function explorerUrl(mint: string): string {
 export function poolExplorerUrl(pool: string): string {
   if (!pool) return 'https://solscan.io'
   return `${LEVI.poolExplorerBase}${pool}`
+}
+
+export function squadsAppUrl(address: string = LEVI.squads): string {
+  if (!address) return 'https://app.squads.so'
+  return `${LEVI.squadsAppBase}${address}/home`
+}
+
+export function accountExplorerUrl(address: string): string {
+  if (!address) return 'https://solscan.io'
+  return `${LEVI.poolExplorerBase}${address}`
 }
 
 type DexPair = {

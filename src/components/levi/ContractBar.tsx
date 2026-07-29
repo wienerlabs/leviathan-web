@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { motion } from 'motion/react'
 import {
   LEVI,
+  accountExplorerUrl,
   explorerUrl,
   poolExplorerUrl,
   shortAddress,
+  squadsAppUrl,
 } from '../../data/levi'
 
 export default function ContractBar({
@@ -12,11 +14,12 @@ export default function ContractBar({
 }: {
   position: 'top' | 'bottom'
 }) {
-  const [copied, setCopied] = useState<'mint' | 'pool' | null>(null)
+  const [copied, setCopied] = useState<'mint' | 'pool' | 'squads' | null>(null)
   const mint = LEVI.mint
   const pool = LEVI.pool
+  const squads = LEVI.squads
 
-  const copy = async (value: string, kind: 'mint' | 'pool') => {
+  const copy = async (value: string, kind: 'mint' | 'pool' | 'squads') => {
     if (!value) return
     try {
       await navigator.clipboard.writeText(value)
@@ -67,7 +70,7 @@ export default function ContractBar({
       </div>
 
       {pool ? (
-        <div className="px-4 sm:px-5 py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-black/[0.015]">
+        <div className="px-4 sm:px-5 py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-black/10 bg-black/[0.015]">
           <div className="min-w-0">
             <p className="text-[12px] tracking-[0.08em] text-black/40 mb-1">
               Raydium pool
@@ -102,6 +105,47 @@ export default function ContractBar({
               className="inline-flex h-11 items-center justify-center rounded-full bg-black px-5 text-[14px] font-medium text-white hover:bg-black/80 transition-colors"
             >
               Trade
+            </a>
+          </div>
+        </div>
+      ) : null}
+
+      {squads ? (
+        <div className="px-4 sm:px-5 py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[12px] tracking-[0.08em] text-black/40 mb-1">
+              Squads treasury
+            </p>
+            <p className="font-mono text-[14px] sm:text-[16px] tracking-tight truncate">
+              {squads}
+            </p>
+            <p className="text-[13px] text-black/45 mt-1">
+              Multisig vault · {shortAddress(squads, 6)}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => copy(squads, 'squads')}
+              className="inline-flex h-11 items-center justify-center rounded-full border border-black px-5 text-[14px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              {copied === 'squads' ? 'Copied' : 'Copy'}
+            </button>
+            <a
+              href={accountExplorerUrl(squads)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-black px-5 text-[14px] font-medium hover:bg-black hover:text-white transition-colors"
+            >
+              Explorer
+            </a>
+            <a
+              href={squadsAppUrl(squads)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-black px-5 text-[14px] font-medium text-white hover:bg-black/80 transition-colors"
+            >
+              Open Squads
             </a>
           </div>
         </div>
