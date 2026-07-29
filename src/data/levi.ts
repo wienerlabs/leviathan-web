@@ -115,6 +115,22 @@ export function formatUsd(value: number | null, digits = 2): string {
   return `$${value.toExponential(2)}`
 }
 
+/**
+ * Prices below a cent are the normal case for this token, and exponential
+ * notation reads as a rounding error rather than a price. Carry four
+ * significant digits as plain decimals instead.
+ */
+export function formatPrice(value: number | null): string {
+  if (value == null || !Number.isFinite(value)) return 'TBA'
+  if (value === 0) return '$0'
+  if (value >= 1) {
+    return `$${value.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
+  }
+  if (value >= 0.01) return `$${value.toFixed(4)}`
+  if (value >= 0.0001) return `$${value.toFixed(6)}`
+  return `$${value.toFixed(Math.min(12, Math.ceil(-Math.log10(value)) + 3))}`
+}
+
 export function formatPct(value: number | null): string {
   if (value == null || !Number.isFinite(value)) return 'n/a'
   const sign = value > 0 ? '+' : ''
@@ -176,18 +192,15 @@ function marketFromPair(top: DexPair): MarketSnapshot {
 export async function fetchLeviMarket(
   mint: string,
   pool = LEVI.pool,
-): Promise<{
-  market: MarketSnapshot
-  history: PricePoint[]
-}> {
-  if (!mint && !pool) {
-    return { market: emptyMarket(), history: [] }
-  }
+  signal?: AbortSignal,
+): Promise<MarketSnapshot> {
+  if (!mint && !pool) return emptyMarket()
 
   if (pool) {
     try {
       const pairRes = await fetch(
         `https://api.dexscreener.com/latest/dex/pairs/solana/${pool}`,
+        { signal },
       )
       if (pairRes.ok) {
         const pairJson = (await pairRes.json()) as {
@@ -198,71 +211,79 @@ export async function fetchLeviMarket(
           pairJson.pair ??
           (pairJson.pairs ?? []).find((p) => p.pairAddress === pool) ??
           null
-        if (direct) {
-          const market = marketFromPair(direct)
-          return {
-            market,
-            history: buildHistoryFromSpot(market.priceUsd, direct.pairCreatedAt),
-          }
-        }
+        if (direct) return marketFromPair(direct)
       }
     } catch {
       // fall through to mint lookup
     }
   }
 
-  if (!mint) {
-    return { market: emptyMarket(), history: [] }
-  }
+  if (!mint) return emptyMarket()
 
   const res = await fetch(
     `https://api.dexscreener.com/latest/dex/tokens/${mint}`,
+    { signal },
   )
-  if (!res.ok) {
-    return { market: emptyMarket(), history: [] }
-  }
+  if (!res.ok) return emptyMarket()
 
   const json = (await res.json()) as {
     pairs?: DexPair[]
   }
 
   const pairs = (json.pairs ?? []).filter((p) => p.chainId === 'solana')
-  if (pairs.length === 0) {
-    return { market: emptyMarket(), history: [] }
-  }
+  if (pairs.length === 0) return emptyMarket()
 
   const preferred = pool
     ? pairs.find((p) => p.pairAddress === pool)
     : undefined
-  pairs.sort(
-    (a, b) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0),
-  )
-  const top = preferred ?? pairs[0]
-  const market = marketFromPair(top)
-  return {
-    market,
-    history: buildHistoryFromSpot(market.priceUsd, top.pairCreatedAt),
-  }
+  pairs.sort((a, b) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0))
+  return marketFromPair(preferred ?? pairs[0])
 }
 
-function buildHistoryFromSpot(
-  price: number | null,
-  createdAt?: number,
-): PricePoint[] {
-  if (price == null || !Number.isFinite(price) || price <= 0) return []
-  const now = Date.now()
-  const start = createdAt && createdAt < now ? createdAt : now - 1000 * 60 * 60 * 24 * 90
-  const points = 96
-  const out: PricePoint[] = []
-  let p = price * 0.42
-  for (let i = 0; i < points; i++) {
-    const t = start + ((now - start) * i) / (points - 1)
-    const progress = i / (points - 1)
-    const drift = Math.sin(progress * Math.PI * 3.2) * 0.06
-    const pull = (price - p) * (0.04 + progress * 0.08)
-    p = Math.max(price * 0.08, p + pull + drift * p)
-    if (i === points - 1) p = price
-    out.push({ t, price: p })
+export type ChartRange = 'LIVE' | '1H' | '24H' | '7D' | 'ALL'
+
+export const CHART_RANGES: { key: ChartRange; label: string }[] = [
+  { key: 'LIVE', label: 'Live' },
+  { key: '1H', label: '1h' },
+  { key: '24H', label: '24h' },
+  { key: '7D', label: '7d' },
+  { key: 'ALL', label: 'All' },
+]
+
+const RANGE_QUERY: Record<
+  Exclude<ChartRange, 'LIVE'>,
+  { timeframe: 'minute' | 'hour' | 'day'; aggregate: number; limit: number }
+> = {
+  '1H': { timeframe: 'minute', aggregate: 1, limit: 60 },
+  '24H': { timeframe: 'minute', aggregate: 15, limit: 96 },
+  '7D': { timeframe: 'hour', aggregate: 1, limit: 168 },
+  ALL: { timeframe: 'day', aggregate: 1, limit: 365 },
+}
+
+/**
+ * Real traded prices for the pool, candle by candle. There is deliberately no
+ * fallback that synthesises a curve from the spot price: a chart that invents
+ * its own history is worse than no chart, because a reader cannot tell the
+ * difference and will price a trade on it.
+ */
+export async function fetchPriceHistory(
+  range: ChartRange,
+  pool = LEVI.pool,
+  signal?: AbortSignal,
+): Promise<PricePoint[]> {
+  if (!pool || range === 'LIVE') return []
+  const { timeframe, aggregate, limit } = RANGE_QUERY[range]
+  const url = `https://api.geckoterminal.com/api/v2/networks/solana/pools/${pool}/ohlcv/${timeframe}?aggregate=${aggregate}&limit=${limit}`
+
+  const response = await fetch(url, { signal })
+  if (!response.ok) return []
+  const json = (await response.json()) as {
+    data?: { attributes?: { ohlcv_list?: number[][] } }
   }
-  return out
+  const candles = json.data?.attributes?.ohlcv_list ?? []
+
+  return candles
+    .map((candle) => ({ t: candle[0] * 1000, price: candle[4] }))
+    .filter((point) => Number.isFinite(point.price) && point.price > 0)
+    .sort((a, b) => a.t - b.t)
 }

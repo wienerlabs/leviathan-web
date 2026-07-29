@@ -1,9 +1,11 @@
 import { motion } from 'motion/react'
 import {
   formatPct,
+  formatPrice,
   formatUsd,
   type MarketSnapshot,
 } from '../../data/levi'
+import { DOWN_COLOR, UP_COLOR } from './LeviChart'
 
 const cards = [
   { key: 'price', label: 'Levi price', hint: 'USD spot' },
@@ -18,7 +20,7 @@ function valueFor(
 ): string {
   switch (key) {
     case 'price':
-      return formatUsd(market.priceUsd, 6)
+      return formatPrice(market.priceUsd)
     case 'fdv':
       return formatUsd(market.fdvUsd)
     case 'liquidity':
@@ -35,6 +37,13 @@ export default function MarketCards({
   market: MarketSnapshot
   loading: boolean
 }) {
+  // The price carries the same colour as the day's move, the way an exchange
+  // ticker does. Colouring it poll to poll instead would leave it grey most of
+  // the time, because the feed repeats a price far more often than it changes.
+  const dayMove = market.priceChange24h
+  const priceTone =
+    dayMove == null ? undefined : dayMove >= 0 ? UP_COLOR : DOWN_COLOR
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
       {cards.map((card, i) => (
@@ -52,7 +61,14 @@ export default function MarketCards({
           <p className="text-[12px] sm:text-[13px] tracking-[0.07em] text-black/40 mb-2">
             {card.label}
           </p>
-          <p className="text-[24px] sm:text-[28px] md:text-[32px] tabular-nums tracking-tight leading-none">
+          <p
+            className="text-[20px] sm:text-[24px] md:text-[27px] tabular-nums tracking-tight leading-none truncate transition-colors duration-500"
+            style={
+              card.key === 'price' && priceTone
+                ? { color: priceTone }
+                : undefined
+            }
+          >
             {loading ? (
               <span className="inline-block h-8 w-24 rounded-md bg-black/[0.06] animate-pulse" />
             ) : (
@@ -63,10 +79,10 @@ export default function MarketCards({
             <p className="text-[13px] text-black/45">{card.hint}</p>
             {card.key === 'price' && market.priceChange24h != null ? (
               <span
-                className={[
-                  'text-[13px] tabular-nums',
-                  market.priceChange24h >= 0 ? 'text-black' : 'text-black/50',
-                ].join(' ')}
+                className="text-[13px] tabular-nums"
+                style={{
+                  color: market.priceChange24h >= 0 ? UP_COLOR : DOWN_COLOR,
+                }}
               >
                 {formatPct(market.priceChange24h)}
               </span>

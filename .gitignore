@@ -30,3 +30,7 @@ manim/__pycache__
 .vercel
 
 scripts/.lm-roman.ttf
+
+.env
+.env.local
+.env.*.local

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import SiteHeader from '../components/SiteHeader'
@@ -11,14 +11,8 @@ import LeviChart from '../components/levi/LeviChart'
 import LeviStake from '../components/levi/LeviStake'
 import TradeVenues from '../components/levi/TradeVenues'
 import TeamVest from '../components/levi/TeamVest'
-import {
-  emptyMarket,
-  fetchLeviMarket,
-  fetchPriceHistory,
-  LEVI,
-  type MarketSnapshot,
-  type PricePoint,
-} from '../data/levi'
+import { LEVI, type ChartRange } from '../data/levi'
+import { useLeviLive } from '../data/useLeviLive'
 
 const META = [
   { label: 'Network', value: LEVI.network },
@@ -36,40 +30,8 @@ export default function GetLevi() {
 }
 
 function GetLeviPage() {
-  const [market, setMarket] = useState<MarketSnapshot>(emptyMarket())
-  const [history, setHistory] = useState<PricePoint[]>([])
-  const [loading, setLoading] = useState(Boolean(LEVI.mint))
-
-  useEffect(() => {
-    let cancelled = false
-    if (!LEVI.mint) {
-      setLoading(false)
-      return
-    }
-
-    setLoading(true)
-    Promise.all([
-      fetchLeviMarket(LEVI.mint),
-      fetchPriceHistory('24H'),
-    ])
-      .then(([m, h]) => {
-        if (cancelled) return
-        setMarket(m)
-        setHistory(h)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setMarket(emptyMarket())
-        setHistory([])
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [])
+  const [range, setRange] = useState<ChartRange>('LIVE')
+  const { market, history, live, rangeChangePct, loading } = useLeviLive(range)
 
   return (
     <main className="min-h-screen bg-white text-black font-manrope overflow-x-clip max-w-[100vw]">
@@ -200,7 +162,14 @@ function GetLeviPage() {
           <LeviSwap />
           <div className="flex flex-col gap-3 md:gap-4 min-h-0">
             <div className="flex-1 min-h-[340px]">
-              <LeviChart history={history} loading={loading} />
+              <LeviChart
+                history={history}
+                live={live}
+                range={range}
+                onRangeChange={setRange}
+                changePct={rangeChangePct}
+                loading={loading}
+              />
             </div>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
