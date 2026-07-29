@@ -30,7 +30,7 @@ export const ALLOCATION: AllocationSlice[] = [
     short: 'Team',
     share: 25,
     fill: '#404040',
-    purpose: 'Build and operate · Streamflow vest (1y cliff, 3y linear)',
+    purpose: 'Build and operate · Streamflow 250M (cliff 29 Jul 2027, then 36 months)',
   },
   {
     key: 'audit',
@@ -46,7 +46,7 @@ export const ALLOCATION: AllocationSlice[] = [
     short: 'Ecosystem',
     share: 10,
     fill: '#8c8c8c',
-    purpose: 'Tooling, relays, research',
+    purpose: 'Tooling, relays, research · Streamflow 100M to treasury (24 months linear)',
   },
   {
     key: 'community',
@@ -62,7 +62,7 @@ export const ALLOCATION: AllocationSlice[] = [
     short: 'Liquidity',
     share: 5,
     fill: '#d9d9d9',
-    purpose: 'CEX/DEX depth if pursued',
+    purpose: 'Raydium CPMM · ~8.08% contributed from treasury (LP not locked)',
   },
 ]
 
@@ -229,44 +229,77 @@ export const presetOperatingData = PRESET_ECONOMICS.map((p) => ({
   bond: Number(p.bondAtP10Usd.toFixed(4)),
 }))
 
+export type VestCategory = 'team' | 'ecosystem'
+
 export type VestStream = {
   id: string
+  category: VestCategory
   label: string
   address: string
   status: 'live' | 'pending'
-  amountLabel?: string
+  amountLabel: string
+  shareOfSupply: number
+  schedule: string
   unlockCadence?: string
   unlockPerPeriodLabel?: string
   nextUnlockLabel?: string
+  recipientLabel: string
+  recipientAddress?: string
+  immutable: boolean
 }
 
-export const TEAM_VEST = {
+export const SUPPLY_LOCKS = {
   provider: 'Streamflow',
   providerUrl: 'https://app.streamflow.finance',
-  amount: 250_000_000,
-  amountLabel: '250,000,000',
-  shareOfSupply: 25,
-  schedule: '1y cliff, 3y linear',
   summary:
-    '250,000,000 $LEVI tokens are being vested with Streamflow - fully locked and unlocking transparently over time. Trustless. Transparent. On-chain.',
+    'Team and ecosystem allocations are vested on Streamflow. Streams are immutable and cannot be cancelled. Trustless. Transparent. On-chain.',
   streams: [
     {
-      id: 'team-1',
-      label: 'Team stream 1',
+      id: 'team',
+      category: 'team' as const,
+      label: 'Team lock',
       address: '8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX',
       status: 'live' as const,
+      amountLabel: '250,000,000',
+      shareOfSupply: 25,
+      schedule: 'No unlock before 29 Jul 2027, then 36 monthly releases',
+      unlockCadence: 'Monthly after cliff',
+      unlockPerPeriodLabel: '6,944,444 LEVI / month',
+      nextUnlockLabel: 'First unlock 29 Jul 2027',
+      recipientLabel: 'Team recipient',
+      recipientAddress: 'GvS6K2HCyW42Lgtg3a4Te53uM3EMXwAwyb4m6ftPBC6K',
+      immutable: true,
     },
     {
-      id: 'team-2',
-      label: 'Team stream 2',
+      id: 'ecosystem',
+      category: 'ecosystem' as const,
+      label: 'Ecosystem and grants lock',
       address: 'J1L8QzmHGChv3YKduRi2DN6bvtmev2tnjL51W7DnmDHZ',
       status: 'live' as const,
       amountLabel: '100,000,000',
+      shareOfSupply: 10,
+      schedule: 'Linear across 24 months from 29 Jul 2026',
       unlockCadence: 'Monthly',
       unlockPerPeriodLabel: '4.1666M LEVI / month',
       nextUnlockLabel: '29 Aug 2026, 07:09 GMT+3',
+      recipientLabel: 'Treasury multisig (not a personal wallet)',
+      recipientAddress: 'ALxuDYPT5BYE5jWW5zF4BK8o1KXAwPcrt7SGdUspjNNr',
+      immutable: true,
     },
   ] satisfies VestStream[],
+} as const
+
+/** @deprecated Use SUPPLY_LOCKS. Kept as alias for the team row only. */
+export const TEAM_VEST = {
+  provider: SUPPLY_LOCKS.provider,
+  providerUrl: SUPPLY_LOCKS.providerUrl,
+  amount: 250_000_000,
+  amountLabel: '250,000,000',
+  shareOfSupply: 25,
+  schedule: 'No unlock before 29 Jul 2027, then 36 monthly releases',
+  summary:
+    '250,000,000 $LEVI (25% team allocation) is locked on Streamflow. Immutable and non-cancellable. Nothing unlocks before 29 July 2027, then monthly for 36 months.',
+  streams: SUPPLY_LOCKS.streams.filter((s) => s.category === 'team'),
 } as const
 
 export function streamflowContractUrl(address: string): string {

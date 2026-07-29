@@ -14,6 +14,7 @@ import TeamVest from '../components/levi/TeamVest'
 import {
   emptyMarket,
   fetchLeviMarket,
+  fetchPriceHistory,
   LEVI,
   type MarketSnapshot,
   type PricePoint,
@@ -47,8 +48,11 @@ function GetLeviPage() {
     }
 
     setLoading(true)
-    fetchLeviMarket(LEVI.mint)
-      .then(({ market: m, history: h }) => {
+    Promise.all([
+      fetchLeviMarket(LEVI.mint),
+      fetchPriceHistory('24H'),
+    ])
+      .then(([m, h]) => {
         if (cancelled) return
         setMarket(m)
         setHistory(h)

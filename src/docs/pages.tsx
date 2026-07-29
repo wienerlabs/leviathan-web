@@ -924,91 +924,100 @@ telemetry -> web`}</Pre>
 
         <H2 id="allocation">Supply allocation</H2>
         <P>
-          Working totals for modelling only. Counsel may require structural
-          change. These percentages live only in the tokenomics design; they are
-          not encoded in <Code>economy.py</Code> (that file covers
-          bond/reward/audit math).
+          Product map for the 1B $LEVI mint. Rows with a Streamflow or pool
+          address are on-chain commitments (mainnet read 29 July 2026). Rows
+          without an address are intentions under treasury policy. Round
+          economics in <Code>economy.py</Code> cover bond/reward/audit math, not
+          supply layout. Full source:{' '}
+          <A href="https://github.com/wienerlabs/leviathan/blob/main/docs/TOKENOMICS.md">
+            docs/TOKENOMICS.md
+          </A>
+          .
         </P>
         <Table
-          headers={['Allocation', 'Share', 'Vesting', 'Purpose']}
+          headers={['Allocation', 'Share', 'On-chain status', 'Vesting / control', 'Address']}
           rows={[
             [
               'Training rewards endowment',
               '35%',
-              'Emission over multi-year PoG schedule',
-              'Pay accepted work',
+              'Intention',
+              'Multi-year PoG emission from treasury-funded runs',
+              'none',
             ],
             [
               'Audit / security treasury',
               '15%',
-              'Continuous draw for audit fees and red-team bounties',
-              'Fund p=0.1 pressure and paid breaks',
+              'Intention',
+              'Continuous draw under treasury policy',
+              'none',
             ],
             [
               'Ecosystem / grants',
               '10%',
-              'Squads multisig, milestone grants',
-              'Tooling, relays, research',
+              'Settled',
+              'Streamflow immutable. Linear 24 months from 29 Jul 2026. Recipient is the treasury multisig',
+              'J1L8QzmH…mDHZ',
             ],
             [
               'Team',
               '25%',
-              'Streamflow vest · 1y cliff, 3y linear',
-              'Build and operate · 250M locked on-chain',
+              'Settled',
+              'Streamflow immutable. No unlock before 29 Jul 2027, then 36× 6,944,444 / month',
+              '8imUz6ed…qyfX',
             ],
             [
               'Early contributors / community',
               '10%',
-              'TGE unlock + short vest',
-              'Genesis participants, bug bounties',
+              'Intention',
+              'TGE unlock + short vest when that path ships',
+              'none',
             ],
             [
               'Liquidity / market making',
-              '5%',
-              'At TGE under Squads multisig policy',
-              'CEX/DEX depth if pursued',
+              'plan 5%; ~8.08% contributed',
+              'Settled as pool balance (LP not locked)',
+              'Raydium CPMM. Extra above 5% funded from treasury to deepen the book. Reserves move with trading',
+              'wauDNp6g…AMne',
             ],
           ]}
         />
         <Note>
-          Total 100%. Team rose from 15% to 25% entirely by reducing the
-          training rewards endowment from 45% to 35%. Training rewards remain the
-          largest single bucket (35% &gt; 25%), so the thesis that the network
-          that trains the model holds the primary emission share still holds.
+          Total plan shares sum to 100%. Team rose from 15% to 25% by reducing
+          training rewards from 45% to 35%. Training remains the largest planned
+          bucket (35% &gt; 25%). Liquidity contributed is higher than the 5% plan
+          row; the LP position is not locked.
         </Note>
         <H3 id="team-vest">Team lock on Streamflow</H3>
         <P>
-          250,000,000 $LEVI (the full 25% team allocation) is being vested with{' '}
-          <A href="https://app.streamflow.finance">Streamflow</A> - fully locked
-          and unlocking transparently over time. Trustless. Transparent.
-          On-chain.
+          250,000,000 $LEVI (25%) is locked on{' '}
+          <A href="https://app.streamflow.finance">Streamflow</A> contract{' '}
+          <A href="https://app.streamflow.finance/contract/solana/mainnet/8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX">
+            <Code>8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX</Code>
+          </A>
+          . Immutable and non-cancellable, including by the team. Nothing unlocks
+          before 29 July 2027, then 36 monthly releases of 6,944,444 LEVI.
+          Recipient{' '}
+          <Code>GvS6K2HCyW42Lgtg3a4Te53uM3EMXwAwyb4m6ftPBC6K</Code>.
         </P>
-        <Ul>
-          <Li>
-            Stream 1:{' '}
-            <A href="https://app.streamflow.finance/contract/solana/mainnet/8imUz6edAWFfPzsyrJqYwvF1UP54rtFTe5asNu1zqyfX">
-              <Code>8imUz6ed…qyfX</Code>
-            </A>
-          </Li>
-          <Li>
-            Stream 2 (100M, monthly ~4.1666M):{' '}
-            <A href="https://app.streamflow.finance/contract/solana/mainnet/J1L8QzmHGChv3YKduRi2DN6bvtmev2tnjL51W7DnmDHZ">
-              <Code>J1L8QzmH…mDHZ</Code>
-            </A>
-            . Next unlock 29 Aug 2026, 07:09 GMT+3.
-          </Li>
-          <Li>
-            Markets page surfaces the same streams under Get $LEVI.
-          </Li>
-        </Ul>
+        <H3 id="ecosystem-vest">Ecosystem and grants lock</H3>
+        <P>
+          100,000,000 $LEVI (10%) is locked on Streamflow contract{' '}
+          <A href="https://app.streamflow.finance/contract/solana/mainnet/J1L8QzmHGChv3YKduRi2DN6bvtmev2tnjL51W7DnmDHZ">
+            <Code>J1L8QzmHGChv3YKduRi2DN6bvtmev2tnjL51W7DnmDHZ</Code>
+          </A>
+          . Immutable and non-cancellable. Linear across 24 months from 29 July
+          2026 (~4.1666M / month). Recipient is the treasury multisig, not a
+          personal wallet. Next unlock 29 Aug 2026, 07:09 GMT+3.
+        </P>
         <H3 id="squads-treasury">Squads treasury</H3>
         <P>
-          Network treasury and mint authority sit behind a Squads multisig. The
-          live vault address is{' '}
+          Network treasury sits behind a Squads multisig (2 of 3). Live vault:{' '}
           <A href="https://app.squads.so/squads/ALxuDYPT5BYE5jWW5zF4BK8o1KXAwPcrt7SGdUspjNNr/home">
             <Code>ALxuDYPT5BYE5jWW5zF4BK8o1KXAwPcrt7SGdUspjNNr</Code>
           </A>
-          . Get $LEVI surfaces the same address next to mint and pool.
+          . At the 29 July 2026 read it held 500,160,070 LEVI (50.02% of supply).
+          This address is a program-derived vault (no private key). Get $LEVI
+          surfaces mint, pool, treasury and both Streamflow streams.
         </P>
         <P>
           Emission is not a fixed block subsidy. Each run configures epoch
