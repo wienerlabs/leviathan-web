@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { LEVI, leviVenues } from '../../data/levi'
 
 export default function TradeVenues() {
-  const venues = leviVenues(LEVI.mint)
+  const venues = leviVenues(LEVI.mint, LEVI.pool)
 
   return (
     <motion.section

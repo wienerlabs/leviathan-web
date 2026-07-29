@@ -68,19 +68,43 @@ export default function GetLevi() {
           className="rounded-[22px] border border-black bg-black text-white px-5 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
           role="status"
         >
-          <div>
+          <div className="min-w-0">
             <p className="text-[12px] tracking-[0.1em] text-white/55 mb-1">
               Status
             </p>
             <p className="text-[22px] sm:text-[26px] leading-tight font-medium">
-              Mint live · pool pending
+              Mint live · Raydium pool live
             </p>
+            {LEVI.pool ? (
+              <p className="mt-1.5 font-mono text-[12px] sm:text-[13px] text-white/55 truncate">
+                {LEVI.pool}
+              </p>
+            ) : null}
           </div>
-          <p className="text-[14px] sm:text-[15px] leading-relaxed text-white/70 max-w-[36rem]">
-            $LEVI mint is on Solana. No liquidity pool is connected yet, so
-            market cards may show TBA. Swap links use the mint address when you
-            are ready to route.
-          </p>
+          <div className="flex flex-col sm:items-end gap-2 max-w-[36rem]">
+            <p className="text-[14px] sm:text-[15px] leading-relaxed text-white/70 sm:text-right">
+              $LEVI trades on Solana via the Raydium LEVI/SOL pool. Buy on
+              Jupiter or Raydium; charts fill as indexers pick up the pair.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href={`${LEVI.raydiumBase}${LEVI.mint}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-10 items-center rounded-full bg-white px-4 text-[13px] font-medium text-black hover:bg-white/90 transition-colors"
+              >
+                Trade on Raydium
+              </a>
+              <a
+                href={`${LEVI.dexscreenerBase}${LEVI.pool}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-10 items-center rounded-full border border-white/30 px-4 text-[13px] font-medium text-white hover:border-white transition-colors"
+              >
+                Dexscreener
+              </a>
+            </div>
+          </div>
         </motion.div>
 
         <motion.section

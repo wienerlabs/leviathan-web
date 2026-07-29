@@ -12,9 +12,14 @@ export const LEVI = {
   mint:
     (import.meta.env.VITE_LEVI_MINT as string | undefined)?.trim() ||
     'LeViePUwqFYuKzA5sDXHkU2Jec1xwDn8Tdk55ecSqvv',
+  pool:
+    (import.meta.env.VITE_LEVI_POOL as string | undefined)?.trim() ||
+    'wauDNp6gNoDayfPEUd675p9ouXYULknr3EQmSgVAMne',
   explorerBase: 'https://solscan.io/token/',
+  poolExplorerBase: 'https://solscan.io/account/',
   jupiterBase: 'https://jup.ag/swap/SOL-',
   raydiumBase: 'https://raydium.io/swap/?inputMint=sol&outputMint=',
+  raydiumPoolBase: 'https://raydium.io/liquidity-pools/?tab=all&pool_id=',
   dexscreenerBase: 'https://dexscreener.com/solana/',
   birdeyeBase: 'https://birdeye.so/token/',
 } as const
@@ -27,7 +32,7 @@ export type LeviVenue = {
   logo: string
 }
 
-export function leviVenues(mint: string): LeviVenue[] {
+export function leviVenues(mint: string, pool = LEVI.pool): LeviVenue[] {
   const m = mint || 'LEVI'
   return [
     {
@@ -40,14 +45,22 @@ export function leviVenues(mint: string): LeviVenue[] {
     {
       name: 'Raydium',
       kind: 'AMM',
-      href: mint ? `${LEVI.raydiumBase}${mint}` : 'https://raydium.io',
-      blurb: 'Primary concentrated liquidity pool',
+      href: mint
+        ? `${LEVI.raydiumBase}${mint}`
+        : 'https://raydium.io',
+      blurb: pool
+        ? `Primary LEVI/SOL pool · ${shortAddress(pool, 4)}`
+        : 'Primary LEVI/SOL liquidity pool',
       logo: '/logos/raydium.png',
     },
     {
       name: 'Dexscreener',
       kind: 'Market data',
-      href: mint ? `${LEVI.dexscreenerBase}${mint}` : 'https://dexscreener.com/solana',
+      href: pool
+        ? `${LEVI.dexscreenerBase}${pool}`
+        : mint
+          ? `${LEVI.dexscreenerBase}${mint}`
+          : 'https://dexscreener.com/solana',
       blurb: 'Live pair charts and volume',
       logo: '/logos/dexscreener.png',
     },
@@ -115,10 +128,75 @@ export function explorerUrl(mint: string): string {
   return `${LEVI.explorerBase}${mint}`
 }
 
-export async function fetchLeviMarket(mint: string): Promise<{
+export function poolExplorerUrl(pool: string): string {
+  if (!pool) return 'https://solscan.io'
+  return `${LEVI.poolExplorerBase}${pool}`
+}
+
+type DexPair = {
+  chainId: string
+  url: string
+  pairAddress: string
+  priceUsd?: string
+  fdv?: number
+  liquidity?: { usd?: number }
+  volume?: { h24?: number }
+  priceChange?: { h24?: number }
+  pairCreatedAt?: number
+}
+
+function marketFromPair(top: DexPair): MarketSnapshot {
+  const price = top.priceUsd ? Number(top.priceUsd) : null
+  return {
+    priceUsd: price != null && Number.isFinite(price) ? price : null,
+    fdvUsd: top.fdv ?? null,
+    liquidityUsd: top.liquidity?.usd ?? null,
+    volume24hUsd: top.volume?.h24 ?? null,
+    priceChange24h: top.priceChange?.h24 ?? null,
+    pairAddress: top.pairAddress ?? null,
+    url: top.url ?? null,
+    listed: true,
+  }
+}
+
+export async function fetchLeviMarket(
+  mint: string,
+  pool = LEVI.pool,
+): Promise<{
   market: MarketSnapshot
   history: PricePoint[]
 }> {
+  if (!mint && !pool) {
+    return { market: emptyMarket(), history: [] }
+  }
+
+  if (pool) {
+    try {
+      const pairRes = await fetch(
+        `https://api.dexscreener.com/latest/dex/pairs/solana/${pool}`,
+      )
+      if (pairRes.ok) {
+        const pairJson = (await pairRes.json()) as {
+          pair?: DexPair | null
+          pairs?: DexPair[]
+        }
+        const direct =
+          pairJson.pair ??
+          (pairJson.pairs ?? []).find((p) => p.pairAddress === pool) ??
+          null
+        if (direct) {
+          const market = marketFromPair(direct)
+          return {
+            market,
+            history: buildHistoryFromSpot(market.priceUsd, direct.pairCreatedAt),
+          }
+        }
+      }
+    } catch {
+      // fall through to mint lookup
+    }
+  }
+
   if (!mint) {
     return { market: emptyMarket(), history: [] }
   }
@@ -131,17 +209,7 @@ export async function fetchLeviMarket(mint: string): Promise<{
   }
 
   const json = (await res.json()) as {
-    pairs?: Array<{
-      chainId: string
-      url: string
-      pairAddress: string
-      priceUsd?: string
-      fdv?: number
-      liquidity?: { usd?: number }
-      volume?: { h24?: number }
-      priceChange?: { h24?: number }
-      pairCreatedAt?: number
-    }>
+    pairs?: DexPair[]
   }
 
   const pairs = (json.pairs ?? []).filter((p) => p.chainId === 'solana')
@@ -149,24 +217,18 @@ export async function fetchLeviMarket(mint: string): Promise<{
     return { market: emptyMarket(), history: [] }
   }
 
+  const preferred = pool
+    ? pairs.find((p) => p.pairAddress === pool)
+    : undefined
   pairs.sort(
     (a, b) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0),
   )
-  const top = pairs[0]
-  const price = top.priceUsd ? Number(top.priceUsd) : null
-  const market: MarketSnapshot = {
-    priceUsd: price != null && Number.isFinite(price) ? price : null,
-    fdvUsd: top.fdv ?? null,
-    liquidityUsd: top.liquidity?.usd ?? null,
-    volume24hUsd: top.volume?.h24 ?? null,
-    priceChange24h: top.priceChange?.h24 ?? null,
-    pairAddress: top.pairAddress ?? null,
-    url: top.url ?? null,
-    listed: true,
+  const top = preferred ?? pairs[0]
+  const market = marketFromPair(top)
+  return {
+    market,
+    history: buildHistoryFromSpot(market.priceUsd, top.pairCreatedAt),
   }
-
-  const history = buildHistoryFromSpot(market.priceUsd, top.pairCreatedAt)
-  return { market, history }
 }
 
 function buildHistoryFromSpot(
