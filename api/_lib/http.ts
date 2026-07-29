@@ -8,6 +8,15 @@ type CookieOptions = {
   path?: string
   sameSite?: 'Lax' | 'Strict' | 'None'
   secure?: boolean
+  domain?: string
+}
+
+export function cookieDomainFor(url: URL): string | undefined {
+  const host = url.hostname.toLowerCase()
+  if (host === 'leviathan.run' || host.endsWith('.leviathan.run')) {
+    return '.leviathan.run'
+  }
+  return undefined
 }
 
 export function serializeCookie(
@@ -20,13 +29,18 @@ export function serializeCookie(
   if (options.maxAge != null) parts.push(`Max-Age=${options.maxAge}`)
   if (options.httpOnly) parts.push('HttpOnly')
   if (options.secure) parts.push('Secure')
+  if (options.domain) parts.push(`Domain=${options.domain}`)
   parts.push(`SameSite=${options.sameSite ?? 'Lax'}`)
   return parts.join('; ')
 }
 
-// Set-Cookie value that clears a cookie the browser previously stored.
-export function clearCookie(name: string): string {
-  return serializeCookie(name, '', { maxAge: 0, httpOnly: true, secure: true })
+export function clearCookie(name: string, domain?: string): string {
+  return serializeCookie(name, '', {
+    maxAge: 0,
+    httpOnly: true,
+    secure: true,
+    domain,
+  })
 }
 
 export function parseCookies(header: string | null): Record<string, string> {

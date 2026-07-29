@@ -1,9 +1,3 @@
-// GET /api/waitlist/twitter/callback?code=...&state=...
-// X redirects here after the user approves. We verify state, exchange the code
-// for a token, read the verified profile, and drop a signed identity session
-// cookie. No DB write happens yet — the user still fills in the form, and only
-// `submit` (which re-reads this cookie) persists the entry.
-
 import {
   OAUTH_COOKIE,
   SESSION_COOKIE,
@@ -16,39 +10,50 @@ import {
 } from '../../_lib/auth'
 import {
   clearCookie,
+  cookieDomainFor,
   parseCookies,
   serializeCookie,
   waitlistRedirect,
 } from '../../_lib/http'
 import { exchangeCode, fetchTwitterUser } from '../../_lib/twitter'
 
+export const config = { runtime: 'edge' }
+
 export default async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url)
   const origin = url.origin
   const env = readEnv()
+  const domain = cookieDomainFor(url)
 
   if (missingEnv(env).length > 0) {
     return waitlistRedirect(origin, { error: 'config' })
   }
 
-  // The user denied access or X returned an error.
   if (url.searchParams.get('error')) {
-    return waitlistRedirect(origin, { error: 'denied' }, [clearCookie(OAUTH_COOKIE)])
+    return waitlistRedirect(origin, { error: 'denied' }, [
+      clearCookie(OAUTH_COOKIE, domain),
+    ])
   }
 
   const code = url.searchParams.get('code') ?? ''
   const state = url.searchParams.get('state') ?? ''
   if (!code || !state) {
-    return waitlistRedirect(origin, { error: 'twitter' }, [clearCookie(OAUTH_COOKIE)])
+    return waitlistRedirect(origin, { error: 'twitter' }, [
+      clearCookie(OAUTH_COOKIE, domain),
+    ])
   }
 
   const cookies = parseCookies(req.headers.get('cookie'))
   const oauth = await verifyOAuthState(cookies[OAUTH_COOKIE], env.sessionSecret)
   if (!oauth) {
-    return waitlistRedirect(origin, { error: 'expired' }, [clearCookie(OAUTH_COOKIE)])
+    return waitlistRedirect(origin, { error: 'expired' }, [
+      clearCookie(OAUTH_COOKIE, domain),
+    ])
   }
   if (oauth.state !== state) {
-    return waitlistRedirect(origin, { error: 'state' }, [clearCookie(OAUTH_COOKIE)])
+    return waitlistRedirect(origin, { error: 'state' }, [
+      clearCookie(OAUTH_COOKIE, domain),
+    ])
   }
 
   try {
@@ -78,15 +83,16 @@ export default async function handler(req: Request): Promise<Response> {
       secure: url.protocol === 'https:',
       sameSite: 'Lax',
       maxAge: SESSION_TTL_SECONDS,
+      domain,
     })
 
     return waitlistRedirect(origin, { verified: '1' }, [
       sessionCookie,
-      clearCookie(OAUTH_COOKIE),
+      clearCookie(OAUTH_COOKIE, domain),
     ])
   } catch {
-    return waitlistRedirect(origin, { error: 'twitter' }, [clearCookie(OAUTH_COOKIE)])
+    return waitlistRedirect(origin, { error: 'twitter' }, [
+      clearCookie(OAUTH_COOKIE, domain),
+    ])
   }
 }
-
-export const config = { runtime: 'edge' }

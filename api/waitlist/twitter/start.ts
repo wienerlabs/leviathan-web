@@ -10,7 +10,12 @@ import {
   readEnv,
   signOAuthState,
 } from '../../_lib/auth'
-import { redirect, serializeCookie, waitlistRedirect } from '../../_lib/http'
+import {
+  cookieDomainFor,
+  redirect,
+  serializeCookie,
+  waitlistRedirect,
+} from '../../_lib/http'
 import { buildAuthorizeUrl } from '../../_lib/twitter'
 import { pkceChallengeFromVerifier, randomToken } from '../../_lib/webcrypto'
 
@@ -40,6 +45,7 @@ export default async function handler(req: Request): Promise<Response> {
     secure: url.protocol === 'https:',
     sameSite: 'Lax',
     maxAge: OAUTH_TTL_SECONDS,
+    domain: cookieDomainFor(url),
   })
 
   return redirect(authorizeUrl, [cookie])
