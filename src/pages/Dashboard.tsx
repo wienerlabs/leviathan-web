@@ -20,6 +20,11 @@ import {
   type RunTelemetry,
   SAMPLE_TELEMETRY,
 } from '../data/telemetry'
+import SupplyPanel from '../components/dashboard/SupplyPanel'
+import ProgramsPanel from '../components/dashboard/ProgramsPanel'
+import MarketPanel from '../components/dashboard/MarketPanel'
+import { useChainFacts } from '../data/useChainFacts'
+import { LEVI } from '../data/levi'
 
 const fmt = (n: number) => n.toLocaleString('en-US')
 const short = (s: string) =>
@@ -130,6 +135,8 @@ export default function Dashboard() {
       })),
     [telemetry.leaderboard],
   )
+
+  const chain = useChainFacts()
 
   const security = telemetry.security
   const secure = security?.economically_secure ?? false
@@ -285,6 +292,21 @@ export default function Dashboard() {
                 }
               />
             </section>
+
+            <MarketPanel market={chain.market} loading={chain.loading} />
+
+            <SupplyPanel
+              mint={chain.mint}
+              breakdown={chain.supply}
+              loading={chain.loading}
+            />
+
+            <ProgramsPanel
+              programs={chain.programs}
+              cluster="devnet"
+              multisig={LEVI.squads}
+              loading={chain.loading}
+            />
 
             {security ? (
               <section className="mb-8 rounded-[24px] border border-black bg-white overflow-hidden">
