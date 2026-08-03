@@ -1,11 +1,11 @@
 {
   "run_id": "leviathan-devnet",
-  "run_state": "Witness",
-  "epoch": 8,
-  "step": 129,
+  "run_state": "Cooldown",
+  "epoch": 17,
+  "step": 202,
   "registered_clients": 4,
   "active_clients": 1,
-  "total_earned": 4000,
+  "total_earned": 7000,
   "total_slashed": 0,
   "convicted_clients": 0,
   "verification_percent": 0,
@@ -14,7 +14,7 @@
   "leaderboard": [
     {
       "signer": "753a7734610d5ebf81b64dc2c9aad55bb2aae36c68457a8282e241303c5fcabf",
-      "earned": 3000,
+      "earned": 6000,
       "slashed": 0
     },
     {
@@ -40,5 +40,5 @@
     "expected_fraud_value_per_round": 0.324,
     "economically_secure": false
   },
-  "generated_at": "2026-08-03T00:05:21Z"
+  "generated_at": "2026-08-03T04:37:31Z"
 }
