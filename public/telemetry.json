@@ -1,8 +1,8 @@
 {
   "run_id": "leviathan-devnet",
   "run_state": "Waiting for members",
-  "epoch": 18,
-  "step": 202,
+  "epoch": 19,
+  "step": 203,
   "registered_clients": 4,
   "active_clients": 0,
   "total_earned": 7000,
@@ -40,5 +40,5 @@
     "expected_fraud_value_per_round": 0.324,
     "economically_secure": false
   },
-  "generated_at": "2026-08-03T12:33:53Z"
+  "generated_at": "2026-08-03T15:49:36Z"
 }
