@@ -13,22 +13,22 @@
   "expected_rounds_to_catch": null,
   "leaderboard": [
     {
-      "signer": "753a7734610d5ebf81b64dc2c9aad55bb2aae36c68457a8282e241303c5fcabf",
+      "signer": "8tcQfLmW1ucG5ohoDf3fci8vRz3Kspviu5bKsTm628Un",
       "earned": 6000,
       "slashed": 0
     },
     {
-      "signer": "05bd4152792ef4655db712ceee83b04483f733dc55806197004e32d03aeb0328",
+      "signer": "PQRAqGT8vntRZUhJxKFivi1wfGPftznzPz4QZTpFw43",
       "earned": 1000,
       "slashed": 0
     },
     {
-      "signer": "6fecea42d7ba07d65506df55759d103746f13a9fd41396ef930e822a212fa27d",
+      "signer": "8XunSCGCzL2ZoUCeinYp7DHzZAerpnZEatfyeLckt4rp",
       "earned": 0,
       "slashed": 0
     },
     {
-      "signer": "f5cecaedd5fbc9b4df9e5b550936e7a74b81dfce8b3f51e69cc738a6fc836bb7",
+      "signer": "HYXmvGi8SFn7GdGLA2m7YVUxqqwv3rYy7wYhwZ4EoaYn",
       "earned": 0,
       "slashed": 0
     }
@@ -40,5 +40,5 @@
     "expected_fraud_value_per_round": 0.324,
     "economically_secure": false
   },
-  "generated_at": "2026-08-03T19:51:56Z"
+  "generated_at": "2026-08-03T21:16:14Z"
 }
