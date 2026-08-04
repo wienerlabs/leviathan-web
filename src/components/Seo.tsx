@@ -44,7 +44,7 @@ function pageMeta(pathname: string): {
     return {
       title: `Network dashboard · ${SITE.name}`,
       description:
-        'Live or sample coordinator telemetry: run state, rewards, slashing, and economic security.',
+        'Every run on chain: coordinator state, the committee draw, bonds, and the appeals court, decoded live from Solana.',
       image: ogImageUrl(),
       imageAlt: SITE.imageAlt,
       imageWidth: SITE.imageWidth,

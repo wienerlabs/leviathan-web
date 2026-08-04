@@ -9,6 +9,7 @@ import {
   type SupplyBreakdown,
 } from './chain'
 import { fetchLeviMarket, LEVI, type MarketSnapshot } from './levi'
+import { MAINNET_ID_REHEARSALS, PROGRAMS } from './protocol'
 
 const REFRESH_MS = 60000
 
@@ -16,11 +17,27 @@ const REFRESH_MS = 60000
  * The protocol programs live on devnet while the token lives on mainnet, so
  * this reads from both and says which cluster each panel is describing rather
  * than blurring them together.
+ *
+ * The first three are the deployments that hold state. The rehearsal builds
+ * carry the mainnet program ids and are also on devnet, but own no accounts, so
+ * a list containing only those described a network that had never run.
  */
 export const PROTOCOL_PROGRAMS = [
-  { name: 'Coordinator', id: '9Sid2EWErkyMBKoqy9vzruRq6qJV2TUy9grp6NiieWN7' },
-  { name: 'Treasurer', id: 'A6Z8jZeKi81zUaozR7X7SGXtY8EyXm1YyTeFMuFgXEkW' },
-  { name: 'Authorizer', id: '2QXAd9g31vKFGSyxZC2wcjJdCZ4bjCdzrXA95H6Ft2eU' },
+  { name: 'Coordinator', id: PROGRAMS.coordinator },
+  { name: 'Treasurer', id: PROGRAMS.treasurer },
+  { name: 'Authorizer', id: PROGRAMS.authorizer },
+  {
+    name: 'Coordinator, mainnet id rehearsal',
+    id: MAINNET_ID_REHEARSALS.coordinator,
+  },
+  {
+    name: 'Treasurer, mainnet id rehearsal',
+    id: MAINNET_ID_REHEARSALS.treasurer,
+  },
+  {
+    name: 'Authorizer, mainnet id rehearsal',
+    id: MAINNET_ID_REHEARSALS.authorizer,
+  },
 ] as const
 
 export type ChainFacts = {

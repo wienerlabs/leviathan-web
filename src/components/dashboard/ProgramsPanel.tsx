@@ -100,7 +100,7 @@ export default function ProgramsPanel({
                   )}
                 </td>
                 <td className="px-5 sm:px-6 py-3 text-right tabular-nums text-black/55">
-                  {p.dataLength ? `${Math.round(p.dataLength / 1024)} KB` : '—'}
+                  {p.dataLength ? `${Math.round(p.dataLength / 1024)} KB` : '·'}
                 </td>
               </tr>
             ))}

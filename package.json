@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node -e \"import { readFileSync, writeFileSync } from 'node:fs'; writeFileSync('public/blog-catalog.json', readFileSync('src/blog/catalog.json'));\" && node scripts/generate-og.mjs && (python3 scripts/generate-link-previews.py || echo 'skip link previews: Pillow not installed') && tsc -b && vite build && node scripts/inject-blog-meta.mjs",
+    "build": "node -e \"import { readFileSync, writeFileSync } from 'node:fs'; writeFileSync('public/blog-catalog.json', readFileSync('src/blog/catalog.json'));\" && tsx scripts/verify-committee.ts && node scripts/generate-og.mjs && (python3 scripts/generate-link-previews.py || echo 'skip link previews: Pillow not installed') && tsc -b && vite build && node scripts/inject-blog-meta.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
+    "verify:committee": "tsx scripts/verify-committee.ts",
     "og:generate": "node scripts/generate-og.mjs && python3 scripts/generate-link-previews.py || true",
     "previews:generate": "python3 scripts/generate-link-previews.py"
   },
