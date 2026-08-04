@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   fetchAuthorizations,
+  fetchCoordinator,
   fetchCoordinators,
   fetchRunInstances,
   fetchTreasurerAccounts,
@@ -13,6 +14,11 @@ import {
 import type { CoordinatorView } from './coordinator'
 import { CommitteeSelection, type CommitteeAssignment } from './committee'
 
+/**
+ * Scanning every coordinator account costs 2.7 MB, so it happens on mount and
+ * on an explicit refresh. The timer refreshes the treasurer side, which is
+ * 25 KB, and whichever single run is on screen, which is 155 KB.
+ */
 const REFRESH_MS = 20000
 
 export type ProtocolState = {
@@ -29,7 +35,7 @@ export type ProtocolState = {
   refresh: () => void
 }
 
-export function useProtocol(): ProtocolState {
+export function useProtocol(watching: string | null): ProtocolState {
   const [instances, setInstances] = useState<RunInstance[]>([])
   const [coordinators, setCoordinators] = useState<CoordinatorView[]>([])
   const [runs, setRuns] = useState<TreasuryRun[]>([])
@@ -42,16 +48,12 @@ export function useProtocol(): ProtocolState {
   const [fetchedAt, setFetchedAt] = useState<number | null>(null)
   const [tick, setTick] = useState(0)
 
-  const controllerRef = useRef<AbortController | null>(null)
-
   const refresh = useCallback(() => setTick((value) => value + 1), [])
 
   useEffect(() => {
     const controller = new AbortController()
-    controllerRef.current?.abort()
-    controllerRef.current = controller
 
-    const read = async () => {
+    const readEverything = async () => {
       try {
         const [instanceList, coordinatorList, treasurer, authList] =
           await Promise.all([
@@ -78,13 +80,47 @@ export function useProtocol(): ProtocolState {
       }
     }
 
-    read()
-    const timer = window.setInterval(read, REFRESH_MS)
+    readEverything()
+    return () => controller.abort()
+  }, [tick])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const readWatched = async () => {
+      try {
+        const [treasurer, updated] = await Promise.all([
+          fetchTreasurerAccounts(controller.signal),
+          watching
+            ? fetchCoordinator(watching, controller.signal)
+            : Promise.resolve(null),
+        ])
+        if (controller.signal.aborted) return
+        setRuns(treasurer.runs)
+        setParticipants(treasurer.participants)
+        setVerdicts(treasurer.verdicts)
+        setUnrecognised(treasurer.unrecognised)
+        if (updated) {
+          setCoordinators((current) =>
+            current.map((entry) =>
+              entry.address === updated.address ? updated : entry,
+            ),
+          )
+        }
+        setError(null)
+        setFetchedAt(Date.now())
+      } catch (cause) {
+        if (controller.signal.aborted) return
+        setError(cause instanceof Error ? cause.message : 'devnet read failed')
+      }
+    }
+
+    const timer = window.setInterval(readWatched, REFRESH_MS)
     return () => {
       controller.abort()
       window.clearInterval(timer)
     }
-  }, [tick])
+  }, [watching, tick])
 
   return {
     instances,

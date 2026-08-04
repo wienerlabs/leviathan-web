@@ -31,10 +31,10 @@ function SkeletonBlock({ className = '' }: { className?: string }) {
 }
 
 export default function Dashboard() {
-  const protocol = useProtocol()
+  const [selected, setSelected] = useState<string | null>(null)
+  const protocol = useProtocol(selected)
   const chain = useChainFacts()
   const fleet = useFleet()
-  const [selected, setSelected] = useState<string | null>(null)
 
   const runs = useMemo(
     () => joinRuns(protocol.instances, protocol.coordinators, protocol.runs),

@@ -181,6 +181,12 @@ export async function fetchRunInstances(
     .sort((a, b) => a.runId.localeCompare(b.runId))
 }
 
+/**
+ * Every coordinator account, which is 2.7 MB over the wire once base64 has had
+ * its way with 18 accounts of 119 KB. Worth paying on load to list the runs
+ * with their real activity, not worth paying on a timer: use
+ * {@link fetchCoordinator} to refresh whichever one is on screen.
+ */
 export async function fetchCoordinators(
   signal?: AbortSignal,
 ): Promise<CoordinatorView[]> {
@@ -192,6 +198,17 @@ export async function fetchCoordinators(
   return accounts
     .map((entry) => decodeCoordinator(entry.pubkey, entry.data))
     .filter((entry): entry is CoordinatorView => entry !== null)
+}
+
+export async function fetchCoordinator(
+  address: string,
+  signal?: AbortSignal,
+): Promise<CoordinatorView | null> {
+  const result = await rpc<{
+    value: { data: [string, string] } | null
+  }>('getAccountInfo', [address, { encoding: 'base64' }], signal)
+  if (!result.value) return null
+  return decodeCoordinator(address, decodeBase64(result.value.data[0]))
 }
 
 /**

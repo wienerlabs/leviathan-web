@@ -1,4 +1,12 @@
 import { LEVI } from './levi'
+import { toBase58 } from './coordinator'
+
+function decodeBase64(value: string): Uint8Array {
+  const binary = atob(value)
+  const out = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i += 1) out[i] = binary.charCodeAt(i)
+  return out
+}
 
 export const MAINNET_RPC =
   (import.meta.env.VITE_SOLANA_RPC as string | undefined)?.trim() ||
@@ -207,25 +215,37 @@ export async function fetchProgramStatus(
     const programData = program.value?.data.parsed?.info?.programData
     if (!programData) return base
 
+    // Sliced, because a programData account holds the whole compiled program.
+    // Asking for it parsed pulled roughly half a megabyte per program per
+    // refresh, for one pubkey. The header is the loader enum, the deploy slot,
+    // and an optional authority.
     const detail = await rpc<{
-      value: {
-        data: {
-          parsed?: {
-            info?: { authority?: string | null; slot?: number }
-          }
-        }
-        space?: number
-      } | null
-    }>(endpoint, 'getAccountInfo', [programData, { encoding: 'jsonParsed' }], signal)
+      value: { data: [string, string]; space?: number } | null
+    }>(
+      endpoint,
+      'getAccountInfo',
+      [
+        programData,
+        { encoding: 'base64', dataSlice: { offset: 0, length: 45 } },
+      ],
+      signal,
+    )
 
-    const authority = detail.value?.data.parsed?.info?.authority ?? null
+    if (!detail.value) return { ...base, deployed: true }
+
+    const header = decodeBase64(detail.value.data[0])
+    const hasAuthority = header.length >= 45 && header[12] === 1
+    const authority = hasAuthority
+      ? toBase58(header.subarray(13, 45))
+      : null
+
     return {
       name,
       programId,
       deployed: true,
       upgradeAuthority: authority,
       underMultisig: authority === multisig,
-      dataLength: detail.value?.space ?? null,
+      dataLength: detail.value.space ?? null,
     }
   } catch {
     return base
