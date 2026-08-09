@@ -6,13 +6,27 @@ export const DEVNET_RPC =
   'https://api.devnet.solana.com'
 
 /**
- * The devnet deployments that actually hold state.
+ * The live devnet deployment.
  *
- * The mainnet-id rehearsal deployments (`9Sid2EWE…`, `A6Z8jZeK…`, `2QXAd9g3…`)
- * are also on devnet but own zero accounts, so pointing the dashboard at them
- * showed a network that had never run.
+ * The mainnet-id rehearsal deployments are also on devnet but own no accounts,
+ * so pointing the dashboard at those showed a network that had never run.
  */
 export const PROGRAMS = {
+  coordinator: 'GdHJHiQp7uMv8TanfpaCaKQ8nHm5suvEt9JvjpZFWZ19',
+  treasurer: 'Fq1Mv8osXqHxiiXjm4yhvQGE5wgx9QMueK8n2qwbqovV',
+  authorizer: 'ECEmta24U9WCwh397N4diSc8JnAbyJTG3YiTUVL5umrb',
+} as const
+
+/**
+ * The deployment these replaced, kept only so its history stays reachable.
+ *
+ * The internal security review added fields to `Run`, `Participant` and
+ * `AuditVerdict`, so accounts written by those programs cannot be read by the
+ * current ones. Upgrading in place was not an option either: that deployment's
+ * upgrade authority is not held here. Its runs are abandoned rather than
+ * migrated, which is why the dashboard links them but does not decode them.
+ */
+export const SUPERSEDED_DEVNET = {
   coordinator: 'JD9rHTiqBFgHjViWZc7gFZX74LvKKysbLbqFRaFvtmmN',
   treasurer: '9A1kc8Dr9dFJW9t1npAk7EHrADm6TAyFeVLH27CDdvv8',
   authorizer: '2Kg5ERG6ubuzyPmQ24axsws7V2ja2EvWp5CHMKFCrTxv',

@@ -9,7 +9,11 @@ import {
   type SupplyBreakdown,
 } from './chain'
 import { fetchLeviMarket, LEVI, type MarketSnapshot } from './levi'
-import { MAINNET_ID_REHEARSALS, PROGRAMS } from './protocol'
+import {
+  MAINNET_ID_REHEARSALS,
+  PROGRAMS,
+  SUPERSEDED_DEVNET,
+} from './protocol'
 
 const REFRESH_MS = 60000
 
@@ -18,7 +22,8 @@ const REFRESH_MS = 60000
  * this reads from both and says which cluster each panel is describing rather
  * than blurring them together.
  *
- * The first three are the deployments that hold state. The rehearsal builds
+ * The first three are the live deployment. The next three are the deployment it
+ * replaced, listed so its abandoned runs stay reachable. The rehearsal builds
  * carry the mainnet program ids and are also on devnet, but own no accounts, so
  * a list containing only those described a network that had never run.
  */
@@ -26,6 +31,9 @@ export const PROTOCOL_PROGRAMS = [
   { name: 'Coordinator', id: PROGRAMS.coordinator },
   { name: 'Treasurer', id: PROGRAMS.treasurer },
   { name: 'Authorizer', id: PROGRAMS.authorizer },
+  { name: 'Coordinator, superseded', id: SUPERSEDED_DEVNET.coordinator },
+  { name: 'Treasurer, superseded', id: SUPERSEDED_DEVNET.treasurer },
+  { name: 'Authorizer, superseded', id: SUPERSEDED_DEVNET.authorizer },
   {
     name: 'Coordinator, mainnet id rehearsal',
     id: MAINNET_ID_REHEARSALS.coordinator,
